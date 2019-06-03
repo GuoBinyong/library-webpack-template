@@ -4,7 +4,7 @@
   "description": "构建前端库的webpack打包配置模板",
   "main": "prod/library.js",
   "module": "src/index.js",
-  "sideEffects":true,
+  "sideEffects": true,
   "browserslist": [
     "> 1%",
     "last 2 versions",
