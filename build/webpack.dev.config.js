@@ -26,10 +26,18 @@ const wpConfig = {
       // 用 ts-loader 解析 TypeScript
       {
         test: /\.tsx?$/,
-        use: {
+        use: [
+        {
+          loader:"babel-loader",
+          options:{
+            presets: utils.createBabelPresets("js")
+          }
+        },
+        {
           loader:'ts-loader',
           options:require("./tsconfig.dev.js")
-        },
+        }
+      ],
       },
     
     ],

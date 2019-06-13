@@ -3,6 +3,7 @@ const config = require("../project-config.js");
 
 
 module.exports = {
+  // "extends":"../tsconfig.json",    /* tsconfig.json文件可以利用extends属性从另一个配置文件里继承配置。 */
   "compilerOptions": {
     /* Basic Options */
     "target": config.tsTarget,                          /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'. */

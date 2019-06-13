@@ -12,7 +12,7 @@ module.exports = {
   wpTarget: "web",  //node  web
   libraryTarget: "umd",
 
-  entry: "./src/index.js",
+  entry: "./src/index",
   alias: {
     // '@': resolve('src'),
   },
@@ -35,7 +35,7 @@ module.exports = {
   // TypeScript配置:开始
 
    // 指定ECMAScript目标版本 "ES3"（默认）， "ES5"， "ES6"/ "ES2015"， "ES2016"， "ES2017"或 "ESNext"。
-   tsTarget:"es5",
+   tsTarget:"es6",
 
   /*  
   指定生成哪个模块系统代码： "None"， "CommonJS"， "AMD"， "System"， "UMD"， "ES6"或 "ES2015"。

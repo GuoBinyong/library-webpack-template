@@ -32,10 +32,18 @@ const wpConfig = {
     }),
     {
       test: /\.tsx?$/,
-      use: {
+      use: [
+      {
+        loader:"babel-loader",
+        options:{
+          presets: utils.createBabelPresets("js")
+        }
+      },
+        {
         loader:'ts-loader',
         options:tsConfig
-      },
+      }
+    ],
     },
   ]
   },
