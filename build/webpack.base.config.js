@@ -2,8 +2,7 @@ var path = require('path');
 const utils = require('./utils');
 
 const config = require('../project-config');
-var npmConfig = require("../package.json");
-var libraryName = npmConfig.name;
+var libraryName = config.library;
 
 
 function resolve(dir) {
@@ -25,15 +24,16 @@ const createLintingRule = () => ({
 
 
 const wpConfig = {
-  target: config.wpTarget,  //node  web
+  target: config.wpTarget,  //node  web 等等
   context:path.resolve(__dirname, '../'),
   entry: {
     [libraryName]: config.entry,
   },
   output: {
-    filename: '[name].js',
+    filename: config.filename || '[name].js',
     library: libraryName,
     libraryTarget: config.libraryTarget,
+    libraryExport: config.libraryExport,
   },
   externals: config.externals,
   resolve: {

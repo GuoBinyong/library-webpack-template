@@ -2,23 +2,37 @@
 
 
 const path = require('path');
+var npmConfig = require("./package.json");
 
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
 module.exports = {
-  // webpack 的 target
-  wpTarget: "web",  //node  web
-  libraryTarget: "umd",
 
-  entry: "./src/index",
+  // webpack 的入口文件
+  entry: "./src/conditionOperat",
+
+  // webpack 的 target
+  wpTarget: "web",  //node  web 等等
+  // webpack 的 输出文件的名字； 默认值：'[name].js'
+  // filename:"",
+  // 库的名字
+  library: npmConfig.name,
+  libraryTarget: "umd",
+  // 库中被导出的项
+  libraryExport: "default",
+
   alias: {
     // '@': resolve('src'),
   },
+
+  /* 
+  排除依赖的模块
+  */
   externals: {},
 
-  // html模板文件； 
+  // html模板文件；
   // htmlTemplate:"index.html",
   // Template for index.html
   htmlOut: 'index.html',
@@ -29,17 +43,17 @@ module.exports = {
   // 静态资源输出目录， 如; static
   staticOutDirectory: 'static',
 
-  
+
 
 
   // TypeScript配置:开始
 
    // 指定ECMAScript目标版本 "ES3"（默认）， "ES5"， "ES6"/ "ES2015"， "ES2016"， "ES2017"或 "ESNext"。
-   tsTarget:"es6",
+   tsTarget:"es5",
 
-  /*  
+  /*
   指定生成哪个模块系统代码： "None"， "CommonJS"， "AMD"， "System"， "UMD"， "ES6"或 "ES2015"。
-   默认值是： target === "ES6" ? "ES6" : "commonjs"  
+   默认值是： target === "ES6" ? "ES6" : "commonjs"
    */
     //  module:"",
      // 生成相应的 .d.ts文件。
@@ -48,7 +62,7 @@ module.exports = {
 
      // TypeScript配置:结束
 
-  
+
   dev: {
     // 输出目录
     outputPath: resolve("dev"),
