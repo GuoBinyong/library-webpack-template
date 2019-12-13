@@ -24,7 +24,7 @@ const createLintingRule = () => ({
 
 
 const wpConfig = {
-  target: config.wpTarget,  //node  web 等等
+  target: config.target,  //node  web 等等
   context:path.resolve(__dirname, '../'),
   entry: {
     [libraryName]: config.entry,
