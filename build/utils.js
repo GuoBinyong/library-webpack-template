@@ -1,11 +1,6 @@
 'use strict'
 const path = require('path')
-const config = require('../project-config')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-
-exports.assetsPath = function (_path) {
-  return path.posix.join(config.staticOutDirectory, _path)
-}
 
 exports.cssLoaders = function (options) {
   options = options || {}
@@ -159,3 +154,43 @@ exports.createBabelPresets = function createBabelPresets(type,options){
 
 
 // babel预设：结束
+
+
+
+
+
+// projec-config 配置处理工具：开始
+
+
+/**
+ * projec-config 配置处理工具
+ *
+ * @param projecConfig : ProjecConfig   项目配置
+ * @returns [ProjecConfig]    返回包含多个目标对应的项目配置的数组
+ */
+exports.projecConfigMultipleTargetsSeparation = function projecConfigMultipleTargetsSeparation(projecConfig){
+
+  var multipleTargets = projecConfig.multipleTargets;
+  var projecConfig = Object.assign({},projecConfig);
+  delete projecConfig.multipleTargets;
+
+  var multiProjConf = [projecConfig];
+
+  if (multipleTargets && multipleTargets.length > 0){
+
+    multiProjConf = multipleTargets.map(function(target){
+
+      var targetProjConf = Object.assign({},projecConfig,target);
+      targetProjConf.dev = Object.assign({},projecConfig.dev,target.dev);
+      targetProjConf.build = Object.assign({},projecConfig.build,target.build);
+
+      return targetProjConf
+    });
+
+  }
+
+  return multiProjConf;
+}
+
+
+// projec-config 配置处理工具：结束

@@ -1,79 +1,105 @@
-var path = require('path');
+const path = require('path');
+const utils = require('./utils');
 const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-const utils = require('./utils');
-const config = require('../project-config');
-const base = require('./webpack.base.config');
-const outputPath = config.dev.outputPath;
+const createBaseConfig = require('./webpack.base.config');
+const multiProjConf = require('../project-config');
+const createTsConfig = require("./tsconfig.dev.js");
 
-const tsConfig = require("./tsconfig.dev.js");
 
-if (tsConfig.compilerOptions.declaration){
-  tsConfig.compilerOptions.declarationDir = outputPath;
-}
 
-const wpConfig = {
-  mode: "development",
-  devtool: config.dev.sourceMap ? config.dev.devtool : false,
-  output: {
-    path: outputPath,
-  },
-  module: {
-    rules: [
-      ...utils.styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true }),
-      // 用 ts-loader 解析 TypeScript
-      {
-        test: /\.tsx?$/,
-        use: [
+
+/**
+ * 生成 Webpack 配置对象
+ * @param  projecConfig : ProjecConfig    项目配置对象
+ */
+function createWebpackConfig(projecConfig) {
+
+  const tsConfig = createTsConfig(projecConfig);
+  const base = createBaseConfig(projecConfig);
+
+  const outputPath = projecConfig.dev.outputPath;
+
+
+  if (tsConfig.compilerOptions.declaration) {
+    tsConfig.compilerOptions.declarationDir = outputPath;
+  }
+
+  const wpConfig = {
+    mode: "development",
+    devtool: projecConfig.dev.sourceMap ? projecConfig.dev.devtool : false,
+    output: {
+      path: outputPath,
+    },
+    module: {
+      rules: [
+        ...utils.styleLoaders({ sourceMap: projecConfig.dev.cssSourceMap, usePostCSS: true }),
+        // 用 ts-loader 解析 TypeScript
         {
-          loader:"babel-loader",
-          options:{
-            presets: utils.createBabelPresets("js")
-          }
+          test: /\.tsx?$/,
+          use: [
+            {
+              loader: "babel-loader",
+              options: {
+                presets: utils.createBabelPresets("js")
+              }
+            },
+            {
+              loader: 'ts-loader',
+              options: tsConfig
+            }
+          ],
         },
-        {
-          loader:'ts-loader',
-          options:require("./tsconfig.dev.js")
-        }
+
       ],
-      },
-    
-    ],
-  },
+    },
 
-  plugins: [],
-};
+    plugins: [],
+  };
 
 
-// 配置插件：开始
+  // 配置插件：开始
 
-let plugins = wpConfig.plugins || [];
+  let plugins = wpConfig.plugins || [];
 
 
-// Html模板插件
-const htmlTemplate = config.htmlTemplate
-if (htmlTemplate){
-  // https://github.com/ampedandwired/html-webpack-plugin
-  const htmlPlugin = new HtmlWebpackPlugin({
-    filename: path.resolve(__dirname,"..",outputPath,config.htmlOut),
-    template: htmlTemplate,
-    inject: true
-  });
+  // Html模板插件
+  const htmlTemplate = projecConfig.htmlTemplate
+  if (htmlTemplate) {
+    // https://github.com/ampedandwired/html-webpack-plugin
+    const htmlPlugin = new HtmlWebpackPlugin({
+      filename: path.resolve(__dirname, "..", outputPath, projecConfig.htmlOut),
+      template: htmlTemplate,
+      inject: true
+    });
 
-  plugins.push(htmlPlugin);
+    plugins.push(htmlPlugin);
+  }
+
+
+
+
+  wpConfig.plugins = plugins;
+
+  // 配置插件：结束
+
+
+
+
+  const webpackConfig = merge.smart(base, wpConfig);
+
+
+  return webpackConfig;
+
 }
 
 
 
 
-wpConfig.plugins = plugins;
+const multipleWebpackConfig = multiProjConf.map(function (projConf) {
+  return createWebpackConfig(projConf);
+});
 
-// 配置插件：结束
-
-
-
-
-const webpackConfig = merge.smart(base,wpConfig);
-module.exports = webpackConfig;
+module.exports = multipleWebpackConfig;
