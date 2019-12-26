@@ -7,3 +7,12 @@ tsconfig.json
 .eslintrc.js
 .eslintignore
 .editorconfig
+
+#WebStorm生成的用来存放项目配置的目录
+.idea
+
+# VSCode在项目中创建的隐藏目录
+.vscode
+
+#Mac系统中用来存储文件夹的显示属性的文件
+.DS_Store
