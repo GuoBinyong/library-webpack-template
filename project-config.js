@@ -20,36 +20,50 @@ var projecConfig = {
   entry: "./src/index",
 
   /* 
-  webpack 的 target
+  webpack 的 target，用来告知 webpack   bundles 的运行环境。
+  因为 服务器 和 浏览器 代码都可以用 JavaScript 编写，所以 webpack 提供了多种部署 target(目标)
   */
   target: "web",  //node  web 等等
 
   /* 
   webpack 的 输出文件的名字； 默认值：'[name].js'
   */
-  // filename:"",
+  // filename:'[name].js',
 
   /* 
   库的名字
+  https://webpack.docschina.org/configuration/output/#output-library
   */
   library: npmConfig.name,
 
   /* 
-  配置如何暴露 library
+  配置对外暴露 库 的方式
+  即：库将会以哪种方式被使用
+
+  libraryTarget : "var" | "assign" | "this" | "window" | "self" | "global" | "commonjs" | "commonjs2" | "commonjs-module" | "amd" | "amd-require" | "umd" | "umd2" | "jsonp" | "system"
+
+  https://webpack.docschina.org/configuration/output/#output-librarytarget
   */
   libraryTarget: "umd",
 
   /* 
-  库中被导出的项
+  库中被导出的项；
+  默认值是："default"
+  https://webpack.docschina.org/configuration/output/#output-libraryexport
   */
   libraryExport: "default",
 
+  /* 
+  创建 import 或 require 的别名，来使模块引入变得更简单
+  https://webpack.docschina.org/configuration/resolve/#resolve-alias
+  */
   alias: {
     // '@': resolve('src'),
   },
 
   /* 
   排除依赖的模块
+  https://webpack.docschina.org/configuration/externals/#src/components/Sidebar/Sidebar.jsx
   */
   externals: {},
 
@@ -153,8 +167,19 @@ var projecConfig = {
 
   /* 
   配置多个构建目标
+  multipleTargets : undefined | null | Array<ProjecConfig>
+  些选项是可选的，如果没有配置，或者配置的是一个长度为 0 的空数组，则会使用 默认的配置 projecConfig
   */
-  multipleTargets: []
+  multipleTargets: [
+    //使用默认的配置
+    {},
+
+    // node
+    {
+      target:"node",
+      filename:'[name].node.js'
+    }
+  ]
 
 }
 
