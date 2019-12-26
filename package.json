@@ -1,15 +1,10 @@
 {
   "name": "library",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "构建前端库的webpack打包配置模板",
-  "main": "prod/library.js",
+  "main": "dist/library.js",
   "module": "src/index.js",
   "sideEffects": true,
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 8"
-  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack --config build/webpack.dev.config.js",
@@ -18,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://gitee.com/guobinyong/"
+    "url": "https://gitee.com/guobinyong/library-webpack-template"
   },
   "keywords": [
     "前端库",

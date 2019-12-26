@@ -145,7 +145,7 @@ var projecConfig = {
 
   build: {
     // 输出目录
-    outputPath: resolve("prod"),
+    outputPath: resolve("dist"),
 
     /* 
     Source Maps

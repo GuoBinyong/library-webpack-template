@@ -1,0 +1,9 @@
+#忽略配置文件
+build/
+project-config.js
+webpack.config.js
+tsconfig.json
+.postcssrc.js
+.eslintrc.js
+.eslintignore
+.editorconfig
