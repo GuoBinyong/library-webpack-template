@@ -53,17 +53,6 @@ module.exports = function createWebpackConfig(projecConfig) {
     module: {
       rules: [
         // ...(projecConfig.dev.useEslint ? [createLintingRule()] : []),
-        // 用 babel-loader 解析 TypeScript
-        /* {
-          test: /\.ts$/,
-          use: {
-            loader:"babel-loader",
-            options:{
-              presets: utils.createBabelPresets("ts")
-            }
-          },
-          exclude: /node_modules/
-        }, */
         {
           test: /\.js$/,
           use: {

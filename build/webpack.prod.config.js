@@ -44,21 +44,8 @@ function createWebpackConfig(projecConfig) {
           extract: true,
           usePostCSS: true
         }),
-        {
-          test: /\.tsx?$/,
-          use: [
-            {
-              loader: "babel-loader",
-              options: {
-                presets: utils.createBabelPresets("js")
-              }
-            },
-            {
-              loader: 'ts-loader',
-              options: tsConfig
-            }
-          ],
-        },
+        // TypeScript 的 Loader
+        utils.createTsParseLoader(projecConfig.tsParseLoader,{exclude: /node_modules/},tsConfig),
       ]
     },
 

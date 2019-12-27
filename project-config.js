@@ -93,7 +93,6 @@ var projecConfig = {
 
   // TypeScript配置:开始
 
-
   /*
   指定ECMAScript目标版本 "ES3"（默认）， "ES5"， "ES6"/ "ES2015"， "ES2016"， "ES2017"或 "ESNext"。
   */
@@ -109,6 +108,22 @@ var projecConfig = {
   生成相应的 .d.ts文件。
   */
   declaration: true,
+
+
+
+
+
+  /* 
+  tsParseLoader : "ts-loader" | "babel-loader" ；默认值："ts-loader"
+  配置解析 TypeScript 的 loader
+
+  目前，解析 TypeScript 的 loader 有两个： "ts-loader" 和 "babel-loader"
+
+  注意，日前发现：
+  - "ts-loader" 会忽略TypeScript中默认的导出项 `export default`，这时配置项 ` libraryExport: "default" ` 可能会导到导出的值是 undefined
+  - "babel-loader" 暂未支持生成 声明文件 .d.ts，并且会忽略 项目中关于 TypeScript 的自定配置，如：tsconfig.json、tsconfig.dev.js、tsconfig.prod.js 中的配置
+  */
+ tsParseLoader:"ts-loader",
 
 
   // TypeScript配置:结束

@@ -105,10 +105,10 @@ const jsBabelPresets = [
   ];
 
 
-  // jsx 的 babel 的预设
-const tsBabelPresets = jsBabelPresets.concat([
+  // TypeScript 的 babel 的预设
+const tsBabelPresets = [
   "@babel/preset-typescript"
-]);
+];
 
 
 
@@ -122,7 +122,7 @@ const tsBabelPresets = jsBabelPresets.concat([
  * typescript类型 : ts、tsx、typescript
  * 其它类型 : 除上述之外的所有值
  */
-exports.createBabelPresets = function createBabelPresets(type,options){
+function createBabelPresets(type,options){
   type = type.toLowerCase();
   // let babelPresets = jsBabelPresets.slice();
   let babelPresets = [];
@@ -151,9 +151,74 @@ exports.createBabelPresets = function createBabelPresets(type,options){
   return jsBabelPresets.concat(babelPresets);
 }
 
+exports.createBabelPresets = createBabelPresets
+
 
 
 // babel预设：结束
+
+
+// TypeScript的Loader：开始
+
+/* 
+创建
+*/
+
+/**
+ * 创建 TypeScript 的 Loader
+ *
+ * @param loader : "ts-loader" | "babel-loader"  默认值："ts-loader" ； 解析 TypeScript 的 loader
+ * @param options : Object      配置 loader 的额外选项
+ * @param tsConfig : Object     TypeScript 的配置选项，与 tsconfig.json 的配置相同
+ * @returns Loader
+ */
+exports.createTsParseLoader = function createTsParseLoader(loader,options,tsConfig){
+
+  var tsLoader = {
+    test: /\.tsx?$/
+  }; 
+
+  if (options && typeof options == "object") {
+    Object.assign(tsLoader,options);
+  }
+
+  switch (loader){
+    
+    // 用 babel-loader 解析 TypeScript
+    case "babel-loader":{
+      tsLoader.use = {
+        loader:"babel-loader",
+        options:{
+          presets: createBabelPresets("ts")
+        }
+      };
+      break;
+    }
+
+    // 用 ts-loader 解析 TypeScript
+    default:{
+      tsLoader.use = [
+        {
+          loader: "babel-loader",
+          options: {
+            presets: createBabelPresets("js")
+          }
+        },
+        {
+          loader: 'ts-loader',
+          options: tsConfig
+        }
+      ];
+
+    }
+  }
+
+
+  return tsLoader;
+}
+
+
+// TypeScript的Loader：结束
 
 
 

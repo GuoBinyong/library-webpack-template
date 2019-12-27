@@ -36,23 +36,8 @@ function createWebpackConfig(projecConfig) {
     module: {
       rules: [
         ...utils.styleLoaders({ sourceMap: projecConfig.dev.cssSourceMap, usePostCSS: true }),
-        // 用 ts-loader 解析 TypeScript
-        {
-          test: /\.tsx?$/,
-          use: [
-            {
-              loader: "babel-loader",
-              options: {
-                presets: utils.createBabelPresets("js")
-              }
-            },
-            {
-              loader: 'ts-loader',
-              options: tsConfig
-            }
-          ],
-        },
-
+        // TypeScript 的 Loader
+        utils.createTsParseLoader(projecConfig.tsParseLoader,{exclude: /node_modules/},tsConfig),
       ],
     },
 
