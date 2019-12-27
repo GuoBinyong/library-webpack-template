@@ -33,8 +33,10 @@ var projecConfig = {
   /* 
   库的名字
   https://webpack.docschina.org/configuration/output/#output-library
+
+  utils.stringToCamelFormat(npmConfig.name) 的作用是把 package.json 中的 name 字段的值 从 中划线 或 下划线 分隔的方式 转成 驼峰式
   */
-  library: npmConfig.name,
+  library: utils.stringToCamelFormat(npmConfig.name),
 
   /* 
   配置对外暴露 库 的方式
