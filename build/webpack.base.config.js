@@ -1,4 +1,5 @@
-var path = require('path');
+const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const utils = require('./utils');
 
 
@@ -47,7 +48,7 @@ module.exports = function createWebpackConfig(projecConfig) {
     },
     externals: projecConfig.externals,
     resolve: {
-      extensions: ['.tsx', '.ts', '.js', '.jsx', '.json'],
+      extensions: projecConfig.extensions,
       alias: projecConfig.alias,
     },
     module: {

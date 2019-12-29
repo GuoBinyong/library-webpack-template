@@ -15,78 +15,103 @@ function resolve(dir) {
 var projecConfig = {
 
   /* 
-  webpack 的入口文件
+ webpack 的入口配置 entry；  指示 webpack 应该使用哪个模块，来作为构建其内部 依赖图的开始
+  - 类型: string | [string] | object { <key>: string | [string] } | (function: () => string | [string] | object { <key>: string | [string] })
+  - 详细信息： <https://webpack.docschina.org/configuration/entry-context/#entry>  
    */
   entry: "./src/index",
 
   /* 
-  webpack 的 target，用来告知 webpack   bundles 的运行环境。
-  因为 服务器 和 浏览器 代码都可以用 JavaScript 编写，所以 webpack 提供了多种部署 target(目标)
+  webpack 的 target，用来告知 webpack   bundles 的运行环境。因为 服务器 和 浏览器 代码都可以用 JavaScript 编写，所以 webpack 提供了多种部署 target(目标)
+    - 类型： string | function (compiler)
+    - 详细信息： <https://webpack.docschina.org/configuration/target/#target> 
   */
   target: "web",  //node  web 等等
 
   /* 
-  webpack 的 输出文件的名字； 默认值：'[name].js'
+  webpack 的 filename；此选项决定了每个输出 bundle 的名称。这些 bundle 将写入到 output.path 选项指定的目录下
+    - 类型： string | function
+    - 默认值："[name].js"
+    - 详细信息： <https://webpack.docschina.org/configuration/output/#output-filename> 
   */
   // filename:'[name].js',
 
   /* 
-  库的名字
-  https://webpack.docschina.org/configuration/output/#output-library
-
-  utils.stringToCamelFormat(npmConfig.name) 的作用是把 package.json 中的 name 字段的值 从 中划线 或 下划线 分隔的方式 转成 驼峰式
+  库的名字；webpack 的 output.library；
+    - 类型： string 或 object（从 webpack 3.1.0 开始；用于 libraryTarget: 'umd'）
+    - 详细信息： <https://webpack.docschina.org/configuration/output/#output-library> 
+    - `utils.stringToCamelFormat(npmConfig.name)` 的作用是把 package.json 中的 name 字段的值 从 中划线 或 下划线 分隔的方式 转成 驼峰式
   */
   library: utils.stringToCamelFormat(npmConfig.name),
 
   /* 
-  配置对外暴露 库 的方式
-  即：库将会以哪种方式被使用
-
-  libraryTarget : "var" | "assign" | "this" | "window" | "self" | "global" | "commonjs" | "commonjs2" | "commonjs-module" | "amd" | "amd-require" | "umd" | "umd2" | "jsonp" | "system"
-
-  https://webpack.docschina.org/configuration/output/#output-librarytarget
+  配置对外暴露 库 的方式，即：库将会以哪种方式被使用；webpack 的 output.libraryTarget；
+    - 类型： "var" | "assign" | "this" | "window" | "self" | "global" | "commonjs" | "commonjs2" | "commonjs-module" | "amd" | "amd-require" | "umd" | "umd2" | "jsonp" | "system"
+    - 详细信息： <https://webpack.docschina.org/configuration/output/#output-librarytarget> 
   */
   libraryTarget: "umd",
 
   /* 
-  库中被导出的项；
-  默认值是："default"
-  https://webpack.docschina.org/configuration/output/#output-libraryexport
+  库中被导出的项；webpack 的 output.libraryExport ；
+    - 类型： string | string[]
+    - 默认值： "default"
+    - 备注： 如果设置成空字符串 "" ，则会导出包含所有导出的对象；
+    - 详细信息： <https://webpack.docschina.org/configuration/output/#output-libraryexport> 
   */
   libraryExport: "default",
 
   /* 
-  创建 import 或 require 的别名，来使模块引入变得更简单
-  https://webpack.docschina.org/configuration/resolve/#resolve-alias
+  webpack 的 resolve.alias，创建 import 或 require 的别名，来使模块引入变得更简单
+    - 类型： object
+    - 详细信息： <https://webpack.docschina.org/configuration/resolve/#resolve-alias> 
   */
   alias: {
     // '@': resolve('src'),
   },
 
+
   /* 
-  排除依赖的模块
-  https://webpack.docschina.org/configuration/externals/#src/components/Sidebar/Sidebar.jsx
+  webpack 的 resolve.extensions，自动解析确定的扩展名，能够使用户在引入模块时不用写文件的扩展名
+    - 类型： string[]
+    - 详细信息： <https://webpack.docschina.org/configuration/resolve/#resolve-extensions> 
+  */
+  extensions: ['.tsx', '.ts', '.js', '.jsx', '.json'],
+
+  /* 
+  webpack 的 externals； 排除依赖的模块；防止将某些 import 的包(package)打包到 bundle 中；
+    - 类型： string | object | function | regex | array 
+    - 详细信息： <https://webpack.docschina.org/configuration/externals/#externals> 
   */
   externals: {},
 
   /* 
-  html模板文件；
+  html模板文件；html-webpack-plugin
+ template 的 template 选项；
+    - 类型： string
+    - 详细信息： <https://github.com/ampedandwired/html-webpack-plugin> 
   */
   // htmlTemplate:"index.html",
 
+
   /* 
-  Template for index.html
+  要将 html模板文件 htmlTemplate 写入的文件。您也可以在此处指定子目录；该选项会结合 outputPath 选项 生成 html-webpack-plugin
+ 的 filename 选项 的值；
+    - 类型： string
+    - 默认值： "index.html"
+    - 详细信息： <https://github.com/ampedandwired/html-webpack-plugin>  
   */
   htmlOut: 'index.html',
 
 
   /* 
-  静态资源目录
+  静态资源的原目录；该目录下的内容将会被拷贝到构建输出目录中；
+    - **类型：** string
   */
   // staticDirectory:"static",
 
   /* 
-  静态资源输出目录， 如; static
+  静态资源输出目录；设置将静态资源从原目录拷贝到构建输出目录中时，静态资源目录的名字；
+    - **类型：** string
   */
   staticOutDirectory: 'static',
 
@@ -96,18 +121,26 @@ var projecConfig = {
   // TypeScript配置:开始
 
   /*
-  指定ECMAScript目标版本 "ES3"（默认）， "ES5"， "ES6"/ "ES2015"， "ES2016"， "ES2017"或 "ESNext"。
+  指定TypeScript编译成 ECMAScript 的目标版本；用作 tsconfig 的 target 选项；
+    - **类型：** "ES3" | "ES5" | "ES6"/"ES2015" | "ES2016" | "ES2017" | "ESNext"
+    - **默认值：** "ES3"
+    - **详细信息：** <https://www.tslang.cn/docs/handbook/compiler-options.html>  
   */
   tsTarget: "es5",
 
   /*
-  指定生成哪个模块系统代码： "None"， "CommonJS"， "AMD"， "System"， "UMD"， "ES6"或 "ES2015"。
-  默认值是： target === "ES6" ? "ES6" : "commonjs"
+  指定生成哪个模块系统代码；用作 tsconfig 的 module 选项；
+    - **类型：** "None" | "CommonJS" | "AMD" | "System" | "UMD" | "ES6" | "ES2015"
+    - **默认值：** target === "ES6" ? "ES6" : "commonjs"
+    - **详细信息：** <https://www.tslang.cn/docs/handbook/compiler-options.html>  
    */
   //  module:"",
 
   /* 
-  生成相应的 .d.ts文件。
+  指定是否生成相应的 .d.ts 文件。用作 tsconfig 的 declaration 选项
+    - **类型：** boolean
+    - **默认值：** false 
+    - **详细信息：** <https://www.tslang.cn/docs/handbook/compiler-options.html> 
   */
   declaration: true,
 
