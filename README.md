@@ -1,15 +1,85 @@
 [交互式树形可视化构建分析报告]: ./可删除-交互式树形可视化构建分析报告.gif
 
+[git仓库]: https://github.com/GuoBinyong/-library-webpack-template
+[issues]: https://github.com/GuoBinyong/-library-webpack-template/issues
 
 
-> 构建过程是复杂前端项目必不可少的环节；但 业务代码 与 公用代码（如：封装的库、组件、工具等被复用的代码）的构建需求是不一样的；我发现很多 npm 贡献者都没意识到这一点，他们用传统的业务项目的 webpack 配置 去打包 公用代码，虽然能运行，但实际潜藏着许多问题；甚至都不经过编译构建，直接发布单纯的源码到 npm 上；
+
+> 构建过程是复杂的前端项目必不可少的环节；但 业务代码 与 公用代码（如：封装的库、组件、工具等被复用的代码）的构建需求是不一样的；我发现很多 npm 贡献者都没意识到这一点，他们用传统的业务项目的 webpack 配置 去打包 公用代码，虽然能运行，但实际潜藏着许多问题；甚至都不经过编译构建，直接发布单纯的源码到 npm 上；由于本人经常封装一些东西，为了方便构建，就使用 webpack 开发并配置了一套专门用于构建公共代码的配置模板，当需要开发和构建公共代码时，直接克隆本项目即可； 
+
+
+
+
+<!-- TOC -->
+
+- [1. 简介](#1-简介)
+- [2. 使用](#2-使用)
+- [3. 命令](#3-命令)
+- [4. 业务代码与公用代码的构建特点](#4-业务代码与公用代码的构建特点)
+    - [4.1. 业务代码](#41-业务代码)
+    - [4.2. 公用代码](#42-公用代码)
+- [5. 构建工具的选择](#5-构建工具的选择)
+- [6. 公共代码构建的配置目标](#6-公共代码构建的配置目标)
+- [7. 组织结构](#7-组织结构)
+- [8. project-config.js](#8-project-configjs)
+- [9. npm包管理配置文件](#9-npm包管理配置文件)
+- [10. Webpack配置文件](#10-webpack配置文件)
+- [11. TypeScript配置文件](#11-typescript配置文件)
+
+<!-- /TOC -->
+
+
+
 
 **注意：**  
 为了方便下文描述，我把 **业务代码** 构建出的最终产品称为 **应用程序**；把 **公用代码** 构建的出产品称为 **组件**；
 
-# 业务代码与公用代码的构建特点
 
-## 业务代码
+
+# 1. 简介
+library-webpack-template 是专门用于构建 公共代码（如：封装的库、工具等） 的 webpack 配置模板，当需要开发和构建公共代码时，直接克隆本项目即可，并默认在的 src 目录下开发即可；
+
+- 主页：<https://github.com/GuoBinyong/-library-webpack-template>
+- [API接口文档][]
+
+**如果您在使用的过程中遇到了问题，或者有好的建议和想法，您都可以通过以下方式联系我，期待与您的交流：**
+- 给该仓库提交 [issues][]
+- 给我 Pull requests
+- 邮箱：<guobinyong@qq.com>
+- QQ：guobinyong@qq.com
+- 微信：keyanzhe
+
+
+# 2. 使用
+从 [git仓库][] 克隆或者下载本项目到本地，然后默认从 `src/index` 文件开始写代码即可；
+通过 项目配置文件 `project-config.js` 可根据自己的需求进行定制；
+
+
+
+# 3. 命令
+library-webpack-template 项目支持如下构建命令：
+- `npm start` : 以开发模式构建项目；
+- `npm run dev` : 以开发模式构建项目；
+- `npm run build` : 以生道模式构建项目；
+
+在 project-config.js 配置文件中，如果 没有配置 bundleAnalyzerReport 选项，则支持运行构建命令时 携带 `--report` 选项来开启 交互式树形可视化构建分析报告，如：`npm start --report`、`npm run dev --report`、`npm run build --report`，当构建完成时，会自动打开浏览器展示 交互式树形可视化构建分析报告，如下图：
+
+   ![交互式树形可视化构建分析报告][]
+
+
+
+
+如果已经全局安装了 `webpack` 命令，也可以在项目根目录下执行如下命令：
+- `webpack` : 以开发模式构建项目；
+- `webpack --env.production` : 以生产模式构建项目；
+
+
+
+
+
+# 4. 业务代码与公用代码的构建特点
+
+## 4.1. 业务代码
 - 需要把所有代码及依赖（包括 公用代码）都构建在一块，作为一个整体来运行；  
     因为：业务代码的最终呈现效果是应用程序，应用程序是一个完整的代码逻辑，任何依赖的缺失都会导致应用程序崩溃。
 
@@ -27,7 +97,7 @@
     浏览器端的应用程序都是以HTML文件为入口的，通过HTML加载 CSS 和 JavaScript 文件；
 
 
-## 公用代码
+## 4.2. 公用代码
 - 需要去除依赖；  
     公共代码的依赖往往也是其它公共代码或者业务代码的依赖，当业务代码中引入公共代码时，极有可能也引入了该公共代码的依赖，如果公共代码中不去除其依赖，则会导致业务代码中包含多份公共代码的依赖，造成代码冗余，增大业务代码的体积；
 
@@ -46,15 +116,15 @@
 
 
 
-# 构建工具的选择
+# 5. 构建工具的选择
 前端的构建工具有很多，像：Webpack、rollup、Browserify、Parcel、Grunt、Gulp等等；
 
 目前，对于构建公共代码的工具较常用的是 rollup，对于构建业务代码，较常用的工具是 Webpack；不过，Webpack 也是可以用于构建公共代码的。
 
-为了统一性，我选择了用 Webpack 构建 公共代码；所以，就有了本项目————Webapck针对Library的构建配置模板；
+为了统一性，我选择了用 Webpack 构建 公共代码；所以，就有了本项目————库构建模板：针对Library的Webapck构建配置模板；
 
 
-# 公共代码构建的配置目标
+# 6. 公共代码构建的配置目标
 公共代码构建的配置目标其就是实现上文所述的公共代码的构建特点，总结如下：
 
 - 去除依赖
@@ -66,7 +136,7 @@
 
 
 
-# 组织结构
+# 7. 组织结构
 模板项目中默认包含了一些文件和目录，它们的组织结构和作用如下所示：
 ```
 library-webpack-template/   # 构建前端库的webpack打包配置模板项目根目录
@@ -95,29 +165,8 @@ library-webpack-template/   # 构建前端库的webpack打包配置模板项目�
 ```
 
 
-
-# 命令
-library-webpack-template 项目支持如下构建命令：
-- `npm start` : 以开发模式构建项目；
-- `npm run dev` : 以开发模式构建项目；
-- `npm run build` : 以生道模式构建项目；
-
-在 project-config.js 配置文件中，如果 没有配置 bundleAnalyzerReport 选项，则支持运行构建命令时 携带 `--report` 选项来开启 交互式树形可视化构建分析报告，如：`npm start --report`、`npm run dev --report`、`npm run build --report`，当构建完成时，会自动打开浏览器展示 交互式树形可视化构建分析报告，如下图：
-
-   ![交互式树形可视化构建分析报告][]
-
-
-
-
-如果已经全局安装了 `webpack` 命令，也可以在项目根目录下执行如下命令：
-- `webpack` : 以开发模式构建项目；
-- `webpack --env.production` : 以生产模式构建项目；
-
-
-
-
-# project-config.js
-project-config.js 是整个项目的配置文件，是该项目模板暴露给使用者的配置文件；
+# 8. project-config.js
+project-config.js 是整个项目的配置文件，是 library-webpack-template 提供的 面向使用者的 对 整个项目的配置入口；
 
 该配置文件中的所有配置项都保存在 projectConfig 变量中，可配置的属性如下：
 
@@ -299,7 +348,17 @@ project-config.js 是整个项目的配置文件，是该项目模板暴露给�
 
 
 
-# webpack配置文件
+
+
+# 9. npm包管理配置文件
+library-webpack-template 中与 npm 包管理相关的配置文件有 2 个：
+- `.npmignore` : npm 上传包时的忽略配置文件；默认忽略了 与构建配置文件的所有文件和目录，如：`build/` 等等；还有编辑器相关的文件和目录，如：`.idea`、`.vscode`；
+- `package.json` : npm 的包管理配置文件；同时也是 通过 npm 上传、发布 包 的 配置模板文件；
+
+
+
+
+# 10. Webpack配置文件
 library-webpack-template 中包含了4个 webpack 配置文件：
 
 - `build/webpack.base.config.js` : 这个文件包含提 开发 和 生产这两个模式 公共的 webpack 配置；
@@ -310,14 +369,21 @@ library-webpack-template 中包含了4个 webpack 配置文件：
 所以，项目真正的 webpack 构建配置是放在 `build/` 目录下的 3个 webpack 配置文件中的：`build/webpack.base.config.js`、`build/webpack.dev.config.js`、`build/webpack.prod.config.js` ；
 
 
-# TypeScript配置文件
+# 11. TypeScript配置文件
 library-webpack-template 中包含了3个 TypeScript 配置文件：
 - `tsconfig.json` : 这个文件是项目的级的 TypeScript 配置文件；同时也是 开发 和 生产 这两种模式公共的 TypeScript 配置文件； 并且 该文件的存在，也是为了方便能在项目根目录下直接使用 TypeScript 的编译命令 `tsc`；
 - `build/tsconfig.dev.js` : 这个文件仅包含提 开发模式 特有的 TypeScript 配置；并且会覆盖 公共配置 `tsconfig.json` 中相应的具体选项；
 - `build/tsconfig.prod.js` : 这个文件仅包含提 生产模式 特有的 TypeScript 配置；并且会覆盖 公共配置 `tsconfig.json` 中相应的具体选项；
 
 
-# npm包管理配置文件
-library-webpack-template 中与 npm 包管理相关的配置文件有 2 个：
-- `.npmignore` : npm 上传包时的忽略配置文件；默认忽略了 与构建配置文件的所有文件和目录，如：`build/` 等等；还有编辑器相关的文件和目录，如：`.idea`、`.vscode`；
-- `package.json` : npm 的包管理配置文件；同时也是 通过 npm 上传、发布 包 的 配置模板文件；
+
+
+
+
+
+
+--------------------
+
+> 有您的支持，我会在开源的道路上，越走越远
+
+![赞赏码](https://raw.githubusercontent.com/GuoBinyong/sshcp/master/赞赏码.JPG)
