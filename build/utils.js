@@ -1,6 +1,9 @@
 'use strict'
 const path = require('path')
+const merge = require('webpack-merge');
+const _ = require('lodash');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+
 
 exports.cssLoaders = function (options) {
   options = options || {}
@@ -224,7 +227,34 @@ exports.createTsParseLoader = function createTsParseLoader(loader,options,tsConf
 
 
 
-// projec-config 配置处理工具：开始
+// 配置处理工具：开始
+
+
+
+/**
+ * 将多个配置对象合并一个配置对象，并会对数组类型的配置项去重；
+ * @returns  Configuration  返回合并后的配置对象
+ * 
+ * 
+ * 接口1:
+ * uniqMerge(...configuration)
+ * 接收任意多个参数，每个参数都是一个配置对象；
+ * 
+ * 
+ * 
+ * 接口2:
+ * uniqMerge(configurationArray: Configuration[])
+ * 接收一个包含所有配置对象的数组
+ * @param configurationArray : Configuration[]    配置对象的数组；
+ */
+const uniqMerge = merge({
+  customizeArray:function(a, b, key) {
+    return _.uniqWith([...a, ...b], _.isEqual);
+  }
+});
+
+exports.uniqMerge = uniqMerge;
+
 
 
 /**
@@ -244,12 +274,7 @@ exports.projecConfigMultipleTargetsSeparation = function projecConfigMultipleTar
   if (multipleTargets && multipleTargets.length > 0){
 
     multiProjConf = multipleTargets.map(function(target){
-
-      var targetProjConf = Object.assign({},projecConfig,target);
-      targetProjConf.dev = Object.assign({},projecConfig.dev,target.dev);
-      targetProjConf.build = Object.assign({},projecConfig.build,target.build);
-
-      return targetProjConf
+      return uniqMerge(projecConfig,target);
     });
 
   }
@@ -258,7 +283,8 @@ exports.projecConfigMultipleTargetsSeparation = function projecConfigMultipleTar
 }
 
 
-// projec-config 配置处理工具：结束
+// 配置处理工具：结束
+
 
 
 
@@ -285,4 +311,5 @@ exports.stringToCamelFormat = function stringToCamelFormat(str,separators) {
   });
 
   return targetStr;
-}
+};
+

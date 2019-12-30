@@ -1,21 +1,28 @@
+const utils = require('./utils');
+const baseConfig = require("../tsconfig.json");
+
+
+
 /**
  * 生成 TypeScript 配置对象
- * @param  projecConfig : ProjecConfig    项目配置对象
+ * @param  projectConfig : projectConfig    项目配置对象
  */
-module.exports = function createTsConfig(projecConfig) {
+module.exports = function createTsConfig(projectConfig) {
 
-  return {
+  let tsConfOfProj = projectConfig.tsconfig || {};
+
+  let tsConfig = {
     // "extends":"../tsconfig.json",    /* tsconfig.json文件可以利用extends属性从另一个配置文件里继承配置。 */
     "compilerOptions": {
       /* Basic Options */
-      "target": projecConfig.tsTarget,                          /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'. */
-      "module": projecConfig.module,                     /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
+      "target": tsConfOfProj.target,                          /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'. */
+      "module": tsConfOfProj.module,                    /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
       // "lib": [],                             /* Specify library files to be included in the compilation:  */
       // "allowJs": true,                       /* Allow javascript files to be compiled. */
       // "checkJs": true,                       /* Report errors in .js files. */
       // "jsx": "preserve",                     /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */
-      "declaration": projecConfig.declaration,                   /* Generates corresponding '.d.ts' file. */
-      "sourceMap": projecConfig.build.sourceMap,                     /* Generates corresponding '.map' file. */
+      "declaration": tsConfOfProj.declaration,                   /* Generates corresponding '.d.ts' file. */
+      "sourceMap": projectConfig.build.sourceMap,                     /* Generates corresponding '.map' file. */
       // "outFile": "./",                       /* Concatenate and emit output to single file. */
       // "outDir": "./",                        /* Redirect output structure to the directory. */
       // "rootDir": "./",                       /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
@@ -26,7 +33,7 @@ module.exports = function createTsConfig(projecConfig) {
       // "isolatedModules": true,               /* Transpile each file as a separate module (similar to 'ts.transpileModule'). */
 
       /* Strict Type-Checking Options */
-      "strict": true                            /* Enable all strict type-checking options. */
+      // "strict": true,                            /* Enable all strict type-checking options. */
       // "noImplicitAny": true,                 /* Raise error on expressions and declarations with an implied 'any' type. */
       // "strictNullChecks": true,              /* Enable strict null checks. */
       // "strictFunctionTypes": true,           /* Enable strict checking of function types. */
@@ -59,6 +66,7 @@ module.exports = function createTsConfig(projecConfig) {
       // "experimentalDecorators": true,        /* Enables experimental support for ES7 decorators. */
       // "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */
     }
-  }
+  };
 
+  return utils.uniqMerge(baseConfig,tsConfig);
 }
