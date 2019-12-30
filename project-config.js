@@ -187,6 +187,28 @@ var projectConfig = {
   },
 
 
+
+
+  /* 
+  是否开启构建分析报告；
+    - 类型： boolean
+    - 默认值： process.env.npm_config_report； 即：根据执行命令时是否带有 `--report` 选项来决定是否开启 构建分析报告；
+  */
+  // bundleAnalyzerReport: true,
+
+
+  /* 
+  构建分析报告的配置选项； webpack-bundle-analyzer 的 webpack 插件选项对象；
+    - 类型： Object
+    - 默认值： `bundleAnalyzerOptions.analyzerPort` 的默认值是 "auto"
+    - 详细信息： <https://github.com/webpack-contrib/webpack-bundle-analyzer> 
+  */
+  /* bundleAnalyzerOptions: {
+    // analyzerHost: "127.0.0.1",
+    // analyzerPort: "9033",
+  }, */
+
+
   /* 
   开发模式的配置选项对象
     - 类型： Object
@@ -271,20 +293,6 @@ source map 的开关；用于控制是否生成 source map；
       - 详细信息： <https://webpack.docschina.org/configuration/devtool/>
      */
     devtool: '#source-map',
-
-
-    /* 
-    是否启用包分析报告；
-      - 类型： boolean
-      - 默认值： false
-      - `process.env.npm_config_report` 表示运行命令时是否带有 `--report` 选项；如果给 `bundleAnalyzerReport` 设置 `process.env.npm_config_report` ，则会根据 运行 build 命令 `npm run build` 时是否带有 `--report` 选项来决定是否启用 包的分析报告；
-
-    Run the build command with an extra argument to
-    View the bundle analyzer report after build finishes:
-    `npm run build --report`
-    Set to `true` or `false` to always turn it on or off
-    */
-    bundleAnalyzerReport: process.env.npm_config_report,
   }
 
 }

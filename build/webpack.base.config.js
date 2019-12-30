@@ -118,6 +118,23 @@ module.exports = function createWebpackConfig(projectConfig) {
 
 
 
+  let baReport = projectConfig.bundleAnalyzerReport;
+  if (baReport === undefined){
+    baReport = process.env.npm_config_report;
+  }
+
+  
+  if (baReport) {
+    const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+    let baOpts = projectConfig.bundleAnalyzerOptions || {};
+    if(!baOpts.analyzerPort){
+      baOpts.analyzerPort = "auto";
+    }
+    plugins.push(new BundleAnalyzerPlugin(baOpts));
+  }
+
+
+
   wpConfig.plugins = plugins;
   // 配置插件：结束
 

@@ -122,10 +122,10 @@ function createWebpackConfig(projectConfig) {
 
 
 
-  if (projectConfig.build.bundleAnalyzerReport) {
+/*   if (projectConfig.build.bundleAnalyzerReport) {
     const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
     webpackConfig.plugins.push(new BundleAnalyzerPlugin())
-  }
+  } */
 
   return webpackConfig;
 

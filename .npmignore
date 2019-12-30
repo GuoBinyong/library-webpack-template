@@ -1,4 +1,4 @@
-#忽略配置文件
+# 构建配置相关
 build/
 project-config.js
 webpack.config.js
@@ -7,8 +7,9 @@ tsconfig.json
 .eslintrc.js
 .eslintignore
 .editorconfig
+可删除-交互式树形可视化构建分析报告.gif
 
-#WebStorm生成的用来存放项目配置的目录
+# WebStorm生成的用来存放项目配置的目录
 .idea
 
 # VSCode在项目中创建的隐藏目录

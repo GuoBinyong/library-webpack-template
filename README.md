@@ -1,3 +1,7 @@
+[交互式树形可视化构建分析报告]: ./可删除-交互式树形可视化构建分析报告.gif
+
+
+
 > 构建过程是复杂前端项目必不可少的环节；但 业务代码 与 公用代码（如：封装的库、组件、工具等被复用的代码）的构建需求是不一样的；我发现很多 npm 贡献者都没意识到这一点，他们用传统的业务项目的 webpack 配置 去打包 公用代码，虽然能运行，但实际潜藏着许多问题；甚至都不经过编译构建，直接发布单纯的源码到 npm 上；
 
 **注意：**  
@@ -61,11 +65,59 @@
 - 分离 CSS 和 JavaScript 文件；
 
 
-# 目录结构
+
+# 组织结构
+模板项目中默认包含了一些文件和目录，它们的组织结构和作用如下所示：
+```
+library-webpack-template/   # 构建前端库的webpack打包配置模板项目根目录
+   ├── .editorconfig           # 编辑器的通用配置文件
+   ├── .eslintignore           # ESLint 的忽略配置文件
+   ├── .eslintrc.js            # ESLint 的配置文件
+   ├── .gitignore              # git 的忽略配置文件
+   ├── .npmignore              # npm 上传包时的忽略配置文件
+   ├── .postcssrc.js           # PostCSS 的配置文件
+   ├── tsconfig.json           # 项目的级的 TypeScript 配置文件；同时也是 开发 和 生产 这两种模式公共的 TypeScript 配置文件；
+   ├── webpack.config.js       # webpack 命令默认的配置文件；会根据执行 webpack 命令时是否携带含有设置 production 环境变量的选项来决定是加载 生产模式 还是 开发模式 的 构建配置；
+   ├── package.json            # npm 的包管理配置文件
+   ├── project-config.js       # 项目的配置文件；library-webpack-template 提供的 面向使用者的 对 整个项目的配置入口；
+   ├── README.md               # 项目的说明文档
+   ├── build/                  # 包含构建相关配置和工具的目录
+   │   ├── tsconfig.dev.js          # 开发模式特有的 TypeScript 配置文件
+   │   ├── tsconfig.prod.js         # 生产模式特有的 TypeScript 配置文件
+   │   ├── utils.js                 # 包含与构建相关的工具函数的 JavaScript 代码文件
+   │   ├── webpack.base.config.js   # 开发 和 生产两种模式公共的 webpack 配置文件；
+   │   ├── webpack.dev.config.js    # 开发模式 特有的 webpack 配置文件；
+   │   └── webpack.prod.config.js   # 生产模式 特有的 webpack 配置文件；
+   ├── src/                    # 默认的包含项目源代码的目录
+   │   └── index.js                 # 默认的构建入口文件；
+   ├── dev/                    # 开发模式下默认的构建输出目录
+   └── dist/                   # 生产模式下默认的构建输出目录
+```
+
+
+
+# 命令
+library-webpack-template 项目支持如下构建命令：
+- `npm start` : 以开发模式构建项目；
+- `npm run dev` : 以开发模式构建项目；
+- `npm run build` : 以生道模式构建项目；
+
+在 project-config.js 配置文件中，如果 没有配置 bundleAnalyzerReport 选项，则支持运行构建命令时 携带 `--report` 选项来开启 交互式树形可视化构建分析报告，如：`npm start --report`、`npm run dev --report`、`npm run build --report`，当构建完成时，会自动打开浏览器展示 交互式树形可视化构建分析报告，如下图：
+
+   ![交互式树形可视化构建分析报告][]
+
+
+
+
+如果已经全局安装了 `webpack` 命令，也可以在项目根目录下执行如下命令：
+- `webpack` : 以开发模式构建项目；
+- `webpack --env.production` : 以生产模式构建项目；
+
+
 
 
 # project-config.js
-project-config.js 是整个项目的配置文件，是该模块暴露给使用者的配置文件；
+project-config.js 是整个项目的配置文件，是该项目模板暴露给使用者的配置文件；
 
 该配置文件中的所有配置项都保存在 projectConfig 变量中，可配置的属性如下：
 
@@ -167,6 +219,18 @@ project-config.js 是整个项目的配置文件，是该模块暴露给使用�
               * "babel-loader" 暂未支持生成 声明文件 .d.ts，并且会忽略 项目中关于 TypeScript 的自定配置，如：tsconfig.json、tsconfig.dev.js、tsconfig.prod.js 中的配置
 
 
+
++ bundleAnalyzerReport ：是否开启构建分析报告；
+    - **类型：** boolean
+    - **默认值：** process.env.npm_config_report； 即：根据执行命令时是否带有 `--report` 选项来决定是否启用 构建分析报告；
+
+
++ bundleAnalyzerOptions ：构建分析报告的配置选项； webpack-bundle-analyzer 的 webpack 插件选项对象；
+    - **类型：** Object
+    - **默认值：** `bundleAnalyzerOptions.analyzerPort` 的默认值是 "auto"
+    - **详细信息：** <https://github.com/webpack-contrib/webpack-bundle-analyzer> 
+
+
 + dev：开发模式的配置选项对象
     - **类型：** Object
     - 可配置的属性如下：
@@ -219,10 +283,6 @@ project-config.js 是整个项目的配置文件，是该模块暴露给使用�
             - **默认值：** false
             - **详细信息：** <https://webpack.docschina.org/configuration/devtool/>
 
-        * bundleAnalyzerReport ：是否启用包分析报告；
-            - **类型：** boolean
-            - **默认值：** false
-            - `process.env.npm_config_report` 表示运行命令时是否带有 `--report` 选项；如果给 `bundleAnalyzerReport` 设置 `process.env.npm_config_report` ，则会根据 运行 build 命令 `npm run build` 时是否带有 `--report` 选项来决定是否启用 包的分析报告；
 
 
 
@@ -235,3 +295,29 @@ project-config.js 是整个项目的配置文件，是该模块暴露给使用�
         * 此选项是可选的，如果没有配置，或者配置的是一个长度为 0 的空数组，则会使用 默认的项目配置 projectConfig （默认的项目配置指的是 project-config.js 文件中的 projectConfig 变量保存的配置） ； 
         * 如果配置的是一个数组，数组中的每个元素都会被当作一个 项目配置 并覆盖 默认的项目配置 projectConfig 中对应的具体选项；当进行构建时，会对数组中的每个项目配置分别构建并生成对应的包；
         * 数组中的 undefined 和 null 会被当作是 默认的项目配置 projectConfig
+
+
+
+
+# webpack配置文件
+library-webpack-template 中包含了4个 webpack 配置文件：
+
+- `build/webpack.base.config.js` : 这个文件包含提 开发 和 生产这两个模式 公共的 webpack 配置；
+- `build/webpack.dev.config.js` : 这个文件仅包含提 开发模式 特有的 webpack 配置；
+- `build/webpack.prod.config.js` : 这个文件仅包含提 生产模式 特有的 webpack 配置；
+- `webpack.config.js` : 这个配置文件存在的目的是为了方便能在项目根目录下直接使用 `webpack` 命令 进行构建；它会根据执行 webpack 命令时是否携带含有设置 production 环境变量的选项来决定是加载 生产模式 还是 开发模式 的 构建配置；
+
+所以，项目真正的 webpack 构建配置是放在 `build/` 目录下的 3个 webpack 配置文件中的：`build/webpack.base.config.js`、`build/webpack.dev.config.js`、`build/webpack.prod.config.js` ；
+
+
+# TypeScript配置文件
+library-webpack-template 中包含了3个 TypeScript 配置文件：
+- `tsconfig.json` : 这个文件是项目的级的 TypeScript 配置文件；同时也是 开发 和 生产 这两种模式公共的 TypeScript 配置文件； 并且 该文件的存在，也是为了方便能在项目根目录下直接使用 TypeScript 的编译命令 `tsc`；
+- `build/tsconfig.dev.js` : 这个文件仅包含提 开发模式 特有的 TypeScript 配置；并且会覆盖 公共配置 `tsconfig.json` 中相应的具体选项；
+- `build/tsconfig.prod.js` : 这个文件仅包含提 生产模式 特有的 TypeScript 配置；并且会覆盖 公共配置 `tsconfig.json` 中相应的具体选项；
+
+
+# npm包管理配置文件
+library-webpack-template 中与 npm 包管理相关的配置文件有 2 个：
+- `.npmignore` : npm 上传包时的忽略配置文件；默认忽略了 与构建配置文件的所有文件和目录，如：`build/` 等等；还有编辑器相关的文件和目录，如：`.idea`、`.vscode`；
+- `package.json` : npm 的包管理配置文件；同时也是 通过 npm 上传、发布 包 的 配置模板文件；
