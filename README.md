@@ -67,7 +67,7 @@
 # project-config.js
 project-config.js 是整个项目的配置文件，是该模块暴露给使用者的配置文件；
 
-该配置文件中的所有配置项都保存在 projecConfig 变量中，可配置的属性如下：
+该配置文件中的所有配置项都保存在 projectConfig 变量中，可配置的属性如下：
 
 + entry：webpack 的入口配置 entry；  指示 webpack 应该使用哪个模块，来作为构建其内部 依赖图的开始
     - **类型：** string | [string] | object { <key>: string | [string] } | (function: () => string | [string] | object { <key>: string | [string] })
@@ -105,58 +105,133 @@ project-config.js 是整个项目的配置文件，是该模块暴露给使用�
   
 
 
-  - alias：webpack 的 resolve.alias，创建 import 或 require 的别名，来使模块引入变得更简单
++ alias：webpack 的 resolve.alias，创建 import 或 require 的别名，来使模块引入变得更简单
     - **类型：** object
     - **详细信息：** <https://webpack.docschina.org/configuration/resolve/#resolve-alias> 
   
 
-- extensions ：webpack 的 resolve.extensions，自动解析确定的扩展名，能够使用户在引入模块时不用写文件的扩展名
++ extensions ：webpack 的 resolve.extensions，自动解析确定的扩展名，能够使用户在引入模块时不用写文件的扩展名
     - **类型：** string[]
     - **详细信息：** <https://webpack.docschina.org/configuration/resolve/#resolve-extensions> 
   
-- externals ：webpack 的 externals； 排除依赖的模块；防止将某些 import 的包(package)打包到 bundle 中；
++ externals ：webpack 的 externals； 排除依赖的模块；防止将某些 import 的包(package)打包到 bundle 中；
     - **类型：** string | object | function | regex | array 
     - **详细信息：** <https://webpack.docschina.org/configuration/externals/#externals> 
   
 
-- htmlTemplate ：html模板文件；html-webpack-plugin
++ htmlTemplate ：html模板文件；html-webpack-plugin
   的 template 选项；
     - **类型：** string
     - **详细信息：** <https://github.com/ampedandwired/html-webpack-plugin>
 
-- htmlOut ：要将 html模板文件 htmlTemplate 写入的文件。您也可以在此处指定子目录；该选项会结合 outputPath 选项 生成 html-webpack-plugin
++ htmlOut ：要将 html模板文件 htmlTemplate 写入的文件。您也可以在此处指定子目录；该选项会结合 outputPath 选项 生成 html-webpack-plugin
  的 filename 选项 的值；
     - **类型：** string
     - **默认值：** "index.html"
     - **详细信息：** <https://github.com/ampedandwired/html-webpack-plugin>  
   
-- staticDirectory：静态资源的原目录；该目录下的内容将会被拷贝到构建输出目录中；
++ staticDirectory：静态资源的原目录；该目录下的内容将会被拷贝到构建输出目录中；
     - **类型：** string
 
-- staticOutDirectory：静态资源输出目录；设置将静态资源从原目录拷贝到构建输出目录中时，静态资源目录的名字；
++ staticOutDirectory：静态资源输出目录；设置将静态资源从原目录拷贝到构建输出目录中时，静态资源目录的名字；
     - **类型：** string
 
 
-- tsTarget：指定TypeScript编译成 ECMAScript 的目标版本；用作 tsconfig 的 target 选项；
-    - **类型：** "ES3" | "ES5" | "ES6"/"ES2015" | "ES2016" | "ES2017" | "ESNext"
-    - **默认值：** "ES3"
-    - **详细信息：** <https://www.tslang.cn/docs/handbook/compiler-options.html>  
 
-- module：指定生成哪个模块系统代码；用作 tsconfig 的 module 选项；
-    - **类型：** "None" | "CommonJS" | "AMD" | "System" | "UMD" | "ES6" | "ES2015"
-    - **默认值：** tsTarget === "ES6" ? "ES6" : "commonjs"
-    - **详细信息：** <https://www.tslang.cn/docs/handbook/compiler-options.html>  
++ tsconfig：TypeScript相关的配置选项对象
+    - **类型：** Object
+    - **详细信息：** <https://www.tslang.cn/docs/handbook/tsconfig-json.html>  
+    - 可配置的属性如下：
+        * target：指定TypeScript编译成 ECMAScript 的目标版本；用作 tsconfig.json 的 target 选项；
+            - **类型：** "ES3" | "ES5" | "ES6"/"ES2015" | "ES2016" | "ES2017" | "ESNext"
+            - **默认值：** "ES3"
+            - **详细信息：** <https://www.tslang.cn/docs/handbook/compiler-options.html>  
+
+        * module：指定生成哪个模块系统代码；用作 tsconfig.json 的 module 选项；
+            - **类型：** "None" | "CommonJS" | "AMD" | "System" | "UMD" | "ES6" | "ES2015"
+            - **默认值：** tsTarget === "ES6" ? "ES6" : "commonjs"
+            - **详细信息：** <https://www.tslang.cn/docs/handbook/compiler-options.html>  
 
 
-- declaration：指定是否生成相应的 .d.ts 文件。用作 tsconfig 的 declaration 选项
-    - **类型：** boolean
-    - **默认值：** false 
-    - **详细信息：** <https://www.tslang.cn/docs/handbook/compiler-options.html> 
+        * declaration：指定是否生成相应的 .d.ts 文件。用作 tsconfig.json 的 declaration 选项
+            - **类型：** boolean
+            - **默认值：** false 
+            - **详细信息：** <https://www.tslang.cn/docs/handbook/compiler-options.html> 
 
 
-+ tsParseLoader：配置解析 TypeScript 的 loader
-    - **类型：** "ts-loader" | "babel-loader" 
-    - **默认值：** "ts-loader" 
-    - **注意：** 目前发现：
-      * "ts-loader" 会忽略TypeScript中默认的导出项 `export default`，这时配置项 ` libraryExport: "default" ` 可能会导到导出的值是 undefined
-      * "babel-loader" 暂未支持生成 声明文件 .d.ts，并且会忽略 项目中关于 TypeScript 的自定配置，如：tsconfig.json、tsconfig.dev.js、tsconfig.prod.js 中的配置
+        * loader：配置解析 TypeScript 的 loader
+            - **类型：** "ts-loader" | "babel-loader" 
+            - **默认值：** "ts-loader" 
+            - **注意：** 目前发现：
+              * "ts-loader" 会忽略TypeScript中默认的导出项 `export default`，这时配置项 ` libraryExport: "default" ` 可能会导致导出的值是 undefined
+              * "babel-loader" 暂未支持生成 声明文件 .d.ts，并且会忽略 项目中关于 TypeScript 的自定配置，如：tsconfig.json、tsconfig.dev.js、tsconfig.prod.js 中的配置
+
+
++ dev：开发模式的配置选项对象
+    - **类型：** Object
+    - 可配置的属性如下：
+        * outputPath ：输出目录，一个绝对路径；webpack 的 output.path；
+            - **类型：** string
+            - **详细信息：** <https://webpack.docschina.org/configuration/output/#output-path>
+
+        * useEslint ：是否使用 Eslint Loader；
+            - **类型：** boolean
+            - **默认值：** false
+            - **详细信息：** <https://github.com/webpack-contrib/eslint-loader>
+
+        * showEslintErrorsInOverlay ：是否在浏览器中显示 Eslint 的错误和警告；
+            - **类型：** boolean
+            - **默认值：** false
+            - **详细信息：** <https://github.com/webpack-contrib/eslint-loader>
+
+        * sourceMap ：source map 的开关；用于控制是否生成 source map；
+            - **类型：** boolean
+            - **默认值：** false
+            - **详细信息：** <https://webpack.docschina.org/configuration/devtool/>
+
+        * devtool ：webpack 的 devtool 选项；用于控制如何生成 source map；
+            - **类型：** string
+            - **默认值：** false
+            - **详细信息：** <https://webpack.docschina.org/configuration/devtool/>
+
+        * cssSourceMap ：CSS source map 的开关；用于控制是否生成 CSS 的 source map；
+            - **类型：** boolean
+            - **默认值：** false
+
+
+
+
++ build：生产模式的配置选项对象
+    - **类型：** Object
+    - 可配置的属性如下：
+        * outputPath ：输出目录，一个绝对路径；webpack 的 output.path；
+            - **类型：** string
+            - **详细信息：** <https://webpack.docschina.org/configuration/output/#output-path>
+
+
+        * sourceMap ：source map 的开关；用于控制是否生成 source map；
+            - **类型：** boolean
+            - **默认值：** false
+            - **详细信息：** <https://webpack.docschina.org/configuration/devtool/>
+
+        * devtool ：webpack 的 devtool 选项；用于控制如何生成 source map；
+            - **类型：** string
+            - **默认值：** false
+            - **详细信息：** <https://webpack.docschina.org/configuration/devtool/>
+
+        * bundleAnalyzerReport ：是否启用包分析报告；
+            - **类型：** boolean
+            - **默认值：** false
+            - `process.env.npm_config_report` 表示运行命令时是否带有 `--report` 选项；如果给 `bundleAnalyzerReport` 设置 `process.env.npm_config_report` ，则会根据 运行 build 命令 `npm run build` 时是否带有 `--report` 选项来决定是否启用 包的分析报告；
+
+
+
+
+
++ multipleTargets ：配置多个构建目标；当进行构建时，会对 multipleTargets 数组中的每个项目配置分别构建并生成对应的包；
+    - **类型：** undefined | null | Array<ProjecConfig | undefined | null>
+    - **默认值：** undefined
+    - **说明：** 
+        * 此选项是可选的，如果没有配置，或者配置的是一个长度为 0 的空数组，则会使用 默认的项目配置 projectConfig （默认的项目配置指的是 project-config.js 文件中的 projectConfig 变量保存的配置） ； 
+        * 如果配置的是一个数组，数组中的每个元素都会被当作一个 项目配置 并覆盖 默认的项目配置 projectConfig 中对应的具体选项；当进行构建时，会对数组中的每个项目配置分别构建并生成对应的包；
+        * 数组中的 undefined 和 null 会被当作是 默认的项目配置 projectConfig

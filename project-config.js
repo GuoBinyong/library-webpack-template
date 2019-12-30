@@ -12,7 +12,31 @@ function resolve(dir) {
 }
 
 
-var projecConfig = {
+var projectConfig = {
+
+
+  /* 
+  配置多个构建目标；当进行构建时，会对 multipleTargets 数组中的每个项目配置分别构建并生成对应的包；
+    - 类型： undefined | null | Array<ProjecConfig | undefined | null>
+    - 默认值： undefined
+    - 说明： 
+        * 此选项是可选的，如果没有配置，或者配置的是一个长度为 0 的空数组，则会使用 默认的项目配置 projectConfig （默认的项目配置指的是 project-config.js 文件中的 projectConfig 变量保存的配置） ； 
+        * 如果配置的是一个数组，数组中的每个元素都会被当作一个 项目配置 并覆盖 默认的项目配置 projectConfig 中对应的具体选项；当进行构建时，会对数组中的每个项目配置分别构建并生成对应的包；
+        * 数组中的 undefined 和 null 会被当作是 默认的项目配置 projectConfig
+  */
+  multipleTargets: [
+    //使用默认的配置
+    null,
+
+    // node
+    {
+      target: "node",
+      filename: '[name].node.js'
+    }
+  ],
+
+
+
 
   /* 
  webpack 的入口配置 entry；  指示 webpack 应该使用哪个模块，来作为构建其内部 依赖图的开始
@@ -105,13 +129,13 @@ var projecConfig = {
 
   /* 
   静态资源的原目录；该目录下的内容将会被拷贝到构建输出目录中；
-    - **类型：** string
+    - 类型： string
   */
   // staticDirectory:"static",
 
   /* 
   静态资源输出目录；设置将静态资源从原目录拷贝到构建输出目录中时，静态资源目录的名字；
-    - **类型：** string
+    - 类型： string
   */
   staticOutDirectory: 'static',
 
@@ -124,25 +148,25 @@ var projecConfig = {
 
     /*
     指定TypeScript编译成 ECMAScript 的目标版本；用作 tsconfig.json 的 target 选项；
-      - **类型：** "ES3" | "ES5" | "ES6"/"ES2015" | "ES2016" | "ES2017" | "ESNext"
-      - **默认值：** "ES3"
-      - **详细信息：** <https://www.tslang.cn/docs/handbook/compiler-options.html>  
+      - 类型： "ES3" | "ES5" | "ES6"/"ES2015" | "ES2016" | "ES2017" | "ESNext"
+      - 默认值： "ES3"
+      - 详细信息： <https://www.tslang.cn/docs/handbook/compiler-options.html>  
     */
     target: "es5",
 
     /*
     指定生成哪个模块系统代码；用作 tsconfig.json 的 module 选项；
-      - **类型：** "None" | "CommonJS" | "AMD" | "System" | "UMD" | "ES6" | "ES2015"
-      - **默认值：** target === "ES6" ? "ES6" : "commonjs"
-      - **详细信息：** <https://www.tslang.cn/docs/handbook/compiler-options.html>  
+      - 类型： "None" | "CommonJS" | "AMD" | "System" | "UMD" | "ES6" | "ES2015"
+      - 默认值： target === "ES6" ? "ES6" : "commonjs"
+      - 详细信息： <https://www.tslang.cn/docs/handbook/compiler-options.html>  
      */
     //  module:"",
 
     /* 
     指定是否生成相应的 .d.ts 文件。用作 tsconfig.json 的 declaration 选项
-      - **类型：** boolean
-      - **默认值：** false 
-      - **详细信息：** <https://www.tslang.cn/docs/handbook/compiler-options.html> 
+      - 类型： boolean
+      - 默认值： false 
+      - 详细信息： <https://www.tslang.cn/docs/handbook/compiler-options.html> 
     */
     declaration: true,
 
@@ -151,86 +175,117 @@ var projecConfig = {
 
 
     /* 
-    loader : "ts-loader" | "babel-loader" ；默认值："ts-loader"
     配置解析 TypeScript 的 loader
-  
-    目前，解析 TypeScript 的 loader 有两个： "ts-loader" 和 "babel-loader"
-  
-    注意，目前发现：
-    - "ts-loader" 会忽略TypeScript中默认的导出项 `export default`，这时配置项 ` libraryExport: "default" ` 可能会导到导出的值是 undefined
-    - "babel-loader" 暂未支持生成 声明文件 .d.ts，并且会忽略 项目中关于 TypeScript 的自定配置，如：tsconfig.json、tsconfig.dev.js、tsconfig.prod.js 中的配置
+    - 类型： "ts-loader" | "babel-loader" 
+    - 默认值： "ts-loader" 
+    - 注意： 目前发现：
+      * "ts-loader" 会忽略TypeScript中默认的导出项 `export default`，这时配置项 ` libraryExport: "default" ` 可能会导到导出的值是 undefined
+      * "babel-loader" 暂未支持生成 声明文件 .d.ts，并且会忽略 项目中关于 TypeScript 的自定配置，如：tsconfig.json、tsconfig.dev.js、tsconfig.prod.js 中的配置
     */
     loader: "ts-loader",
 
   },
 
 
+  /* 
+  开发模式的配置选项对象
+    - 类型： Object
+  */
   dev: {
     /* 
-    输出目录
+    输出目录，一个绝对路径；webpack 的 output.path；
+      - 类型： string
+      - 详细信息： <https://webpack.docschina.org/configuration/output/#output-path>
     */
     outputPath: resolve("dev"),
 
 
     /* 
-     Use Eslint Loader?
+     是否使用 Eslint Loader；
+      - 类型： boolean
+      - 默认值： false
+      - 详细信息： <https://github.com/webpack-contrib/eslint-loader>
+      
      If true, your code will be linted during bundling and
      linting errors and warnings will be shown in the console.
     */
     useEslint: true,
 
     /* 
+    是否在浏览器中显示 Eslint 的错误和警告；
+      - 类型： boolean
+      - 默认值： false
+      - 详细信息： <https://github.com/webpack-contrib/eslint-loader>
+
      If true, eslint errors and warnings will also be shown in the error overlay
      in the browser.
      */
-    showEslintErrorsInOverlay: false,
+    showEslintErrorsInOverlay: true,
 
+    /* 
+    source map 的开关；用于控制是否生成 source map；
+      - 类型： boolean
+      - 默认值： false
+      - 详细信息： <https://webpack.docschina.org/configuration/devtool/>
+    */
+    sourceMap: true,
     /*
-     Source Maps
-     https://webpack.js.org/configuration/devtool/#development
+     webpack 的 devtool 选项；用于控制如何生成 source map；
+      - 类型： string
+      - 默认值： false
+      - 详细信息： <https://webpack.docschina.org/configuration/devtool/>
      */
     devtool: 'cheap-module-eval-source-map',
-    sourceMap: true,
+
+    /* 
+    CSS source map 的开关；用于控制是否生成 CSS 的 source map；
+      - 类型： boolean
+      - 默认值： false
+    */
     cssSourceMap: true,
   },
 
+
+  /* 
+  生产模式的配置选项对象
+    - 类型： Object
+  */
   build: {
     // 输出目录
     outputPath: resolve("dist"),
 
+
     /* 
-    Source Maps
-    https://webpack.js.org/configuration/devtool/#production 
-    */
-    devtool: '#source-map',
+source map 的开关；用于控制是否生成 source map；
+  - 类型： boolean
+  - 默认值： false
+  - 详细信息： <https://webpack.docschina.org/configuration/devtool/>
+*/
     sourceMap: true,
 
 
+    /*
+     webpack 的 devtool 选项；用于控制如何生成 source map；
+      - 类型： string
+      - 默认值： false
+      - 详细信息： <https://webpack.docschina.org/configuration/devtool/>
+     */
+    devtool: '#source-map',
+
+
     /* 
+    是否启用包分析报告；
+      - 类型： boolean
+      - 默认值： false
+      - `process.env.npm_config_report` 表示运行命令时是否带有 `--report` 选项；如果给 `bundleAnalyzerReport` 设置 `process.env.npm_config_report` ，则会根据 运行 build 命令 `npm run build` 时是否带有 `--report` 选项来决定是否启用 包的分析报告；
+
     Run the build command with an extra argument to
     View the bundle analyzer report after build finishes:
     `npm run build --report`
     Set to `true` or `false` to always turn it on or off
     */
     bundleAnalyzerReport: process.env.npm_config_report,
-  },
-
-
-  /* 
-  配置多个构建目标
-  multipleTargets : undefined | null | Array<ProjecConfig>
-  些选项是可选的，如果没有配置，或者配置的是一个长度为 0 的空数组，则会使用 默认的配置 projecConfig
-  */
-  multipleTargets: [
-    //使用默认的配置
-    {},
-
-    // node
-    {
-      target: "node",
-      filename: '[name].node.js'
-    }
-  ]
+  }
 
 }
 
@@ -238,4 +293,4 @@ var projecConfig = {
 
 
 
-module.exports = utils.projecConfigMultipleTargetsSeparation(projecConfig);
+module.exports = utils.projecConfigMultipleTargetsSeparation(projectConfig);

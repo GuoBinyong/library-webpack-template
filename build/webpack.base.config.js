@@ -10,50 +10,37 @@ function resolve(dir) {
 
 /**
  * 生成 Webpack 配置对象
- * @param  projecConfig : ProjecConfig    项目配置对象
+ * @param  projectConfig : ProjecConfig    项目配置对象
  */
-module.exports = function createWebpackConfig(projecConfig) {
+module.exports = function createWebpackConfig(projectConfig) {
 
 
   function assetsPath(_path) {
-    return path.posix.join(projecConfig.staticOutDirectory, _path)
+    return path.posix.join(projectConfig.staticOutDirectory, _path)
   }
 
-  var libraryName = projecConfig.library;
-
-  const createLintingRule = () => ({
-    test: /\.(js|vue)$/,
-    loader: 'eslint-loader',
-    enforce: 'pre',
-    include: [resolve('src'), resolve('test')],
-    options: {
-      formatter: require('eslint-formatter-friendly'),
-      emitWarning: !projecConfig.dev.showEslintErrorsInOverlay
-    }
-  });
-
-
+  var libraryName = projectConfig.library;
+  
 
   const wpConfig = {
-    target: projecConfig.target,  //node  web 等等
+    target: projectConfig.target,  //node  web 等等
     context: path.resolve(__dirname, '../'),
     entry: {
-      [libraryName]: projecConfig.entry,
+      [libraryName]: projectConfig.entry,
     },
     output: {
-      filename: projecConfig.filename || '[name].js',
+      filename: projectConfig.filename || '[name].js',
       library: libraryName,
-      libraryTarget: projecConfig.libraryTarget,
-      libraryExport: projecConfig.libraryExport,
+      libraryTarget: projectConfig.libraryTarget,
+      libraryExport: projectConfig.libraryExport,
     },
-    externals: projecConfig.externals,
+    externals: projectConfig.externals,
     resolve: {
-      extensions: projecConfig.extensions,
-      alias: projecConfig.alias,
+      extensions: projectConfig.extensions,
+      alias: projectConfig.alias,
     },
     module: {
       rules: [
-        // ...(projecConfig.dev.useEslint ? [createLintingRule()] : []),
         {
           test: /\.js$/,
           use: {
@@ -115,13 +102,13 @@ module.exports = function createWebpackConfig(projecConfig) {
 
 
   // 拷贝静态资源插件
-  const staticDirectory = projecConfig.staticDirectory;
+  const staticDirectory = projectConfig.staticDirectory;
   if (staticDirectory) {
     // https://github.com/ampedandwired/html-webpack-plugin
     const copyPlugin = new CopyWebpackPlugin([
       {
         from: resolve(staticDirectory),
-        to: projecConfig.staticOutDirectory,
+        to: projectConfig.staticOutDirectory,
         ignore: ['.*']
       }
     ]);

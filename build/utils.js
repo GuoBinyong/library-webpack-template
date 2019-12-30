@@ -260,21 +260,21 @@ exports.uniqMerge = uniqMerge;
 /**
  * projec-config 配置处理工具
  *
- * @param projecConfig : ProjecConfig   项目配置
+ * @param projectConfig : ProjecConfig   项目配置
  * @returns [ProjecConfig]    返回包含多个目标对应的项目配置的数组
  */
-exports.projecConfigMultipleTargetsSeparation = function projecConfigMultipleTargetsSeparation(projecConfig){
+exports.projecConfigMultipleTargetsSeparation = function projecConfigMultipleTargetsSeparation(projectConfig){
 
-  var multipleTargets = projecConfig.multipleTargets;
-  var projecConfig = Object.assign({},projecConfig);
-  delete projecConfig.multipleTargets;
+  var multipleTargets = projectConfig.multipleTargets;
+  var projectConfig = Object.assign({},projectConfig);
+  delete projectConfig.multipleTargets;
 
-  var multiProjConf = [projecConfig];
+  var multiProjConf = [projectConfig];
 
   if (multipleTargets && multipleTargets.length > 0){
 
     multiProjConf = multipleTargets.map(function(target){
-      return uniqMerge(projecConfig,target);
+      return uniqMerge(projectConfig,target);
     });
 
   }

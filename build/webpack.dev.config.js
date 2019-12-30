@@ -9,35 +9,52 @@ const multiProjConf = require('../project-config');
 const createTsConfig = require("./tsconfig.dev.js");
 
 
+function resolve(dir) {
+  return path.resolve(__dirname, '..', dir)
+}
 
 
 /**
  * 生成 Webpack 配置对象
- * @param  projecConfig : ProjecConfig    项目配置对象
+ * @param  projectConfig : ProjecConfig    项目配置对象
  */
-function createWebpackConfig(projecConfig) {
+function createWebpackConfig(projectConfig) {
 
-  const tsConfig = createTsConfig(projecConfig);
-  const base = createBaseConfig(projecConfig);
+  const tsConfig = createTsConfig(projectConfig);
+  const base = createBaseConfig(projectConfig);
 
-  const outputPath = projecConfig.dev.outputPath;
+  const outputPath = projectConfig.dev.outputPath;
+
+
+  const createLintingRule = () => ({
+    test: /\.(js|vue)$/,
+    loader: 'eslint-loader',
+    enforce: 'pre',
+    include: [resolve('src'), resolve('test')],
+    options: {
+      formatter: require('eslint-formatter-friendly'),
+      emitWarning: !projectConfig.dev.showEslintErrorsInOverlay
+    }
+  });
 
 
   if (tsConfig.compilerOptions.declaration) {
     tsConfig.compilerOptions.declarationDir = outputPath;
   }
 
+
   const wpConfig = {
     mode: "development",
-    devtool: projecConfig.dev.sourceMap ? projecConfig.dev.devtool : false,
+    devtool: projectConfig.dev.sourceMap ? projectConfig.dev.devtool : false,
     output: {
       path: outputPath,
     },
     module: {
       rules: [
-        ...utils.styleLoaders({ sourceMap: projecConfig.dev.cssSourceMap, usePostCSS: true }),
+        ...(projectConfig.dev.useEslint ? [createLintingRule()] : []),
+        ...utils.styleLoaders({ sourceMap: projectConfig.dev.cssSourceMap, usePostCSS: true }),
         // TypeScript 的 Loader
-        utils.createTsParseLoader(projecConfig.tsconfig && projecConfig.tsconfig.loader,{exclude: /node_modules/},tsConfig),
+        utils.createTsParseLoader(projectConfig.tsconfig && projectConfig.tsconfig.loader,{exclude: /node_modules/},tsConfig),
       ],
     },
 
@@ -51,11 +68,11 @@ function createWebpackConfig(projecConfig) {
 
 
   // Html模板插件
-  const htmlTemplate = projecConfig.htmlTemplate
+  const htmlTemplate = projectConfig.htmlTemplate
   if (htmlTemplate) {
     // https://github.com/ampedandwired/html-webpack-plugin
     const htmlPlugin = new HtmlWebpackPlugin({
-      filename: path.resolve(__dirname, "..", outputPath, projecConfig.htmlOut),
+      filename: path.resolve(__dirname, "..", outputPath, projectConfig.htmlOut),
       template: htmlTemplate,
       inject: true
     });
