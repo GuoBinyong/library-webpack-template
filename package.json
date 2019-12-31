@@ -1,7 +1,7 @@
 {
   "name": "library",
   "version": "1.0.0",
-  "description": "构建前端库的webpack打包配置模板",
+  "description": "library-webpack-template 称为 库构建模板，又称 公共代码构建模板 ，是专门用于构建 公共代码（如：封装的库、工具等） 的 webpack 配置模板，当需要开发和构建公共代码时，直接克隆本项目即可，并默认在的 src 目录下开发即可；",
   "main": "dist/library.js",
   "module": "src/index.js",
   "sideEffects": true,
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://gitee.com/guobinyong/library-webpack-template"
+    "url": "https://github.com/GuoBinyong/library-webpack-template"
   },
   "keywords": [
     "前端库",
@@ -21,8 +21,10 @@
     "library",
     "webpack",
     "打包",
+    "构建",
     "配置",
-    "模板"
+    "模板",
+    "公共代码"
   ],
   "author": "郭斌勇",
   "license": "ISC",

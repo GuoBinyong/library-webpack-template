@@ -1,6 +1,12 @@
+/* 
+开发 和 生产两种模式公共的 webpack 配置文件
+https://github.com/GuoBinyong/library-webpack-template
+*/
+
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const utils = require('./utils');
+const npmConfig = require("../package.json");
 
 
 function resolve(dir) {
@@ -19,7 +25,7 @@ module.exports = function createWebpackConfig(projectConfig) {
     return path.posix.join(projectConfig.staticOutDirectory, _path)
   }
 
-  var libraryName = projectConfig.library;
+  var libraryName = projectConfig.library || utils.stringToCamelFormat(npmConfig.name);
   
 
   const wpConfig = {

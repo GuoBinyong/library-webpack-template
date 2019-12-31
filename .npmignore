@@ -1,3 +1,6 @@
+# npm 上传包时的忽略配置文件
+# https://github.com/GuoBinyong/library-webpack-template
+
 # 构建配置相关
 build/
 project-config.js

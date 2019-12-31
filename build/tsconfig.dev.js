@@ -1,3 +1,8 @@
+/* 
+开发模式特有的 TypeScript 配置文件
+https://github.com/GuoBinyong/library-webpack-template
+*/
+
 const utils = require('./utils');
 const baseConfig = require("../tsconfig.json");
 

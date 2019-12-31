@@ -1,4 +1,10 @@
 'use strict'
+
+/* 
+包含与构建相关的工具函数的 JavaScript 代码文件
+https://github.com/GuoBinyong/library-webpack-template
+*/
+
 const path = require('path')
 const merge = require('webpack-merge');
 const _ = require('lodash');

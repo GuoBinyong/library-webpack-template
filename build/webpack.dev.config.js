@@ -1,3 +1,9 @@
+/* 
+开发模式 特有的 webpack 配置文件
+https://github.com/GuoBinyong/library-webpack-template
+*/
+
+
 const path = require('path');
 const utils = require('./utils');
 const merge = require('webpack-merge');

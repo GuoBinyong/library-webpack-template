@@ -1,3 +1,9 @@
+/* 
+生产模式 特有的 webpack 配置文件
+https://github.com/GuoBinyong/library-webpack-template
+*/
+
+
 const path = require('path');
 const utils = require('./utils');
 const merge = require('webpack-merge');
@@ -117,15 +123,6 @@ function createWebpackConfig(projectConfig) {
 
 
   const webpackConfig = merge.smart(base, wpConfig);
-
-
-
-
-
-/*   if (projectConfig.build.bundleAnalyzerReport) {
-    const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-    webpackConfig.plugins.push(new BundleAnalyzerPlugin())
-  } */
 
   return webpackConfig;
 
