@@ -1,4 +1,5 @@
-[交互式树形可视化构建分析报告]: https://raw.githubusercontent.com/GuoBinyong/media_resources/master/image/交互式树形可视化构建分析报告.gif
+[交互式树形可视化构建分析报告]: http://q3d4kj62i.bkt.clouddn.com/交互式树形可视化构建分析报告.gif
+
 
 [git仓库]: https://github.com/GuoBinyong/-library-webpack-template
 [issues]: https://github.com/GuoBinyong/-library-webpack-template/issues
@@ -409,4 +410,4 @@ library-webpack-template 中包含了3个 TypeScript 配置文件：
 
 > 有您的支持，我会在开源的道路上，越走越远
 
-![赞赏码](https://raw.githubusercontent.com/GuoBinyong/media_resources/master/image/赞赏码.JPG)
+![赞赏码](http://q3d4kj62i.bkt.clouddn.com/赞赏码.JPG)
