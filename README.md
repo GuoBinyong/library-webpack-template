@@ -74,7 +74,7 @@ library-webpack-template 称为 库构建模板，又称 公共代码构建模�
 library-webpack-template 项目支持如下构建命令：
 - `npm start` : 以开发模式构建项目；
 - `npm run dev` : 以开发模式构建项目；
-- `npm run build` : 以生道模式构建项目；
+- `npm run build` : 以生产模式构建项目；
 
 在 project-config.js 配置文件中，如果 没有配置 bundleAnalyzerReport 选项，则支持运行构建命令时 携带 `--report` 选项来开启 交互式树形可视化构建分析报告，如：`npm start --report`、`npm run dev --report`、`npm run build --report`，当构建完成时，会自动打开浏览器展示 交互式树形可视化构建分析报告，如下图：
 
@@ -168,7 +168,7 @@ library-webpack-template/   # 构建前端库的webpack打包配置模板项目�
    ├── build/                  # 包含构建相关配置和工具的目录
    │   ├── tsconfig.dev.js          # 开发模式特有的 TypeScript 配置文件
    │   ├── tsconfig.prod.js         # 生产模式特有的 TypeScript 配置文件
-   │   ├── utils.js                 # 包含与构建相关的工具函数的 JavaScript 代码文件
+   │   ├── tools.js                 # 包含与构建相关的工具函数的 JavaScript 代码文件
    │   ├── webpack.base.config.js   # 开发 和 生产两种模式公共的 webpack 配置文件；
    │   ├── webpack.dev.config.js    # 开发模式 特有的 webpack 配置文件；
    │   └── webpack.prod.config.js   # 生产模式 特有的 webpack 配置文件；
@@ -204,7 +204,7 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
 
 + library ：库的名字；webpack 的 output.library；
     - **类型：** string 或 object（从 webpack 3.1.0 开始；用于 libraryTarget: 'umd'）
-    - **默认值：** `utils.stringToCamelFormat(package.name)`  即默认值是 package.json 文件中的 name 字段的值的驼峰式名字；函数 `utils.stringToCamelFormat(str)` 的作用是把 字符串 str 从 中划线 或 下划线 分隔的方式 转成 驼峰式
+    - **默认值：** `tools.stringToCamelFormat(package.name)`  即默认值是 package.json 文件中的 name 字段的值的驼峰式名字；函数 `tools.stringToCamelFormat(str)` 的作用是把 字符串 str 从 中划线 或 下划线 分隔的方式 转成 驼峰式
     - **详细信息：** <https://webpack.docschina.org/configuration/output/#output-library> 
     - **注意：** 如果更改了 library 的值，你可能需要考虑下是否要同步更改下 package.json 中的 name 属性；
 

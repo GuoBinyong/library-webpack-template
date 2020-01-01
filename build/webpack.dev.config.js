@@ -5,7 +5,7 @@ https://github.com/GuoBinyong/library-webpack-template
 
 
 const path = require('path');
-const utils = require('./utils');
+const tools = require('./tools');
 const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -58,9 +58,9 @@ function createWebpackConfig(projectConfig) {
     module: {
       rules: [
         ...(projectConfig.dev.useEslint ? [createLintingRule()] : []),
-        ...utils.styleLoaders({ sourceMap: projectConfig.dev.cssSourceMap, usePostCSS: true }),
+        ...tools.styleLoaders({ sourceMap: projectConfig.dev.cssSourceMap, usePostCSS: true }),
         // TypeScript 的 Loader
-        utils.createTsParseLoader(projectConfig.tsconfig && projectConfig.tsconfig.loader,{exclude: /node_modules/},tsConfig),
+        tools.createTsParseLoader(projectConfig.tsconfig && projectConfig.tsconfig.loader,{exclude: /node_modules/},tsConfig),
       ],
     },
 

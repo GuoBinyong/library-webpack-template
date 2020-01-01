@@ -3,7 +3,7 @@
 https://github.com/GuoBinyong/library-webpack-template
 */
 
-const utils = require('./utils');
+const tools = require('./tools');
 const baseConfig = require("../tsconfig.json");
 
 
@@ -73,5 +73,5 @@ module.exports = function createTsConfig(projectConfig) {
     }
   };
 
-  return utils.uniqMerge(baseConfig,tsConfig);
+  return tools.uniqMerge(baseConfig,tsConfig);
 }

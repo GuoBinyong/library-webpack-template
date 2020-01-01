@@ -7,7 +7,7 @@ https://github.com/GuoBinyong/library-webpack-template
 */
 
 const path = require('path');
-const utils = require('./build/utils');
+const tools = require('./build/tools');
 
 
 
@@ -73,7 +73,7 @@ var projectConfig = {
   /* 
   库的名字；webpack 的 output.library；
     - **类型：** string 或 object（从 webpack 3.1.0 开始；用于 libraryTarget: 'umd'）
-    - **默认值：** `utils.stringToCamelFormat(package.name)`  即默认值是 package.json 文件中的 name 字段的值的驼峰式名字；函数 `utils.stringToCamelFormat(str)` 的作用是把 字符串 str 从 中划线 或 下划线 分隔的方式 转成 驼峰式
+    - **默认值：** `tools.stringToCamelFormat(package.name)`  即默认值是 package.json 文件中的 name 字段的值的驼峰式名字；函数 `tools.stringToCamelFormat(str)` 的作用是把 字符串 str 从 中划线 或 下划线 分隔的方式 转成 驼峰式
     - **详细信息：** <https://webpack.docschina.org/configuration/output/#output-library> 
     - **注意：** 如果更改了 library 的值，你可能需要考虑下是否要同步更改下 package.json 中的 name 属性；
   */
@@ -315,4 +315,4 @@ source map 的开关；用于控制是否生成 source map；
 
 
 
-module.exports = utils.projecConfigMultipleTargetsSeparation(projectConfig);
+module.exports = tools.projecConfigMultipleTargetsSeparation(projectConfig);

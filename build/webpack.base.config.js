@@ -5,7 +5,7 @@ https://github.com/GuoBinyong/library-webpack-template
 
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const utils = require('./utils');
+const tools = require('./tools');
 const npmConfig = require("../package.json");
 
 
@@ -25,7 +25,7 @@ module.exports = function createWebpackConfig(projectConfig) {
     return path.posix.join(projectConfig.staticOutDirectory, _path)
   }
 
-  var libraryName = projectConfig.library || utils.stringToCamelFormat(npmConfig.name);
+  var libraryName = projectConfig.library || tools.stringToCamelFormat(npmConfig.name);
   
 
   const wpConfig = {
@@ -52,7 +52,7 @@ module.exports = function createWebpackConfig(projectConfig) {
           use: {
             loader: "babel-loader",
             options: {
-              presets: utils.createBabelPresets("js")
+              presets: tools.createBabelPresets("js")
             }
           },
           exclude: /node_modules/
@@ -62,7 +62,7 @@ module.exports = function createWebpackConfig(projectConfig) {
           use: {
             loader: "babel-loader",
             options: {
-              presets: utils.createBabelPresets("jsx")
+              presets: tools.createBabelPresets("jsx")
             }
           },
           exclude: /node_modules/
