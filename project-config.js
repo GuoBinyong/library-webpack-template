@@ -21,9 +21,9 @@ var projectConfig = {
 
   /* 
   配置多个构建目标；当进行构建时，会对 multipleTargets 数组中的每个项目配置分别构建并生成对应的包；
-    - **类型：** undefined | null | Array<ProjecConfig | undefined | null>
-    - **默认值：** undefined
-    - **说明：** 
+    - 类型： undefined | null | Array<ProjecConfig | undefined | null>
+    - 默认值： undefined
+    - 说明： 
         * 此选项是可选的，如果没有配置，或者配置的是一个长度为 0 的空数组，则会使用 默认的项目配置 projectConfig （默认的项目配置指的是 project-config.js 文件中的 projectConfig 变量保存的配置） ； 
         * 如果配置的是一个数组，数组中的每个元素都会被当作一个 项目配置 并覆盖 默认的项目配置 projectConfig 中对应的具体选项；当进行构建时，会对数组中的每个项目配置分别构建并生成对应的包；
         * 数组中的 undefined 和 null 会被当作是 默认的项目配置 projectConfig；
@@ -49,9 +49,9 @@ var projectConfig = {
 
   /* 
  webpack 的入口配置 entry；  指示 webpack 应该使用哪个模块，来作为构建其内部 依赖图的开始
-    - **类型：** string | [string] | object { <key>: string | [string] } | (function: () => string | [string] | object { <key>: string | [string] })
-    - **详细信息：** <https://webpack.docschina.org/configuration/entry-context/#entry>
-    - **注意：** 如果修改了 entry 的值，你可能需要考虑下是否要同步更改下 package.json 中的 module 属性；
+    - 类型： string | [string] | object { <key>: string | [string] } | (function: () => string | [string] | object { <key>: string | [string] })
+    - 详细信息： <https://webpack.docschina.org/configuration/entry-context/#entry>
+    - 注意： 如果修改了 entry 的值，你可能需要考虑下是否要同步更改下 package.json 中的 module 属性；
    */
   entry: "./src/index",
 
@@ -72,10 +72,10 @@ var projectConfig = {
 
   /* 
   库的名字；webpack 的 output.library；
-    - **类型：** string 或 object（从 webpack 3.1.0 开始；用于 libraryTarget: 'umd'）
-    - **默认值：** `tools.stringToCamelFormat(package.name)`  即默认值是 package.json 文件中的 name 字段的值的驼峰式名字；函数 `tools.stringToCamelFormat(str)` 的作用是把 字符串 str 从 中划线 或 下划线 分隔的方式 转成 驼峰式
-    - **详细信息：** <https://webpack.docschina.org/configuration/output/#output-library> 
-    - **注意：** 如果更改了 library 的值，你可能需要考虑下是否要同步更改下 package.json 中的 name 属性；
+    - 类型： string 或 object（从 webpack 3.1.0 开始；用于 libraryTarget: 'umd'）
+    - 默认值： tools.stringToCamelFormat(package.name)  即默认值是 package.json 文件中的 name 字段的值的驼峰式名字；函数 `tools.stringToCamelFormat(str)` 的作用是把 字符串 str 从 中划线 或 下划线 分隔的方式 转成 驼峰式
+    - 详细信息： <https://webpack.docschina.org/configuration/output/#output-library> 
+    - 注意： 如果更改了 library 的值，你可能需要考虑下是否要同步更改下 package.json 中的 name 属性；
   */
   // library: "",
 
@@ -210,10 +210,10 @@ var projectConfig = {
 
   /* 
   构建分析报告的配置选项； webpack-bundle-analyzer 的 webpack 插件选项对象；
-    - **类型：** Object
-    - **默认值：** `bundleAnalyzerOptions.analyzerPort` 的默认值是 "auto"
-    - **详细信息：** <https://github.com/webpack-contrib/webpack-bundle-analyzer> 
-    - **注意：** 如果你配置了多个构建目标 multipleTargets ，并且以 server 模式（这是默认的模式）开启了 构建分析报告，则建义采用以下任意一种方案来对 `bundleAnalyzerOptions.analyzerPort` 进行设置，这样可以防止针对每个构建目标启动一个 构建分析报告 时，因服务端口被占用而启动失败：
+    - 类型： Object
+    - 默认值： bundleAnalyzerOptions.analyzerPort 的默认值是 "auto"
+    - 详细信息： <https://github.com/webpack-contrib/webpack-bundle-analyzer> 
+    - 注意： 如果你配置了多个构建目标 multipleTargets ，并且以 server 模式（这是默认的模式）开启了 构建分析报告，则建义采用以下任意一种方案来对 `bundleAnalyzerOptions.analyzerPort` 进行设置，这样可以防止针对每个构建目标启动一个 构建分析报告 时，因服务端口被占用而启动失败：
         * 方案1（这是默认的设置）：将 所有构建目标公共的 `projectConfig.bundleAnalyzerOptions.analyzerPort` 设置为 auto ；
         * 方案2：分别给每一个 构建目标的 `bundleAnalyzerOptions.analyzerPort` 设置一个不同的值；
   */

@@ -197,7 +197,7 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
 
 + filename ：webpack 的 output.filename；此选项决定了每个输出 bundle 的名称。这些 bundle 将写入到 output.path 选项指定的目录下
     - **类型：** string | function
-    - **默认值：** "[name].js"
+    - **默认值：** `"[name].js"`
     - **详细信息：** <https://webpack.docschina.org/configuration/output/#output-filename> 
 
 
@@ -216,7 +216,7 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
 
 + libraryExport ：库中被导出的项；webpack 的 output.libraryExport ；
     - **类型：** string | string[]
-    - **默认值：** "default"
+    - **默认值：** `"default"`
     - **备注：** 如果设置成空字符串 "" ，则会导出包含所有导出的对象；
     - **详细信息：** <https://webpack.docschina.org/configuration/output/#output-libraryexport> 
   
@@ -244,7 +244,7 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
 + htmlOut ：要将 html模板文件 htmlTemplate 写入的文件。您也可以在此处指定子目录；该选项会结合 outputPath 选项 生成 html-webpack-plugin
  的 filename 选项 的值；
     - **类型：** string
-    - **默认值：** "index.html"
+    - **默认值：** `"index.html"`
     - **详细信息：** <https://github.com/ampedandwired/html-webpack-plugin>  
   
 + staticDirectory：静态资源的原目录；该目录下的内容将会被拷贝到构建输出目录中；
@@ -261,24 +261,24 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
     - 可配置的属性如下：
         * target：指定TypeScript编译成 ECMAScript 的目标版本；用作 tsconfig.json 的 target 选项；
             - **类型：** "ES3" | "ES5" | "ES6"/"ES2015" | "ES2016" | "ES2017" | "ESNext"
-            - **默认值：** "ES3"
+            - **默认值：** `"ES3"`
             - **详细信息：** <https://www.tslang.cn/docs/handbook/compiler-options.html>  
 
         * module：指定生成哪个模块系统代码；用作 tsconfig.json 的 module 选项；
             - **类型：** "None" | "CommonJS" | "AMD" | "System" | "UMD" | "ES6" | "ES2015"
-            - **默认值：** tsTarget === "ES6" ? "ES6" : "commonjs"
+            - **默认值：** `tsTarget === "ES6" ? "ES6" : "commonjs"`
             - **详细信息：** <https://www.tslang.cn/docs/handbook/compiler-options.html>  
 
 
         * declaration：指定是否生成相应的 .d.ts 文件。用作 tsconfig.json 的 declaration 选项
             - **类型：** boolean
-            - **默认值：** false 
+            - **默认值：** `false` 
             - **详细信息：** <https://www.tslang.cn/docs/handbook/compiler-options.html> 
 
 
         * loader：配置解析 TypeScript 的 loader
             - **类型：** "ts-loader" | "babel-loader" 
-            - **默认值：** "ts-loader" 
+            - **默认值：** `"ts-loader"` 
             - **注意：** 目前发现：
               * "ts-loader" 会忽略TypeScript中默认的导出项 `export default`，这时配置项 ` libraryExport: "default" ` 可能会导致导出的值是 undefined
               * "babel-loader" 暂未支持生成 声明文件 .d.ts，并且会忽略 项目中关于 TypeScript 的自定配置，如：tsconfig.json、tsconfig.dev.js、tsconfig.prod.js 中的配置
@@ -287,12 +287,12 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
 
 + bundleAnalyzerReport ：是否开启构建分析报告；
     - **类型：** boolean
-    - **默认值：** process.env.npm_config_report； 即：根据执行命令时是否带有 `--report` 选项来决定是否启用 构建分析报告；
+    - **默认值：** `process.env.npm_config_report`； 即：根据执行命令时是否带有 `--report` 选项来决定是否启用 构建分析报告；
 
 
 + bundleAnalyzerOptions ：构建分析报告的配置选项； webpack-bundle-analyzer 的 webpack 插件选项对象；
     - **类型：** Object
-    - **默认值：** `bundleAnalyzerOptions.analyzerPort` 的默认值是 "auto"
+    - **默认值：** `bundleAnalyzerOptions.analyzerPort` 的默认值是 `"auto"`
     - **详细信息：** <https://github.com/webpack-contrib/webpack-bundle-analyzer> 
     - **注意：** 如果你配置了多个构建目标 multipleTargets ，并且以 server 模式（这是默认的模式）开启了 构建分析报告，则建义采用以下任意一种方案来对 `bundleAnalyzerOptions.analyzerPort` 进行设置，这样可以防止针对每个构建目标启动一个 构建分析报告 时，因服务端口被占用而启动失败：
         * 方案1（这是默认的设置）：将 所有构建目标公共的 `projectConfig.bundleAnalyzerOptions.analyzerPort` 设置为 auto ；
@@ -308,27 +308,27 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
 
         * useEslint ：是否使用 Eslint Loader；
             - **类型：** boolean
-            - **默认值：** false
+            - **默认值：** `false`
             - **详细信息：** <https://github.com/webpack-contrib/eslint-loader>
 
         * showEslintErrorsInOverlay ：是否在浏览器中显示 Eslint 的错误和警告；
             - **类型：** boolean
-            - **默认值：** false
+            - **默认值：** `false`
             - **详细信息：** <https://github.com/webpack-contrib/eslint-loader>
 
         * sourceMap ：source map 的开关；用于控制是否生成 source map；
             - **类型：** boolean
-            - **默认值：** false
+            - **默认值：** `false`
             - **详细信息：** <https://webpack.docschina.org/configuration/devtool/>
 
         * devtool ：webpack 的 devtool 选项；用于控制如何生成 source map；
             - **类型：** string
-            - **默认值：** false
+            - **默认值：** `false`
             - **详细信息：** <https://webpack.docschina.org/configuration/devtool/>
 
         * cssSourceMap ：CSS source map 的开关；用于控制是否生成 CSS 的 source map；
             - **类型：** boolean
-            - **默认值：** false
+            - **默认值：** `false`
 
 
 
@@ -343,12 +343,12 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
 
         * sourceMap ：source map 的开关；用于控制是否生成 source map；
             - **类型：** boolean
-            - **默认值：** false
+            - **默认值：** `false`
             - **详细信息：** <https://webpack.docschina.org/configuration/devtool/>
 
         * devtool ：webpack 的 devtool 选项；用于控制如何生成 source map；
             - **类型：** string
-            - **默认值：** false
+            - **默认值：** `false`
             - **详细信息：** <https://webpack.docschina.org/configuration/devtool/>
 
 
@@ -358,7 +358,7 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
 
 + multipleTargets ：配置多个构建目标；当进行构建时，会对 multipleTargets 数组中的每个项目配置分别构建并生成对应的包；
     - **类型：** undefined | null | Array<ProjecConfig | undefined | null>
-    - **默认值：** undefined
+    - **默认值：** `undefined`
     - **说明：** 
         * 此选项是可选的，如果没有配置，或者配置的是一个长度为 0 的空数组，则会使用 默认的项目配置 projectConfig （默认的项目配置指的是 project-config.js 文件中的 projectConfig 变量保存的配置） ； 
         * 如果配置的是一个数组，数组中的每个元素都会被当作一个 项目配置 并覆盖 默认的项目配置 projectConfig 中对应的具体选项；当进行构建时，会对数组中的每个项目配置分别构建并生成对应的包；
