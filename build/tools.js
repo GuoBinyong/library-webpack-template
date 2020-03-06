@@ -187,9 +187,7 @@ exports.createTsParseLoader = function createTsParseLoader(loader,options,tsConf
     test: /\.tsx?$/
   }; 
 
-  if (options && typeof options == "object") {
-    Object.assign(tsLoader,options);
-  }
+  Object.assign(tsLoader,options);
 
   switch (loader){
     
@@ -226,6 +224,20 @@ exports.createTsParseLoader = function createTsParseLoader(loader,options,tsConf
   return tsLoader;
 }
 
+
+
+/**
+ * 将一个 TypeScript的配置对象 和 一个 ts-loader 的配置对象 合并成 一个 ts-loader 的配置对象，并会对数组类型的配置项去重；
+ * 
+ * tsLoaderConfigMerge(tsconfg,tsloaderConfig)
+ * @param tsconfg TypeScript的配置对象
+ * @param tsloaderConfig ts-loader 的配置对象 
+ * 
+ * @returns  返回 ts-loader 的配置对象
+ */
+exports.tsLoaderConfigMerge = function tsLoaderConfigMerge(tsconfg,tsloaderConfig){
+  return uniqMerge({compilerOptions:tsconfg.compilerOptions},tsloaderConfig);
+};
 
 // TypeScript的Loader：结束
 

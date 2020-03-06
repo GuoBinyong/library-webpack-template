@@ -72,5 +72,5 @@ module.exports = function createTsConfig(projectConfig) {
     }
   };
 
-  return tools.uniqMerge(baseConfig,tsConfig);
+  return tools.tsLoaderConfigMerge(baseConfig,tsConfig);
 }
