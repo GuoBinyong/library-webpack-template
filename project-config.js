@@ -232,13 +232,15 @@ var projectConfig = {
     输出目录，一个绝对路径；webpack 的 output.path；
       - 类型： string
       - 详细信息： <https://webpack.docschina.org/configuration/output/#output-path>
-      - **注意：** 如果你使用的是 TypeScript，建议你将该处配置的输出目录 增加到 项目根目录下的 TypeScript 配置选项（一般在配置文件 tsconfig.json 中）的 排除字段 "exclude" 下，如：
-      ```
-      "exclude":[
-        "dist",
-        "dev"
-      ]
-      ```
+      - **注意：**   
+        + 如果你使用的是 ESLint，建议你将该处配置的输出目录 增加到 ESLint 的忽略配置文件中一般在项目根目录下的 .eslintignore 文件中）；
+        + 如果你使用的是 TypeScript，建议你将该处配置的输出目录 增加到 项目根目录下的 TypeScript 配置选项（一般在配置文件 tsconfig.json 中）的 排除字段 "exclude" 下，如：
+        ```
+        "exclude":[
+          "dist",
+          "dev"
+        ]
+        ```
     */
     outputPath: resolve("dev"),
 
@@ -298,13 +300,15 @@ var projectConfig = {
     输出目录，一个绝对路径；webpack 的 output.path；
       - 类型： string
       - 详细信息： <https://webpack.docschina.org/configuration/output/#output-path>
-      - **注意：** 如果你使用的是 TypeScript，建议你将该处配置的输出目录 增加到 项目根目录下的 TypeScript 配置选项（一般在配置文件 tsconfig.json 中）的 排除字段 "exclude" 下，如：
-      ```
-      "exclude":[
-        "dist",
-        "dev"
-      ]
-      ```
+      - **注意：**  
+        + 如果你使用的是 ESLint，建议你将该处配置的输出目录 增加到 ESLint 的忽略配置文件中一般在项目根目录下的 .eslintignore 文件中）；
+        + 如果你使用的是 TypeScript，建议你将该处配置的输出目录 增加到 项目根目录下的 TypeScript 配置选项（一般在配置文件 tsconfig.json 中）的 排除字段 "exclude" 下，如：
+        ```
+        "exclude":[
+          "dist",
+          "dev"
+        ]
+        ```
     */
     outputPath: resolve("dist"),
 
