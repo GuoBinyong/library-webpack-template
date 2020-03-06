@@ -190,7 +190,7 @@ var projectConfig = {
     - 类型： "ts-loader" | "babel-loader" 
     - 默认值： "ts-loader" 
     - 注意： 目前发现：
-      * "ts-loader" 会忽略TypeScript中默认的导出项 `export default`，这时配置项 ` libraryExport: "default" ` 可能会导到导出的值是 undefined
+      * "ts-loader" 会忽略TypeScript中默认的导出项 `export default`(TypeScript 3 之后 默认禁用了 `export default`)，这时配置项 ` libraryExport: "default" ` 可能会导到导出的值是 undefined
       * "babel-loader" 暂未支持生成 声明文件 .d.ts，并且会忽略 项目中关于 TypeScript 的自定配置，如：tsconfig.json、tsconfig.dev.js、tsconfig.prod.js 中的配置
     */
     loader: "ts-loader",
@@ -232,6 +232,13 @@ var projectConfig = {
     输出目录，一个绝对路径；webpack 的 output.path；
       - 类型： string
       - 详细信息： <https://webpack.docschina.org/configuration/output/#output-path>
+      - **注意：** 如果你使用的是 TypeScript，建议你将该处配置的输出目录 增加到 项目根目录下的 TypeScript 配置选项（一般在配置文件 tsconfig.json 中）的 排除字段 "exclude" 下，如：
+      ```
+      "exclude":[
+        "dist",
+        "dev"
+      ]
+      ```
     */
     outputPath: resolve("dev"),
 
@@ -287,7 +294,18 @@ var projectConfig = {
     - 类型： Object
   */
   build: {
-    // 输出目录
+    /* 
+    输出目录，一个绝对路径；webpack 的 output.path；
+      - 类型： string
+      - 详细信息： <https://webpack.docschina.org/configuration/output/#output-path>
+      - **注意：** 如果你使用的是 TypeScript，建议你将该处配置的输出目录 增加到 项目根目录下的 TypeScript 配置选项（一般在配置文件 tsconfig.json 中）的 排除字段 "exclude" 下，如：
+      ```
+      "exclude":[
+        "dist",
+        "dev"
+      ]
+      ```
+    */
     outputPath: resolve("dist"),
 
 

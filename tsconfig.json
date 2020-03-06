@@ -5,9 +5,13 @@
     "lib": [
       "DOM",
       "DOM.Iterable",
-      "ES2018",
+      "ESNext",
       "ScriptHost"
     ],
     "strict": true
-  }
+  },
+  "exclude":[
+    "dist",
+    "dev"
+  ]
 }
