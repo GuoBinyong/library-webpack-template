@@ -27,6 +27,7 @@
 - [10. npm包管理配置文件](#10-npm包管理配置文件)
 - [11. Webpack配置文件](#11-webpack配置文件)
 - [12. TypeScript配置文件](#12-typescript配置文件)
+- [13. 代码检查](#13-代码检查)
 
 <!-- /TOC -->
 
@@ -421,6 +422,13 @@ library-webpack-template 中包含了3个 TypeScript 配置文件：
 - `build/tsconfig.prod.js` : 这个文件仅包含提 生产模式 特有的 TypeScript 配置；并且会覆盖 公共配置 `tsconfig.json` 中相应的具体选项；
 
 
+
+# 13. 代码检查
+本配置模版默认使用 ESLint 作为 JavaScript 和 TypeScript 的代码检查工具；至于为什么 TypeScript 不用 TSLint 作为代码检查工具的原因请参看 <https://github.com/typescript-eslint/typescript-eslint>；
+
+ESLint 相关的配置文件如下：
+- `.eslintrc.js` : ESLint 的配置文件，可配置 解析器、解析选项、规则 等等；默认是 TypeScript 代码检查配置；
+- `.eslintignore` : ESLint 的忽略文件的配置文件；
 
 
 
