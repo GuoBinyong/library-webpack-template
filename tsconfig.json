@@ -8,7 +8,8 @@
       "ESNext",
       "ScriptHost"
     ],
-    "strict": true
+    "strict": true,
+    "declaration":true
   },
   "exclude":[
     "dist",
