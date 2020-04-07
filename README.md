@@ -54,7 +54,7 @@ library-webpack-template 称为 库构建模板，又称 公共代码构建模�
 
 
 # 2. 特性
-- 可配置去除 公共代码 的依赖；
+- 可配置去除 公共代码 的依赖，默认去除了所有 `node_modules` 中的依赖；
 - 多个构建目标可同时构建，即：一次构建分别生成多个构建目标的构建包；
 - 可快速切换 开发模式 和 生产模式；
 - 自动分离 CSS 和 JavaScript 文件；
@@ -234,6 +234,7 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
   
 + externals ：webpack 的 externals； 排除依赖的模块；防止将某些 import 的包(package)打包到 bundle 中；
     - **类型：** string | object | function | regex | array 
+    - **默认值：** `webpackNodeExternals()` ； 即排除所有 `node_modules` 中的模块； `webpackNodeExternals` 是 webpack-node-externals 包提供的功能，该包的信息详见 <https://github.com/liady/webpack-node-externals> ；
     - **详细信息：** <https://webpack.docschina.org/configuration/externals/#externals> 
   
 

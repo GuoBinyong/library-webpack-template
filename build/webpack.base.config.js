@@ -5,6 +5,7 @@ https://github.com/GuoBinyong/library-webpack-template
 
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const webpackNodeExternals = require('webpack-node-externals');
 const tools = require('./tools');
 const npmConfig = require("../package.json");
 
@@ -40,7 +41,7 @@ module.exports = function createWebpackConfig(projectConfig) {
       libraryTarget: projectConfig.libraryTarget,
       libraryExport: projectConfig.libraryExport,
     },
-    externals: projectConfig.externals,
+    externals: projectConfig.externals || webpackNodeExternals(),
     resolve: {
       extensions: projectConfig.extensions,
       alias: projectConfig.alias,
