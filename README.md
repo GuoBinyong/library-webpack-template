@@ -45,7 +45,7 @@
 library-webpack-template 称为 库构建模板，又称 公共代码构建模板 ，是专门用于构建 公共代码（如：封装的库、工具等） 的 webpack 配置模板，当需要开发和构建公共代码时，直接克隆本项目即可，并默认在的 src 目录下开发即可；
 
 - 主页：<https://github.com/GuoBinyong/-library-webpack-template>
-- [API接口文档][]
+
 
 **如果您在使用的过程中遇到了问题，或者有好的建议和想法，您都可以通过以下方式联系我，期待与您的交流：**
 - 给该仓库提交 [issues][]
