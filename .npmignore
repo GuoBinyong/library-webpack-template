@@ -10,7 +10,9 @@ tsconfig.json
 .eslintrc.js
 .eslintignore
 .editorconfig
-可删除-交互式树形可视化构建分析报告.gif
+交互式树形可视化构建分析报告.gif
+
+
 
 # WebStorm生成的用来存放项目配置的目录
 .idea
