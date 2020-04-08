@@ -1,4 +1,6 @@
-[交互式树形可视化构建分析报告]: http://q3d4kj62i.bkt.clouddn.com/交互式树形可视化构建分析报告.gif
+[交互式可视化树形构建分析报告]: https://i.loli.net/2020/04/08/l1PkSEtv2U3O9Fw.gif
+
+
 
 
 [git仓库]: https://github.com/GuoBinyong/-library-webpack-template
@@ -61,8 +63,8 @@ library-webpack-template 称为 库构建模板，又称 公共代码构建模�
 - 支持 JavaScript、JSX、TypeScript、TSX、CSS、Sass、Less、Stylus、PostCss等等；
 - 支持 ESLint；
 - 支持 代码压缩；
-- 支持 交互式树形可视化构建分析报告，如下图：
-    ![交互式树形可视化构建分析报告][]
+- 支持 交互式可视化树形构建分析报告，如下图：
+    ![交互式可视化树形构建分析报告][]
 
 
 # 3. 使用
@@ -77,9 +79,9 @@ library-webpack-template 项目支持如下构建命令：
 - `npm run dev` : 以开发模式构建项目；
 - `npm run build` : 以生产模式构建项目；
 
-在 project-config.js 配置文件中，如果 没有配置 bundleAnalyzerReport 选项，则支持运行构建命令时 携带 `--report` 选项来开启 交互式树形可视化构建分析报告，如：`npm start --report`、`npm run dev --report`、`npm run build --report`，当构建完成时，会自动打开浏览器展示 交互式树形可视化构建分析报告，如下图：
+在 project-config.js 配置文件中，如果 没有配置 bundleAnalyzerReport 选项，则支持运行构建命令时 携带 `--report` 选项来开启 交互式可视化树形构建分析报告，如：`npm start --report`、`npm run dev --report`、`npm run build --report`，当构建完成时，会自动打开浏览器展示 交互式可视化树形构建分析报告，如下图：
 
-   ![交互式树形可视化构建分析报告][]
+   ![交互式可视化树形构建分析报告][]
 
 
 
@@ -445,4 +447,4 @@ ESLint 相关的配置文件如下：
 
 > 有您的支持，我会在开源的道路上，越走越远
 
-![赞赏码](http://q3d4kj62i.bkt.clouddn.com/赞赏码.JPG)
+![赞赏码](https://i.loli.net/2020/04/08/PGsAEqdJCin1oQL.jpg)
