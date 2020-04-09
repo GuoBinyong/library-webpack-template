@@ -30,5 +30,7 @@ module.exports = {
         'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
         //提示 没用的变量；默认是 报错 "error"
         "no-unused-vars":"warn",
+        // 关闭 var 关键字的提示
+        "no-var":'off'
     }
 };
