@@ -407,6 +407,7 @@ library-webpack-template 中与 npm 包管理相关的配置文件有 2 个：
 **注意：** `package.json` 文件中的如下字段：
 - `module` : 该字段是用来指定以标准模块暴露的出口文件；
 - `types` | `typings` ： 该字段是用来指定库的类型声明文件；如果库没有类型声明文件，则去除该字段；
+- "sideEffects" : boolean | Array<string> ，可以为布尔，表示整个包是否有副作用；也可以是一些有副作用文件的的路径字符串，路径支持 相对路径、绝对路径和 glob 模式； 副作用标记；表明项目中的哪些文件不是 纯的 ES2015 模块，由此不能安全地删除文件中未使用的部分；详细内容请见 <https://webpack.docschina.org/guides/tree-shaking/#将文件标记为-side-effect-free-无副作用->
 
 
 
