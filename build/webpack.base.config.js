@@ -52,9 +52,7 @@ module.exports = function createWebpackConfig(projectConfig) {
           test: /\.js$/,
           use: {
             loader: "babel-loader",
-            options: {
-              presets: tools.createBabelPresets("js")
-            }
+            options:tools.createBabelLoaderOptions("js")
           },
           exclude: /node_modules/
         },
@@ -62,9 +60,7 @@ module.exports = function createWebpackConfig(projectConfig) {
           test: /\.jsx$/,
           use: {
             loader: "babel-loader",
-            options: {
-              presets: tools.createBabelPresets("jsx")
-            }
+            options: tools.createBabelLoaderOptions("jsx")
           },
           exclude: /node_modules/
         },

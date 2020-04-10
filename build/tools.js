@@ -1,6 +1,6 @@
 'use strict'
 
-/* 
+/*
 包含与构建相关的工具函数的 JavaScript 代码文件
 https://github.com/GuoBinyong/library-webpack-template
 */
@@ -29,7 +29,7 @@ exports.cssLoaders = function (options) {
   }
 
   // generate loader string to be used with extract text plugin
-  function generateLoaders (loader, loaderOptions) {
+  function generateLoaders(loader, loaderOptions) {
     const loaders = options.usePostCSS ? [cssLoader, postcssLoader] : [cssLoader]
 
     if (loader) {
@@ -51,13 +51,13 @@ exports.cssLoaders = function (options) {
           // by default it uses publicPath in webpackOptions.output
           // publicPath: '../',
           // hmr: process.env.NODE_ENV === 'development',
-          hmr:false,
+          hmr: false,
         },
       };
 
       loaders.unshift(miniCssLoader);
 
-    } 
+    }
 
 
     return loaders;
@@ -68,7 +68,7 @@ exports.cssLoaders = function (options) {
     css: generateLoaders(),
     postcss: generateLoaders(),
     less: generateLoaders('less'),
-    sass: generateLoaders('sass', { indentedSyntax: true }),
+    sass: generateLoaders('sass', {indentedSyntax: true}),
     scss: generateLoaders('sass'),
     stylus: generateLoaders('stylus'),
     styl: generateLoaders('stylus')
@@ -92,29 +92,40 @@ exports.styleLoaders = function (options) {
 }
 
 
-
-
-
-
 // babel预设：开始
 
 // js 的 babel 的预设
 const jsBabelPresets = [
   ["@babel/preset-env", {
-    "useBuiltIns":"entry",
-    "corejs":3
+    "useBuiltIns": false,
   }],
   "@babel/preset-flow"
 ];
 
+// js 的 babel 的插件 ：2020-4-10
+const jsBabelPlugins = [
+  // Stage 2
+  ["@babel/plugin-proposal-decorators", {"legacy": false,decoratorsBeforeExport:true}],
+  "@babel/plugin-proposal-function-sent",
+  "@babel/plugin-proposal-export-namespace-from",
+  "@babel/plugin-proposal-numeric-separator",
+  "@babel/plugin-proposal-throw-expressions",
 
-  // jsx 的 babel 的预设
-  const jsxBabelPresets = [
-    "@babel/preset-react"
-  ];
+  // Stage 3
+  "@babel/plugin-syntax-dynamic-import",
+  "@babel/plugin-syntax-import-meta",
+  ["@babel/plugin-proposal-class-properties", {"loose": true}],
+  "@babel/plugin-proposal-json-strings"
+];
 
 
-  // TypeScript 的 babel 的预设
+// jsx 的 babel 的预设
+const jsxBabelPresets = [
+  "@babel/preset-react"
+];
+
+
+// TypeScript 的 babel 的预设
 const tsBabelPresets = [
   "@babel/preset-typescript"
 ];
@@ -124,27 +135,25 @@ const tsBabelPresets = [
 /**
  * createBabelPresets(type,options)
  * @param  type ? : string   要创建的预设的类型
- * @param options ? : Object   要创建预设的参数
- * 
+ *
  * type 可表示的类型及有效值如下
  * jsx类型 : jsx、react
  * typescript类型 : ts、tsx、typescript
  * 其它类型 : 除上述之外的所有值
  */
-function createBabelPresets(type,options){
+function createBabelLoaderOptions(type) {
   type = type.toLowerCase();
-  // let babelPresets = jsBabelPresets.slice();
   let babelPresets = [];
-  switch (type){
+  switch (type) {
     case "jsx":
-    case "react":{
+    case "react": {
       babelPresets = babelPresets.concat(jsxBabelPresets);
       break;
     }
 
     case "ts":
     case "tsx":
-    case "typescript":{
+    case "typescript": {
       babelPresets = babelPresets.concat(tsBabelPresets);
       break;
     }
@@ -152,16 +161,13 @@ function createBabelPresets(type,options){
   }
 
 
-  if (babelPresets.length>0 && options){
-    babelPresets.push(options);
-  }
-
-  
-  return jsBabelPresets.concat(babelPresets);
+  return {
+    presets: jsBabelPresets.concat(babelPresets),
+    plugins: jsBabelPlugins
+  };
 }
 
-exports.createBabelPresets = createBabelPresets
-
+exports.createBabelLoaderOptions = createBabelLoaderOptions;
 
 
 // babel预设：结束
@@ -169,7 +175,7 @@ exports.createBabelPresets = createBabelPresets
 
 // TypeScript的Loader：开始
 
-/* 
+/*
 创建
 */
 
@@ -181,35 +187,31 @@ exports.createBabelPresets = createBabelPresets
  * @param tsConfig : Object     TypeScript 的配置选项，与 tsconfig.json 的配置相同
  * @returns Loader
  */
-exports.createTsParseLoader = function createTsParseLoader(loader,options,tsConfig){
+exports.createTsParseLoader = function createTsParseLoader(loader, options, tsConfig) {
 
   var tsLoader = {
     test: /\.tsx?$/
-  }; 
+  };
 
-  Object.assign(tsLoader,options);
+  Object.assign(tsLoader, options);
 
-  switch (loader){
-    
+  switch (loader) {
+
     // 用 babel-loader 解析 TypeScript
-    case "babel-loader":{
+    case "babel-loader": {
       tsLoader.use = {
-        loader:"babel-loader",
-        options:{
-          presets: createBabelPresets("ts")
-        }
+        loader: "babel-loader",
+        options: createBabelLoaderOptions("ts")
       };
       break;
     }
 
     // 用 ts-loader 解析 TypeScript
-    default:{
+    default: {
       tsLoader.use = [
         {
           loader: "babel-loader",
-          options: {
-            presets: createBabelPresets("js")
-          }
+          options: createBabelLoaderOptions("js")
         },
         {
           loader: 'ts-loader',
@@ -225,54 +227,48 @@ exports.createTsParseLoader = function createTsParseLoader(loader,options,tsConf
 }
 
 
-
 /**
  * 将一个 TypeScript的配置对象 和 一个 ts-loader 的配置对象 合并成 一个 ts-loader 的配置对象，并会对数组类型的配置项去重；
- * 
+ *
  * tsLoaderConfigMerge(tsconfg,tsloaderConfig)
  * @param tsconfg TypeScript的配置对象
- * @param tsloaderConfig ts-loader 的配置对象 
- * 
+ * @param tsloaderConfig ts-loader 的配置对象
+ *
  * @returns  返回 ts-loader 的配置对象
  */
-exports.tsLoaderConfigMerge = function tsLoaderConfigMerge(tsconfg,tsloaderConfig){
-  return uniqMerge({compilerOptions:tsconfg.compilerOptions},tsloaderConfig);
+exports.tsLoaderConfigMerge = function tsLoaderConfigMerge(tsconfg, tsloaderConfig) {
+  return uniqMerge({compilerOptions: tsconfg.compilerOptions}, tsloaderConfig);
 };
 
 // TypeScript的Loader：结束
 
 
-
-
-
 // 配置处理工具：开始
-
 
 
 /**
  * 将多个配置对象合并一个配置对象，并会对数组类型的配置项去重；
  * @returns  Configuration  返回合并后的配置对象
- * 
- * 
+ *
+ *
  * 接口1:
  * uniqMerge(...configuration)
  * 接收任意多个参数，每个参数都是一个配置对象；
- * 
- * 
- * 
+ *
+ *
+ *
  * 接口2:
  * uniqMerge(configurationArray: Configuration[])
  * 接收一个包含所有配置对象的数组
  * @param configurationArray : Configuration[]    配置对象的数组；
  */
 const uniqMerge = merge({
-  customizeArray:function(a, b, key) {
+  customizeArray: function (a, b, key) {
     return _.uniqWith([...a, ...b], _.isEqual);
   }
 });
 
 exports.uniqMerge = uniqMerge;
-
 
 
 /**
@@ -281,18 +277,18 @@ exports.uniqMerge = uniqMerge;
  * @param projectConfig : ProjecConfig   项目配置
  * @returns [ProjecConfig]    返回包含多个目标对应的项目配置的数组
  */
-exports.projecConfigMultipleTargetsSeparation = function projecConfigMultipleTargetsSeparation(projectConfig){
+exports.projecConfigMultipleTargetsSeparation = function projecConfigMultipleTargetsSeparation(projectConfig) {
 
   var multipleTargets = projectConfig.multipleTargets;
-  var projectConfig = Object.assign({},projectConfig);
+  var projectConfig = Object.assign({}, projectConfig);
   delete projectConfig.multipleTargets;
 
   var multiProjConf = [projectConfig];
 
-  if (multipleTargets && multipleTargets.length > 0){
+  if (multipleTargets && multipleTargets.length > 0) {
 
-    multiProjConf = multipleTargets.map(function(target){
-      return uniqMerge(projectConfig,target);
+    multiProjConf = multipleTargets.map(function (target) {
+      return uniqMerge(projectConfig, target);
     });
 
   }
@@ -304,8 +300,6 @@ exports.projecConfigMultipleTargetsSeparation = function projecConfigMultipleTar
 // 配置处理工具：结束
 
 
-
-
 /**
  * 将按指定分隔符分隔的字符串转换成驼峰格式
  *
@@ -313,19 +307,19 @@ exports.projecConfigMultipleTargetsSeparation = function projecConfigMultipleTar
  * @param separators ?: string | Array<string>   可选；默认值：["-","_"]；  分隔符 或 分隔符好数组
  * @returns string  返回驼峰格式的字符串
  */
-exports.stringToCamelFormat = function stringToCamelFormat(str,separators) {
+exports.stringToCamelFormat = function stringToCamelFormat(str, separators) {
 
-  if (separators == undefined)  {
-    separators = ["-","_"] ;
-  }else if(!Array.isArray(separators)){
+  if (separators == undefined) {
+    separators = ["-", "_"];
+  } else if (!Array.isArray(separators)) {
     separators = [separators];
   }
 
-  var separatorRexStr = "(" + separators.join("|") + ")" + "+([A-Za-z]?)" ;
-  var separatorRex = new RegExp(separatorRexStr,"g");
+  var separatorRexStr = "(" + separators.join("|") + ")" + "+([A-Za-z]?)";
+  var separatorRex = new RegExp(separatorRexStr, "g");
 
-  var targetStr = str.replace(separatorRex,function (match,p1,p2) {
-    return p2.toUpperCase() ;
+  var targetStr = str.replace(separatorRex, function (match, p1, p2) {
+    return p2.toUpperCase();
   });
 
   return targetStr;
