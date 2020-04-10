@@ -172,7 +172,7 @@ var projectConfig = {
       - 默认值： target === "ES6" ? "ES6" : "commonjs"
       - 详细信息： <https://www.tslang.cn/docs/handbook/compiler-options.html>
      */
-     module:"ES6",
+     // module:"ES6",
 
     /*
     指定是否生成相应的 .d.ts 文件。用作 tsconfig.json 的 declaration 选项

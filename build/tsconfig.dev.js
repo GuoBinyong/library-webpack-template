@@ -1,4 +1,4 @@
-/* 
+/*
 开发模式特有的 TypeScript 配置文件
 https://github.com/GuoBinyong/library-webpack-template
 */
@@ -13,19 +13,17 @@ const baseConfig = require("../tsconfig.json");
  */
 module.exports = function createTsConfig(projectConfig) {
 
-  let tsConfOfProj = projectConfig.tsconfig || {};
-
   let tsConfig = {
     // "extends":"../tsconfig.json",    /* tsconfig.json文件可以利用extends属性从另一个配置文件里继承配置。 */
     "compilerOptions": {
       /* Basic Options */
-      "target": tsConfOfProj.target,                          /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'. */
-      "module": tsConfOfProj.module,                     /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
+      // "target": "ESNext",                          /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'. */
+      // "module": "ESNext",                     /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
       // "lib": [],                             /* Specify library files to be included in the compilation:  */
       // "allowJs": true,                       /* Allow javascript files to be compiled. */
       // "checkJs": true,                       /* Report errors in .js files. */
       // "jsx": "preserve",                     /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */
-      "declaration": tsConfOfProj.declaration,                   /* Generates corresponding '.d.ts' file. */
+      // "declaration": true,                   /* Generates corresponding '.d.ts' file. */
       "sourceMap": projectConfig.dev.sourceMap,                     /* Generates corresponding '.map' file. */
       // "outFile": "./",                       /* Concatenate and emit output to single file. */
       // "outDir": "./",                        /* Redirect output structure to the directory. */
@@ -72,5 +70,6 @@ module.exports = function createTsConfig(projectConfig) {
     }
   };
 
-  return tools.tsLoaderConfigMerge(baseConfig,tsConfig);
+
+  return tools.tsLoaderConfigMerge(baseConfig,tsConfig,projectConfig);
 }

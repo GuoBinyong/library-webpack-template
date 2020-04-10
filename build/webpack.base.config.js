@@ -1,4 +1,4 @@
-/* 
+/*
 开发 和 生产两种模式公共的 webpack 配置文件
 https://github.com/GuoBinyong/library-webpack-template
 */
@@ -26,8 +26,13 @@ module.exports = function createWebpackConfig(projectConfig) {
     return path.posix.join(projectConfig.staticOutDirectory, _path)
   }
 
-  var libraryName = projectConfig.library || tools.stringToCamelFormat(npmConfig.name);
-  
+  var libraryName = tools.stringToCamelFormat(npmConfig.name);
+  var projectConfigLibrary = projectConfig.library || libraryName;
+  if (typeof projectConfigLibrary === "string"){
+    libraryName = projectConfigLibrary
+  }
+
+
 
   const wpConfig = {
     target: projectConfig.target,  //node  web 等等
@@ -37,7 +42,7 @@ module.exports = function createWebpackConfig(projectConfig) {
     },
     output: {
       filename: projectConfig.filename || '[name].js',
-      library: libraryName,
+      library: projectConfigLibrary,
       libraryTarget: projectConfig.libraryTarget,
       libraryExport: projectConfig.libraryExport,
     },
@@ -50,18 +55,12 @@ module.exports = function createWebpackConfig(projectConfig) {
       rules: [
         {
           test: /\.js$/,
-          use: {
-            loader: "babel-loader",
-            options:tools.createBabelLoaderOptions("js")
-          },
+          use: tools.createBabelLoader("js"),
           exclude: /node_modules/
         },
         {
           test: /\.jsx$/,
-          use: {
-            loader: "babel-loader",
-            options: tools.createBabelLoaderOptions("jsx")
-          },
+          use: tools.createBabelLoader("jsx"),
           exclude: /node_modules/
         },
         {
@@ -126,7 +125,7 @@ module.exports = function createWebpackConfig(projectConfig) {
     baReport = process.env.npm_config_report;
   }
 
-  
+
   if (baReport) {
     const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
     let baOpts = projectConfig.bundleAnalyzerOptions || {};
