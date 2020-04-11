@@ -28,8 +28,12 @@ module.exports = function createWebpackConfig(projectConfig) {
   }
 
   var libraryName = tools.stringToCamelFormat(npmConfig.name);
-  var projectConfigLibrary = projectConfig.library || libraryName;
-  if (typeof projectConfigLibrary === "string"){
+  var projectConfigLibrary = projectConfig.library
+  if (projectConfigLibrary === undefined){
+    projectConfigLibrary = libraryName;
+  }else if(projectConfigLibrary === null){
+    projectConfigLibrary = undefined;
+  }else if (typeof projectConfigLibrary === "string"){
     libraryName = projectConfigLibrary
   }
 

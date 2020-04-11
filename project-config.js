@@ -72,7 +72,9 @@ var projectConfig = {
 
   /*
   库的名字；webpack 的 output.library；
-    - 类型： string 或 object（从 webpack 3.1.0 开始；用于 libraryTarget: 'umd'）
+    - 类型： string | object | null | undefined （从 webpack 3.1.0 开始；用于 libraryTarget: 'umd'）；
+        * 当值为 undefined 时，会使用默认值；
+        * 当值为 null 时，会取消配置 webpack 的 output.library
     - 默认值： tools.stringToCamelFormat(package.name)  即默认值是 package.json 文件中的 name 字段的值的驼峰式名字；函数 `tools.stringToCamelFormat(str)` 的作用是把 字符串 str 从 中划线 或 下划线 分隔的方式 转成 驼峰式
     - 详细信息： <https://webpack.docschina.org/configuration/output/#output-library>
     - 注意： 如果更改了 library 的值，你可能需要考虑下是否要同步更改下 package.json 中的 name 属性；
