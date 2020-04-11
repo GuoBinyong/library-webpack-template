@@ -6,6 +6,8 @@
 [git仓库]: https://github.com/GuoBinyong/-library-webpack-template
 [issues]: https://github.com/GuoBinyong/-library-webpack-template/issues
 
+[码云仓库]: https://gitee.com/guobinyong/library-webpack-template
+
 
 
 > 构建过程是复杂的前端项目必不可少的环节；但 业务代码 与 公用代码（如：封装的库、组件、工具等被复用的代码）的构建需求是不一样的；我发现很多 npm 贡献者都没意识到这一点，他们用传统的业务项目的 webpack 配置 去打包 公用代码，虽然能运行，但实际潜藏着许多问题；甚至都不经过编译构建，直接发布单纯的源码到 npm 上；由于本人经常封装一些东西，为了方便构建，就使用 webpack 开发并配置了一套专门用于构建公共代码的配置模板，当需要开发和构建公共代码时，直接克隆本项目即可； 
@@ -44,7 +46,8 @@
 # 1. 简介
 library-webpack-template 称为 库构建模板，又称 公共代码构建模板 ，是专门用于构建 公共代码（如：封装的库、工具等） 的 webpack 配置模板，当需要开发和构建公共代码时，直接克隆本项目即可，并默认在的 src 目录下开发即可；
 
-- 主页：<https://github.com/GuoBinyong/-library-webpack-template>
+- [主页(GitHub)][git仓库]：<https://github.com/GuoBinyong/-library-webpack-template>
+- [主页(码云)][码云仓库]：<https://gitee.com/guobinyong/library-webpack-template>
 
 
 **如果您在使用的过程中遇到了问题，或者有好的建议和想法，您都可以通过以下方式联系我，期待与您的交流：**
