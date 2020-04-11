@@ -120,6 +120,36 @@ var projectConfig = {
   */
   // externals: {},
 
+
+
+
+
+
+    /*
+     是否使用 Eslint Loader；
+      - 类型： boolean
+      - 默认值： false
+      - 详细信息： <https://github.com/webpack-contrib/eslint-loader>
+
+     If true, your code will be linted during bundling and
+     linting errors and warnings will be shown in the console.
+    */
+   useEslint: true,
+
+   /*
+   是否在浏览器中显示 Eslint 的错误和警告；
+     - 类型： boolean
+     - 默认值： false
+     - 详细信息： <https://github.com/webpack-contrib/eslint-loader>
+
+    If true, eslint errors and warnings will also be shown in the error overlay
+    in the browser.
+    */
+   showEslintErrorsInOverlay: true,
+
+
+
+
   /*
   html模板文件；html-webpack-plugin
  template 的 template 选项；
@@ -245,28 +275,6 @@ var projectConfig = {
     */
     outputPath: resolve("dev"),
 
-
-    /*
-     是否使用 Eslint Loader；
-      - 类型： boolean
-      - 默认值： false
-      - 详细信息： <https://github.com/webpack-contrib/eslint-loader>
-
-     If true, your code will be linted during bundling and
-     linting errors and warnings will be shown in the console.
-    */
-    useEslint: true,
-
-    /*
-    是否在浏览器中显示 Eslint 的错误和警告；
-      - 类型： boolean
-      - 默认值： false
-      - 详细信息： <https://github.com/webpack-contrib/eslint-loader>
-
-     If true, eslint errors and warnings will also be shown in the error overlay
-     in the browser.
-     */
-    showEslintErrorsInOverlay: true,
 
     /*
     source map 的开关；用于控制是否生成 source map；

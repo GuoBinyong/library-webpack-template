@@ -15,6 +15,7 @@ function resolve(dir) {
 }
 
 
+
 /**
  * 生成 Webpack 配置对象
  * @param  projectConfig : ProjecConfig    项目配置对象
@@ -31,6 +32,7 @@ module.exports = function createWebpackConfig(projectConfig) {
   if (typeof projectConfigLibrary === "string"){
     libraryName = projectConfigLibrary
   }
+
 
 
 
@@ -53,6 +55,16 @@ module.exports = function createWebpackConfig(projectConfig) {
     },
     module: {
       rules: [
+        ...(projectConfig.useEslint ? [{
+          test: /\.(js|ts|vue)$/,
+          loader: 'eslint-loader',
+          enforce: 'pre',
+          include: [resolve('src'),resolve('types'), resolve('test')],
+          options: {
+            formatter: require('eslint-formatter-friendly'),
+            emitWarning: !projectConfig.showEslintErrorsInOverlay
+          }
+        }] : []),
         {
           test: /\.js$/,
           use: tools.createBabelLoader("js"),

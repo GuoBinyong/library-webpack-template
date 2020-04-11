@@ -240,6 +240,20 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
     - **详细信息：** <https://webpack.docschina.org/configuration/externals/#externals> 
   
 
+
+
+
++ useEslint ：是否使用 Eslint Loader；
+    - **类型：** boolean
+    - **默认值：** `false`
+    - **详细信息：** <https://github.com/webpack-contrib/eslint-loader>
+
++ showEslintErrorsInOverlay ：是否在浏览器中显示 Eslint 的错误和警告；
+    - **类型：** boolean
+    - **默认值：** `false`
+    - **详细信息：** <https://github.com/webpack-contrib/eslint-loader>
+
+
 + htmlTemplate ：html模板文件；html-webpack-plugin
   的 template 选项；
     - **类型：** string
@@ -319,16 +333,6 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
                 ]
                 ```
 
-
-        * useEslint ：是否使用 Eslint Loader；
-            - **类型：** boolean
-            - **默认值：** `false`
-            - **详细信息：** <https://github.com/webpack-contrib/eslint-loader>
-
-        * showEslintErrorsInOverlay ：是否在浏览器中显示 Eslint 的错误和警告；
-            - **类型：** boolean
-            - **默认值：** `false`
-            - **详细信息：** <https://github.com/webpack-contrib/eslint-loader>
 
         * sourceMap ：source map 的开关；用于控制是否生成 source map；
             - **类型：** boolean

@@ -15,10 +15,6 @@ const multiProjConf = require('../project-config');
 const createTsConfig = require("./tsconfig.dev.js");
 
 
-function resolve(dir) {
-  return path.resolve(__dirname, '..', dir)
-}
-
 
 /**
  * 生成 Webpack 配置对象
@@ -31,17 +27,6 @@ function createWebpackConfig(projectConfig) {
 
   const outputPath = projectConfig.dev.outputPath;
 
-
-  const createLintingRule = () => ({
-    test: /\.(js|vue)$/,
-    loader: 'eslint-loader',
-    enforce: 'pre',
-    include: [resolve('src'), resolve('test')],
-    options: {
-      formatter: require('eslint-formatter-friendly'),
-      emitWarning: !projectConfig.dev.showEslintErrorsInOverlay
-    }
-  });
 
 
   if (tsConfig.compilerOptions.declaration) {
@@ -57,7 +42,6 @@ function createWebpackConfig(projectConfig) {
     },
     module: {
       rules: [
-        ...(projectConfig.dev.useEslint ? [createLintingRule()] : []),
         ...tools.styleLoaders({ sourceMap: projectConfig.dev.cssSourceMap, usePostCSS: true }),
         // TypeScript 的 Loader
         tools.createTsParseLoader(projectConfig.tsconfig && projectConfig.tsconfig.loader,{exclude: /node_modules/},tsConfig),
