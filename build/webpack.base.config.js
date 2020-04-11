@@ -47,7 +47,7 @@ module.exports = function createWebpackConfig(projectConfig) {
       [packageName]: projectConfig.entry,
     },
     output: {
-      filename: projectConfig.filename || `[name].${libraryTarget}.js`,
+      filename: projectConfig.filename ||  (libraryTarget ? `[name].${libraryTarget}.js` : "[name].js"),
       library: libraryName,
       libraryTarget: libraryTarget,
       libraryExport: projectConfig.libraryExport,

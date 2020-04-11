@@ -86,8 +86,11 @@ var projectConfig = {
   /*
   webpack 的 filename；此选项决定了每个输出 bundle 的名称。这些 bundle 将写入到 output.path 选项指定的目录下
     - 类型： string | function
-    - **默认值：** `<package.json/name>.<project-config.js/libraryTarget>.js`，其中 `<package.json/name>` 的值为 package.json 文件中 name 的值，`<project-config.js/libraryTarget>` 为 project-config.js 文件中 libraryTarget 的值；
+    - **默认值：** 
+       + 当未显式指定 libraryTarget 时，`filename` 的默认值为 `<package.json/name>.js`；
+       + 当显式指定 libraryTarget 时，`filename` 的默认值为 `<package.json/name>.<project-config.js/libraryTarget>.js`；
        + **注意：**
+          * 其中 `<package.json/name>` 的值为 package.json 文件中 name 的值，`<project-config.js/libraryTarget>` 为 project-config.js 文件中 libraryTarget 的值；
           * 你可以在 filename 中使用 webpack 提供的模板字符串，如 `[name]` ；
           * 其中 `<package.json/name>` 和 `<project-config.js/libraryTarget>` 并不是 webpack 给 filename 字段提供的有效的模板字符串；
     - 详细信息： <https://webpack.docschina.org/configuration/output/#output-filename>
