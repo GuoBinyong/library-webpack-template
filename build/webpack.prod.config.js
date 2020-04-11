@@ -51,7 +51,11 @@ function createWebpackConfig(projectConfig) {
           usePostCSS: true
         }),
         // TypeScript 的 Loader
-        tools.createTsParseLoader(projectConfig.tsconfig && projectConfig.tsconfig.loader,{exclude: /node_modules/},tsConfig),
+        {
+          test: /\.tsx?$/,
+          use:tools.createTsParseUseLoader(projectConfig.tsconfig && projectConfig.tsconfig.loader,tsConfig),
+          exclude: /node_modules/
+        }
       ]
     },
 

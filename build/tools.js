@@ -180,36 +180,29 @@ exports.createBabelLoader = createBabelLoader
  * @param tsConfig : Object     TypeScript 的配置选项，与 tsconfig.json 的配置相同
  * @returns Loader
  */
-exports.createTsParseLoader = function createTsParseLoader (loader, options, tsConfig) {
-
-  var tsLoader = {
-    test: /\.tsx?$/
-  }
-
-  Object.assign(tsLoader, options)
+exports.createTsParseUseLoader = function createTsParseUseLoader (loader, tsConfig) {
 
   switch (loader) {
 
     // 用 babel-loader 解析 TypeScript
     case 'babel-loader': {
-      tsLoader.use = createBabelLoader('ts');
-      break
+      return createBabelLoader('ts');
     }
 
     // 用 ts-loader 解析 TypeScript
     default: {
-      tsLoader.use = [
+      return [
         createBabelLoader('js'),
         {
           loader: 'ts-loader',
           options: tsConfig
         }
-      ]
+      ];
 
     }
   }
 
-  return tsLoader
+
 }
 
 /**
