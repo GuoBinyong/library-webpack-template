@@ -200,7 +200,10 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
 
 + filename ：webpack 的 output.filename；此选项决定了每个输出 bundle 的名称。这些 bundle 将写入到 output.path 选项指定的目录下
     - **类型：** string | function
-    - **默认值：** `"[name].js"`
+    - **默认值：** `<package.json/name>.<project-config.js/libraryTarget>.js`，其中 `<package.json/name>` 的值为 package.json 文件中 name 的值，`<project-config.js/libraryTarget>` 为 project-config.js 文件中 libraryTarget 的值；
+       + **注意：**
+          * 你可以在 filename 中使用 webpack 提供的模板字符串，如 `[name]` ；
+          * 其中 `<package.json/name>` 和 `<project-config.js/libraryTarget>` 并不是 webpack 给 filename 字段提供的有效的模板字符串；
     - **详细信息：** <https://webpack.docschina.org/configuration/output/#output-filename> 
 
 
@@ -416,7 +419,7 @@ library-webpack-template 中与 npm 包管理相关的配置文件有 2 个：
 - `types` | `typings` ： 该字段是用来指定库的类型声明文件；如果库没有类型声明文件，则去除该字段；
 - "sideEffects" : boolean | Array<string> ，可以为布尔，表示整个包是否有副作用；也可以是一些有副作用文件的的路径字符串，路径支持 相对路径、绝对路径和 glob 模式； 副作用标记；表明项目中的哪些文件不是 纯的 ES2015 模块，由此不能安全地删除文件中未使用的部分，"side effect(副作用)" 的定义是，在导入时会执行特殊行为的代码，而不是仅仅暴露一个 export 或多个 export。举例说明，例如 polyfill，它影响全局作用域，并且通常不提供 export；详细内容请见 <https://webpack.docschina.org/guides/tree-shaking/#将文件标记为-side-effect-free-无副作用->
 
-
+_关于`package.json`文件的详细配置信息请参考<https://docs.npmjs.com/files/package.json>_
 
 
 
@@ -431,12 +434,18 @@ library-webpack-template 中包含了4个 webpack 配置文件：
 所以，项目真正的 webpack 构建配置是放在 `build/` 目录下的 3个 webpack 配置文件中的：`build/webpack.base.config.js`、`build/webpack.dev.config.js`、`build/webpack.prod.config.js` ；
 
 
+_关于 webpack 的详细配置信息请参考<https://webpack.docschina.org/configuration/>_
+
+
 # 12. TypeScript配置文件
 library-webpack-template 中包含了3个 TypeScript 配置文件：
 - `tsconfig.json` : 这个文件是项目的级的 TypeScript 配置文件；同时也是 开发 和 生产 这两种模式公共的 TypeScript 配置文件； 并且 该文件的存在，也是为了方便能在项目根目录下直接使用 TypeScript 的编译命令 `tsc`；
 - `build/tsconfig.dev.js` : 这个文件仅包含提 开发模式 特有的 TypeScript 配置；并且会覆盖 公共配置 `tsconfig.json` 中相应的具体选项；
 - `build/tsconfig.prod.js` : 这个文件仅包含提 生产模式 特有的 TypeScript 配置；并且会覆盖 公共配置 `tsconfig.json` 中相应的具体选项；
 
+其中 `build/` 目录下的 tsconfig 配置文件是供 ts-loader 使用的，并且只会用到 `tsconfig` 中的编译选项 `compilerOptions`，其它选项会被忽略；
+
+_关于 `tsconfig` 的详细配置信息请参考 <https://www.typescriptlang.org/docs/handbook/tsconfig-json.html>_
 
 
 # 13. 代码检查
@@ -446,7 +455,7 @@ ESLint 相关的配置文件如下：
 - `.eslintrc.js` : ESLint 的配置文件，可配置 解析器、解析选项、规则 等等；默认是 TypeScript 代码检查配置；
 - `.eslintignore` : ESLint 的忽略文件的配置文件；
 
-
+_关于 ESLint 的详细配置信息请参考 <http://eslint.cn/docs/user-guide/configuring>_
 
 
 

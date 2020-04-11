@@ -27,15 +27,15 @@ module.exports = function createWebpackConfig(projectConfig) {
     return path.posix.join(projectConfig.staticOutDirectory, _path)
   }
 
-  var libraryName = tools.stringToCamelFormat(npmConfig.name);
-  var projectConfigLibrary = projectConfig.library
-  if (projectConfigLibrary === undefined){
-    projectConfigLibrary = libraryName;
-  }else if(projectConfigLibrary === null){
-    projectConfigLibrary = undefined;
-  }else if (typeof projectConfigLibrary === "string"){
-    libraryName = projectConfigLibrary
+  var packageName = npmConfig.name;
+  var libraryName = projectConfig.library
+  if (libraryName === undefined){
+    libraryName = tools.stringToCamelFormat(packageName);
+  }else if(libraryName === null){
+    libraryName = undefined;
   }
+
+  var libraryTarget = projectConfig.libraryTarget;
 
 
 
@@ -44,12 +44,12 @@ module.exports = function createWebpackConfig(projectConfig) {
     target: projectConfig.target,  //node  web 等等
     context: path.resolve(__dirname, '../'),
     entry: {
-      [libraryName]: projectConfig.entry,
+      [packageName]: projectConfig.entry,
     },
     output: {
-      filename: projectConfig.filename || '[name].js',
-      library: projectConfigLibrary,
-      libraryTarget: projectConfig.libraryTarget,
+      filename: projectConfig.filename || `[name].${libraryTarget}.js`,
+      library: libraryName,
+      libraryTarget: libraryTarget,
       libraryExport: projectConfig.libraryExport,
     },
     externals: projectConfig.externals || webpackNodeExternals(),

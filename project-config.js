@@ -33,16 +33,37 @@ var projectConfig = {
                 * 方案1（这是默认的设置）：将 所有构建目标公共的 `projectConfig.bundleAnalyzerOptions.analyzerPort` 设置为 auto ；
                 * 方案2：分别给每一个 构建目标的 `bundleAnalyzerOptions.analyzerPort` 设置一个不同的值；
   */
-/*   multipleTargets: [
+  multipleTargets: [
     //使用默认的配置
     null,
 
-    // node
+     // 通过 script 标签直接引用
+     {
+      target: "web",  //设置被构建的包的运行环境
+      filename: '[name].script.js',  //输出的包名
+      // library: "",  //库名
+      libraryTarget: "window",  //将包挂载到window中与库名同名的属性上
+      externals: {},  //不排任何依赖，即将所有依赖都打包进库
+    },
+
+    // 通过 commonjs2 规范引用
     {
-      target: "node",
-      filename: '[name].node.js'
-    }
-  ], */
+      // target: "web",   //设置被构建的包的运行环境
+      // filename: '[name].commonjs2.js',  //输出的包名
+      // library: "",  //库名
+      libraryTarget: "commonjs2",  //将库构建成遵循 commonjs2 规范的包
+      externals: undefined,  //排任 node_module 中的所有依赖
+    },
+
+    // 通过 amd 规范引用
+    {
+      // target: "web",   //设置被构建的包的运行环境
+      // filename: '[name].amd.js',  //输出的包名
+      // library: "",  //库名
+      libraryTarget: "amd",  //将库构建成遵循 commonjs2 规范的包
+      externals: undefined,  //排任 node_module 中的所有依赖
+    },
+  ],
 
 
 
@@ -65,7 +86,10 @@ var projectConfig = {
   /*
   webpack 的 filename；此选项决定了每个输出 bundle 的名称。这些 bundle 将写入到 output.path 选项指定的目录下
     - 类型： string | function
-    - 默认值："[name].js"
+    - **默认值：** `<package.json/name>.<project-config.js/libraryTarget>.js`，其中 `<package.json/name>` 的值为 package.json 文件中 name 的值，`<project-config.js/libraryTarget>` 为 project-config.js 文件中 libraryTarget 的值；
+       + **注意：**
+          * 你可以在 filename 中使用 webpack 提供的模板字符串，如 `[name]` ；
+          * 其中 `<package.json/name>` 和 `<project-config.js/libraryTarget>` 并不是 webpack 给 filename 字段提供的有效的模板字符串；
     - 详细信息： <https://webpack.docschina.org/configuration/output/#output-filename>
   */
   // filename:'[name].js',
