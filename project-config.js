@@ -243,6 +243,17 @@ var projectConfig = {
 
 
 
+  /* 
+  是否要对 `node_modules` 中的模块进行编译；
+    - **类型：** boolean
+    - **默认值：** `true`
+    - **说明：** 如果设置为 `false`，则 `node_modules` 中的依赖会被直接包含，不会经过 webpack 相应 loader 的处理；
+  */
+  // parseNodeModules:true,
+  
+
+
+
 
   // TypeScript配置
   tsconfig: {

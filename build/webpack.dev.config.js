@@ -33,6 +33,8 @@ function createWebpackConfig(projectConfig) {
     tsConfig.compilerOptions.declarationDir = outputPath;
   }
 
+  var ruleExclude = projectConfig.parseNodeModules ? undefined : /node_modules/ ;
+
 
   const wpConfig = {
     mode: "development",
@@ -47,7 +49,7 @@ function createWebpackConfig(projectConfig) {
         {
           test: /\.tsx?$/,
           use:tools.createTsParseUseLoader(projectConfig.tsconfig && projectConfig.tsconfig.loader,tsConfig),
-          exclude: /node_modules/
+          exclude: ruleExclude
         }
       ],
     },

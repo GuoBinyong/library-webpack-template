@@ -29,16 +29,18 @@ module.exports = function createWebpackConfig(projectConfig) {
 
   var packageName = npmConfig.name;
   var libraryName = projectConfig.library
-  if (libraryName === undefined){
+  if (libraryName === undefined) {
     libraryName = tools.stringToCamelFormat(packageName);
-  }else if(libraryName === null){
+  } else if (libraryName === null) {
     libraryName = undefined;
   }
 
   var libraryTarget = projectConfig.libraryTarget;
-  if (libraryTarget === null){
+  if (libraryTarget === null) {
     libraryTarget = undefined;
   }
+
+  var ruleExclude = projectConfig.parseNodeModules ? undefined : /node_modules/ ;
 
 
 
@@ -50,7 +52,7 @@ module.exports = function createWebpackConfig(projectConfig) {
       [packageName]: projectConfig.entry,
     },
     output: {
-      filename: projectConfig.filename ||  (libraryTarget ? `[name].${libraryTarget}.js` : "[name].js"),
+      filename: projectConfig.filename || (libraryTarget ? `[name].${libraryTarget}.js` : "[name].js"),
       library: libraryName,
       libraryTarget: libraryTarget,
       libraryExport: projectConfig.libraryExport,
@@ -66,7 +68,7 @@ module.exports = function createWebpackConfig(projectConfig) {
           test: /\.(js|ts|vue)$/,
           loader: 'eslint-loader',
           enforce: 'pre',
-          include: [resolve('src'),resolve('types'), resolve('test')],
+          include: [resolve('src'), resolve('types'), resolve('test')],
           options: {
             formatter: require('eslint-formatter-friendly'),
             emitWarning: !projectConfig.showEslintErrorsInOverlay
@@ -75,12 +77,12 @@ module.exports = function createWebpackConfig(projectConfig) {
         {
           test: /\.js$/,
           use: tools.createBabelLoader("js"),
-          exclude: /node_modules/
+          exclude: ruleExclude
         },
         {
           test: /\.jsx$/,
           use: tools.createBabelLoader("jsx"),
-          exclude: /node_modules/
+          exclude: ruleExclude
         },
         {
           test: /\.css$/,
@@ -88,26 +90,33 @@ module.exports = function createWebpackConfig(projectConfig) {
         },
         {
           test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-          loader: 'url-loader',
-          options: {
-            limit: 10000,
-            name: assetsPath('img/[name].[hash:7].[ext]')
-          }
+          use: {
+            loader: 'url-loader',
+            options: {
+              limit: 10000,
+              name: assetsPath('img/[name].[hash:7].[ext]')
+            }
+          },
+
         },
         {
           test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
-          loader: 'url-loader',
-          options: {
-            limit: 10000,
-            name: assetsPath('media/[name].[hash:7].[ext]')
+          use: {
+            loader: 'url-loader',
+            options: {
+              limit: 10000,
+              name: assetsPath('media/[name].[hash:7].[ext]')
+            }
           }
         },
         {
           test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-          loader: 'url-loader',
-          options: {
-            limit: 10000,
-            name: assetsPath('fonts/[name].[hash:7].[ext]')
+          use: {
+            loader: 'url-loader',
+            options: {
+              limit: 10000,
+              name: assetsPath('fonts/[name].[hash:7].[ext]')
+            }
           }
         }
       ]
@@ -140,7 +149,7 @@ module.exports = function createWebpackConfig(projectConfig) {
 
 
   let baReport = projectConfig.bundleAnalyzerReport;
-  if (baReport === undefined){
+  if (baReport === undefined) {
     baReport = process.env.npm_config_report;
   }
 
@@ -148,7 +157,7 @@ module.exports = function createWebpackConfig(projectConfig) {
   if (baReport) {
     const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
     let baOpts = projectConfig.bundleAnalyzerOptions || {};
-    if(!baOpts.analyzerPort){
+    if (!baOpts.analyzerPort) {
       baOpts.analyzerPort = "auto";
     }
     plugins.push(new BundleAnalyzerPlugin(baOpts));
