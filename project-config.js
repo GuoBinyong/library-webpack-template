@@ -53,7 +53,7 @@ var projectConfig = {
       filename: '[name].script.js',  //输出的包名
       // library: "",  //库名
       libraryTarget: "window",  //将包挂载到window中与库名同名的属性上
-      externals: {},  //不排任何依赖，即将所有依赖都打包进库
+      externals: {},  //不排除何依赖，即将所有依赖都打包进库
     },
 
     // 通过 commonjs2 规范引用
@@ -62,7 +62,7 @@ var projectConfig = {
       // filename: '[name].commonjs2.js',  //输出的包名
       // library: "",  //库名
       libraryTarget: "commonjs2",  //将库构建成遵循 commonjs2 规范的包
-      externals: undefined,  //排任 node_module 中的所有依赖
+      externals: undefined,  //排除 node_module 中的所有依赖
     },
     // 通过 commonjs 规范引用
     {
@@ -70,7 +70,7 @@ var projectConfig = {
       // filename: '[name].commonjs2.js',  //输出的包名
       // library: "",  //库名
       libraryTarget: "commonjs",  //将库构建成遵循 commonjs2 规范的包
-      externals: undefined,  //排任 node_module 中的所有依赖
+      externals: undefined,  //排除 node_module 中的所有依赖
     },
 
     // 通过 amd 规范引用
@@ -79,7 +79,7 @@ var projectConfig = {
       // filename: '[name].amd.js',  //输出的包名
       // library: "",  //库名
       libraryTarget: "amd",  //将库构建成遵循 commonjs2 规范的包
-      externals: undefined,  //排任 node_module 中的所有依赖
+      externals: undefined,  //排除 node_module 中的所有依赖
     },
 
     // node 环境中的 umd 模块化方案
@@ -88,7 +88,7 @@ var projectConfig = {
       filename: '[name].umd.node.js',  //输出的包名
       // library: "",  //库名
       libraryTarget: "umd",  //将库构建成遵循 commonjs2 规范的包
-      externals: undefined,  //排任 node_module 中的所有依赖
+      externals: undefined,  //排除 node_module 中的所有依赖
     }, */
 
   ],
