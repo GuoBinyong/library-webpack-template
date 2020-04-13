@@ -63,6 +63,7 @@ var projectConfig = {
       libraryTarget: "amd",  //将库构建成遵循 commonjs2 规范的包
       externals: undefined,  //排任 node_module 中的所有依赖
     },
+
   ],
 
 
@@ -103,8 +104,11 @@ var projectConfig = {
         * 当值为 undefined 时，会使用默认值；
         * 当值为 null 时，会取消配置 webpack 的 output.library
     - 默认值： tools.stringToCamelFormat(package.name)  即默认值是 package.json 文件中的 name 字段的值的驼峰式名字；函数 `tools.stringToCamelFormat(str)` 的作用是把 字符串 str 从 中划线 或 下划线 分隔的方式 转成 驼峰式
-    - 详细信息： <https://webpack.docschina.org/configuration/output/#output-library>
-    - 注意： 如果更改了 library 的值，你可能需要考虑下是否要同步更改下 package.json 中的 name 属性；
+    - **说明：** 某些模块化方案（由 `libraryTarget` 选项指定）（比如：`var`、`assign`、`this`、`window`、`self`、`global` 等等）会在引入库时会在环境中注入特定名字的环境变量，以便引入者能够通过该环境变量来访问库对外暴露的接口，该环境变量的名字就是由该选项 `library` 指定；
+    - **详细信息：** <https://webpack.docschina.org/configuration/output/#output-library> 
+    - **注意** 
+       * 如果更改了 library 的值，你可能需要考虑下是否要同步更改下 package.json 中的 name 属性；
+       * 如果库不对外导出（暴露）任何东西里，推荐将该 library 设置为 null
   */
   // library: "",
 
