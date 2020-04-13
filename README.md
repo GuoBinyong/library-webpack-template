@@ -191,18 +191,18 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
 该配置文件中的所有配置项都保存在 projectConfig 变量中，可配置的属性如下：
 
 + entry：webpack 的入口配置 entry；  指示 webpack 应该使用哪个模块，来作为构建其内部 依赖图的开始
-    - **类型：** string | [string] | object { <key>: string | [string] } | (function: () => string | [string] | object { <key>: string | [string] })
+    - **类型：** `string | [string] | object { <key>: string | [string] } | (function: () => string | [string] | object { <key>: string | [string] })`
     - **详细信息：** <https://webpack.docschina.org/configuration/entry-context/#entry>
     - **注意：** 如果修改了 entry 的值，你可能需要考虑下是否要同步更改下 package.json 中的 module 属性；
 
 
 + target：webpack 的 target，用来告知 webpack   bundles 的运行环境。因为 服务器 和 浏览器 代码都可以用 JavaScript 编写，所以 webpack 提供了多种部署 target(目标)
-    - **类型：** string | function (compiler)
+    - **类型：** `string | function (compiler)`
     - **详细信息：** <https://webpack.docschina.org/configuration/target/#target>
 
 
 + filename ：webpack 的 output.filename；此选项决定了每个输出 bundle 的名称。这些 bundle 将写入到 output.path 选项指定的目录下
-    - **类型：** string | function
+    - **类型：** `string | function`
     - **默认值：**
        + 当未显式指定 libraryTarget 时，`filename` 的默认值为 `<package.json/name>.js`；
        + 当显式指定 libraryTarget 时，`filename` 的默认值为 `<package.json/name>.<project-config.js/libraryTarget>.js`；
@@ -215,7 +215,7 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
 
 
 + library ：库的名字；webpack 的 output.library；
-    - 类型： string | object | null | undefined （从 webpack 3.1.0 开始；用于 libraryTarget: 'umd'）；
+    - 类型： `string | object | null | undefined` （从 webpack 3.1.0 开始；用于 libraryTarget: 'umd'）；
         * 当值为 undefined 时，会使用默认值；
         * 当值为 null 时，会取消配置 webpack 的 output.library
     - **默认值：** `tools.stringToCamelFormat(package.name)`  即默认值是 package.json 文件中的 name 字段的值的驼峰式名字；函数 `tools.stringToCamelFormat(str)` 的作用是把 字符串 str 从 中划线 或 下划线 分隔的方式 转成 驼峰式
@@ -227,12 +227,12 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
 
 
 + libraryTarget ：配置对外暴露 库 的方式，即：库将会以哪种方式被使用；webpack 的 output.libraryTarget；
-    - **类型：** "var" | "assign" | "this" | "window" | "self" | "global" | "commonjs" | "commonjs2" | "commonjs-module" | "amd" | "amd-require" | "umd" | "umd2" | "jsonp" | "system"
+    - **类型：** `"var" | "assign" | "this" | "window" | "self" | "global" | "commonjs" | "commonjs2" | "commonjs-module" | "amd" | "amd-require" | "umd" | "umd2" | "jsonp" | "system"`
     - **详细信息：** <https://webpack.docschina.org/configuration/output/#output-librarytarget>
 
 
 + libraryExport ：库中被导出的项；webpack 的 output.libraryExport ；
-    - **类型：** string | string[]
+    - **类型：** `string | string[]`
     - **默认值：** `"default"`
     - **备注：** 如果设置成空字符串 "" ，则会导出包含所有导出的对象；
     - **详细信息：** <https://webpack.docschina.org/configuration/output/#output-libraryexport>
@@ -240,16 +240,16 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
 
 
 + alias：webpack 的 resolve.alias，创建 import 或 require 的别名，来使模块引入变得更简单
-    - **类型：** object
+    - **类型：** `object`
     - **详细信息：** <https://webpack.docschina.org/configuration/resolve/#resolve-alias>
 
 
 + extensions ：webpack 的 resolve.extensions，自动解析确定的扩展名，能够使用户在引入模块时不用写文件的扩展名
-    - **类型：** string[]
+    - **类型：** `string[]`
     - **详细信息：** <https://webpack.docschina.org/configuration/resolve/#resolve-extensions>
 
 + externals ：webpack 的 externals； 排除依赖的模块；防止将某些 import 的包(package)打包到 bundle 中；
-    - **类型：** string | object | function | regex | array
+    - **类型：** `string | object | function | regex | array`
     - **默认值：** `webpackNodeExternals()` ； 即排除所有 `node_modules` 中的模块； `webpackNodeExternals` 是 webpack-node-externals 包提供的功能，该包的信息详见 <https://github.com/liady/webpack-node-externals> ；
     - **详细信息：** <https://webpack.docschina.org/configuration/externals/#externals>
 
@@ -258,62 +258,62 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
 
 
 + useEslint ：是否使用 Eslint Loader；
-    - **类型：** boolean
+    - **类型：** `boolean`
     - **默认值：** `false`
     - **详细信息：** <https://github.com/webpack-contrib/eslint-loader>
 
 + showEslintErrorsInOverlay ：是否在浏览器中显示 Eslint 的错误和警告；
-    - **类型：** boolean
+    - **类型：** `boolean`
     - **默认值：** `false`
     - **详细信息：** <https://github.com/webpack-contrib/eslint-loader>
 
 
 + htmlTemplate ：html模板文件；html-webpack-plugin
   的 template 选项；
-    - **类型：** string
+    - **类型：** `string`
     - **详细信息：** <https://github.com/ampedandwired/html-webpack-plugin>
 
 + htmlOut ：要将 html模板文件 htmlTemplate 写入的文件。您也可以在此处指定子目录；该选项会结合 outputPath 选项 生成 html-webpack-plugin
  的 filename 选项 的值；
-    - **类型：** string
+    - **类型：** `string`
     - **默认值：** `"index.html"`
     - **详细信息：** <https://github.com/ampedandwired/html-webpack-plugin>
 
 + staticDirectory：静态资源的原目录；该目录下的内容将会被拷贝到构建输出目录中；
-    - **类型：** string
+    - **类型：** `string`
 
 + staticOutDirectory：静态资源输出目录；设置将静态资源从原目录拷贝到构建输出目录中时，静态资源目录的名字；
-    - **类型：** string
+    - **类型：** `string`
 
 + parseNodeModules ：是否要对 `node_modules` 中的模块进行编译；
-    - **类型：** boolean
+    - **类型：** `boolean`
     - **默认值：** `true`
     - **说明：** 如果设置为 `false`，则 `node_modules` 中的依赖会被直接包含，不会经过 webpack 相应 loader 的处理；
 
 
 + tsconfig：TypeScript相关的配置选项对象
-    - **类型：** Object
+    - **类型：** `Object`
     - **详细信息：** <https://www.tslang.cn/docs/handbook/tsconfig-json.html>
     - 可配置的属性如下：
         * target：指定TypeScript编译成 ECMAScript 的目标版本；用作 tsconfig.json 的 target 选项；
-            - **类型：** "ES3" | "ES5" | "ES6"/"ES2015" | "ES2016" | "ES2017" | "ESNext"
+            - **类型：** `"ES3" | "ES5" | "ES6"/"ES2015" | "ES2016" | "ES2017" | "ESNext"`
             - **默认值：** `"ES3"`
             - **详细信息：** <https://www.tslang.cn/docs/handbook/compiler-options.html>
 
         * module：指定生成哪个模块系统代码；用作 tsconfig.json 的 module 选项；
-            - **类型：** "None" | "CommonJS" | "AMD" | "System" | "UMD" | "ES6" | "ES2015"
+            - **类型：** `"None" | "CommonJS" | "AMD" | "System" | "UMD" | "ES6" | "ES2015"`
             - **默认值：** `tsTarget === "ES6" ? "ES6" : "commonjs"`
             - **详细信息：** <https://www.tslang.cn/docs/handbook/compiler-options.html>
 
 
         * declaration：指定是否生成相应的 .d.ts 文件。用作 tsconfig.json 的 declaration 选项
-            - **类型：** boolean
+            - **类型：** `boolean`
             - **默认值：** `false`
             - **详细信息：** <https://www.tslang.cn/docs/handbook/compiler-options.html>
 
 
         * loader：配置解析 TypeScript 的 loader
-            - **类型：** "ts-loader" | "babel-loader"
+            - **类型：** `"ts-loader" | "babel-loader"`
             - **默认值：** `"ts-loader"`
             - **注意：** 目前发现：
               * "ts-loader" 会忽略TypeScript中默认的导出项 `export default`(TypeScript 3 之后 默认禁用了 `export default`)，这时配置项 ` libraryExport: "default" ` 可能会导致导出的值是 undefined
@@ -323,12 +323,12 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
 
 
 + bundleAnalyzerReport ：是否开启构建分析报告；
-    - **类型：** boolean
+    - **类型：** `boolean`
     - **默认值：** `process.env.npm_config_report`； 即：根据执行命令时是否带有 `--report` 选项来决定是否启用 构建分析报告；
 
 
 + bundleAnalyzerOptions ：构建分析报告的配置选项； webpack-bundle-analyzer 的 webpack 插件选项对象；
-    - **类型：** Object
+    - **类型：** `Object`
     - **默认值：** `bundleAnalyzerOptions.analyzerPort` 的默认值是 `"auto"`
     - **详细信息：** <https://github.com/webpack-contrib/webpack-bundle-analyzer>
     - **注意：** 如果你配置了多个构建目标 multipleTargets ，并且以 server 模式（这是默认的模式）开启了 构建分析报告，则建义采用以下任意一种方案来对 `bundleAnalyzerOptions.analyzerPort` 进行设置，这样可以防止针对每个构建目标启动一个 构建分析报告 时，因服务端口被占用而启动失败：
@@ -337,10 +337,10 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
 
 
 + dev：开发模式的配置选项对象
-    - **类型：** Object
+    - **类型：** `Object`
     - 可配置的属性如下：
         * outputPath ：输出目录，一个绝对路径；webpack 的 output.path；
-            - **类型：** string
+            - **类型：** `string`
             - **详细信息：** <https://webpack.docschina.org/configuration/output/#output-path>
             - **注意：**
                 + 如果你使用的是 ESLint，建议你将该处配置的输出目录 增加到 ESLint 的忽略配置文件中一般在项目根目录下的 .eslintignore 文件中）；
@@ -354,27 +354,27 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
 
 
         * sourceMap ：source map 的开关；用于控制是否生成 source map；
-            - **类型：** boolean
+            - **类型：** `boolean`
             - **默认值：** `false`
             - **详细信息：** <https://webpack.docschina.org/configuration/devtool/>
 
         * devtool ：webpack 的 devtool 选项；用于控制如何生成 source map；
-            - **类型：** string
+            - **类型：** `string`
             - **默认值：** `false`
             - **详细信息：** <https://webpack.docschina.org/configuration/devtool/>
 
         * cssSourceMap ：CSS source map 的开关；用于控制是否生成 CSS 的 source map；
-            - **类型：** boolean
+            - **类型：** `boolean`
             - **默认值：** `false`
 
 
 
 
 + build：生产模式的配置选项对象
-    - **类型：** Object
+    - **类型：** `Object`
     - 可配置的属性如下：
         * outputPath ：输出目录，一个绝对路径；webpack 的 output.path；
-            - **类型：** string
+            - **类型：** `string`
             - **详细信息：** <https://webpack.docschina.org/configuration/output/#output-path>
             - **注意：**
                 + 如果你使用的是 ESLint，建议你将该处配置的输出目录 增加到 ESLint 的忽略配置文件中一般在项目根目录下的 .eslintignore 文件中）；
@@ -390,7 +390,7 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
 
 
         * sourceMap ：source map 的开关；用于控制是否生成 source map；
-            - **类型：** boolean
+            - **类型：** `boolean`
             - **默认值：** `false`
             - **详细信息：** <https://webpack.docschina.org/configuration/devtool/>
 
@@ -405,7 +405,7 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
 
 
 + multipleTargets ：配置多个构建目标；当进行构建时，会对 multipleTargets 数组中的每个项目配置分别构建并生成对应的包；
-    - **类型：** undefined | null | Array<ProjecConfig | undefined | null>
+    - **类型：** `undefined | null | Array<ProjecConfig | undefined | null>`
     - **默认值：** `undefined`
     - **说明：**
         * 此选项是可选的，如果没有配置，或者配置的是一个长度为 0 的空数组，则会使用 默认的项目配置 projectConfig （默认的项目配置指的是 project-config.js 文件中的 projectConfig 变量保存的配置） ；
@@ -419,7 +419,7 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
 
 
 + overrideKeys ：指定 在将 多构建目标 `multipleTargets` 中的选项 与 默认的项目配置 projectConfig 进行合并时 采用覆盖方式进行合并的 key；
-    - **类型：** undefined | null | Array<string>
+    - **类型：** `undefined | null | Array<string>`
     - **默认值：** `["externals"]`
     - **说明：**
        * 此选项只用于 多构建目标 `multipleTargets` 与 默认的项目配置 projectConfig 的合并；
