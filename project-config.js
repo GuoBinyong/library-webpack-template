@@ -18,17 +18,27 @@ function resolve(dir) {
 
 var projectConfig = {
 
+  /*
+  指定 在将 多构建目标 `multipleTargets` 中的选项 与 默认的项目配置 projectConfig 进行合并时 采用覆盖方式进行合并的 key；
+    - **类型：** undefined | null | Array<string>
+    - **默认值：** `["externals"]`
+    - **说明：**
+       * 此选项只用于 多构建目标 `multipleTargets` 与 默认的项目配置 projectConfig 的合并；
+       * 些选择只能配置在 projectConfig 的顶层（即：projectConfig.overrideKeys），多构建目标 `multipleTargets` 中的 overrideKeys 选项会被忽略；
+  */
+  // overrideKeys:["externals"],
+
 
   /*
   配置多个构建目标；当进行构建时，会对 multipleTargets 数组中的每个项目配置分别构建并生成对应的包；
-    - 类型： undefined | null | Array<ProjecConfig | undefined | null>
-    - 默认值： undefined
-    - 说明：
+    - **类型：** undefined | null | Array<ProjecConfig | undefined | null>
+    - **默认值：** `undefined`
+    - **说明：**
         * 此选项是可选的，如果没有配置，或者配置的是一个长度为 0 的空数组，则会使用 默认的项目配置 projectConfig （默认的项目配置指的是 project-config.js 文件中的 projectConfig 变量保存的配置） ；
-        * 如果配置的是一个数组，数组中的每个元素都会被当作一个 项目配置 并覆盖 默认的项目配置 projectConfig 中对应的具体选项；当进行构建时，会对数组中的每个项目配置分别构建并生成对应的包；
+        * 如果配置的是一个数组，数组中的每个元素都会被当作一个 项目配置 并覆盖 或 合并 默认的项目配置 projectConfig 中对应的具体选项；当进行构建时，会对数组中的每个项目配置分别构建并生成对应的包；
         * 数组中的 undefined 和 null 会被当作是 默认的项目配置 projectConfig；
         * 如果配置了多个构建目标，则应注意多个构建目标的输出因命名、路径或服务端口重复导致导出相互被覆盖 或者 服务启动失败 的问题；这类问题的解决方案就是：分别为每个构建目标设置相应选项设置一个不同的值；如：
-            - 分别为每个构建目标的 `filename` 设置一个不同的值，如 `{target: "node", filename: '[name].node.js' }` ，这样可以防止多个构建目标的构建包相互覆盖 ；
+            - 分别为每个构建目标的 `filename` 设置一个不同的值，如 `{target: "node", filename: '[name].node.js' }` ，这样可以防止多个构建目标的构建包相互覆盖 ；`filename` 的默认值已包含了配置变量 `libraryTarget`，所以，如果分别为每个构建目标的 `libraryTarget` 选项显式地指定了不同的值，则也不会出现构建输出文件相互覆盖的问题；
             - 如果以 server 模式（这是默认的模式）开启了 构建分析报告，则应该采用以下任意一种方案来对 `bundleAnalyzerOptions.analyzerPort` 进行设置：
                 * 方案1（这是默认的设置）：将 所有构建目标公共的 `projectConfig.bundleAnalyzerOptions.analyzerPort` 设置为 auto ；
                 * 方案2：分别给每一个 构建目标的 `bundleAnalyzerOptions.analyzerPort` 设置一个不同的值；
@@ -104,7 +114,7 @@ var projectConfig = {
   /*
   webpack 的 filename；此选项决定了每个输出 bundle 的名称。这些 bundle 将写入到 output.path 选项指定的目录下
     - 类型： string | function
-    - **默认值：** 
+    - **默认值：**
        + 当未显式指定 libraryTarget 时，`filename` 的默认值为 `<package.json/name>.js`；
        + 当显式指定 libraryTarget 时，`filename` 的默认值为 `<package.json/name>.<project-config.js/libraryTarget>.js`；
        + **注意：**
@@ -122,8 +132,8 @@ var projectConfig = {
         * 当值为 null 时，会取消配置 webpack 的 output.library
     - 默认值： tools.stringToCamelFormat(package.name)  即默认值是 package.json 文件中的 name 字段的值的驼峰式名字；函数 `tools.stringToCamelFormat(str)` 的作用是把 字符串 str 从 中划线 或 下划线 分隔的方式 转成 驼峰式
     - **说明：** 某些模块化方案（由 `libraryTarget` 选项指定）（比如：`var`、`assign`、`this`、`window`、`self`、`global` 等等）会在引入库时会在环境中注入特定名字的环境变量，以便引入者能够通过该环境变量来访问库对外暴露的接口，该环境变量的名字就是由该选项 `library` 指定；
-    - **详细信息：** <https://webpack.docschina.org/configuration/output/#output-library> 
-    - **注意** 
+    - **详细信息：** <https://webpack.docschina.org/configuration/output/#output-library>
+    - **注意：**
        * 如果更改了 library 的值，你可能需要考虑下是否要同步更改下 package.json 中的 name 属性；
        * 如果库不对外导出（暴露）任何东西里，推荐将该 library 设置为 null
   */
@@ -271,7 +281,7 @@ var projectConfig = {
     - 类型： "ts-loader" | "babel-loader"
     - 默认值： "ts-loader"
     - 注意： 目前发现：
-      * "ts-loader" 会忽略TypeScript中默认的导出项 `export default`(TypeScript 3 之后 默认禁用了 `export default`)，这时配置项 ` libraryExport: "default" ` 可能会导到导出的值是 undefined； 
+      * "ts-loader" 会忽略TypeScript中默认的导出项 `export default`(TypeScript 3 之后 默认禁用了 `export default`)，这时配置项 ` libraryExport: "default" ` 可能会导到导出的值是 undefined；
       * tsconfig 的相关编译选项： allowSyntheticDefaultImports：允许从没有设置默认导出的模块中默认导入。这并不影响代码的输出，仅为了类型检查。
       * "babel-loader" 暂未支持生成 声明文件 .d.ts，并且会忽略 项目中关于 TypeScript 的自定配置，如：tsconfig.json、tsconfig.dev.js、tsconfig.prod.js 中的配置
     */

@@ -158,7 +158,7 @@ function createBabelLoader(type) {
       presets: jsBabelPresets.concat(babelPresets),
       plugins: jsBabelPlugins
     }
-  };
+  }
 
 }
 
@@ -186,7 +186,7 @@ exports.createTsParseUseLoader = function createTsParseUseLoader (loader, tsConf
 
     // 用 babel-loader 解析 TypeScript
     case 'babel-loader': {
-      return createBabelLoader('ts');
+      return createBabelLoader('ts')
     }
 
     // 用 ts-loader 解析 TypeScript
@@ -197,11 +197,10 @@ exports.createTsParseUseLoader = function createTsParseUseLoader (loader, tsConf
           loader: 'ts-loader',
           options: tsConfig
         }
-      ];
+      ]
 
     }
   }
-
 
 }
 
@@ -216,10 +215,10 @@ exports.createTsParseUseLoader = function createTsParseUseLoader (loader, tsConf
  *
  * @returns  返回 ts-loader 的配置对象
  */
-exports.tsLoaderConfigMerge = function tsLoaderConfigMerge (tsconfg, tsloaderConfig,projectConfig) {
+exports.tsLoaderConfigMerge = function tsLoaderConfigMerge (tsconfg, tsloaderConfig, projectConfig) {
   // let tsConfOfProj = Object.assign({},projectConfig.tsconfig);
-  let tsConfOfProj = Object.assignExcludeKeys({},["loader"],projectConfig.tsconfig);
-  return uniqMerge({ compilerOptions: tsconfg.compilerOptions }, tsloaderConfig,{ compilerOptions: tsConfOfProj })
+  let tsConfOfProj = Object.assignExcludeKeys({}, ['loader'], projectConfig.tsconfig)
+  return uniqMerge({ compilerOptions: tsconfg.compilerOptions }, tsloaderConfig, { compilerOptions: tsConfOfProj })
 }
 
 // TypeScript的Loader：结束
@@ -251,6 +250,34 @@ const uniqMerge = merge({
 exports.uniqMerge = uniqMerge
 
 /**
+ * 创建可以将数组去重且可配置以覆盖的方式进行合并的key的合并函数
+ * @param overrideKeys ?: string[]   key的数组，这些key的值不会被合并，以是会被后面的值给覆盖
+ * @return (...configuration:Configuration[])=>Configuration | (configurationArray: Configuration[])=>Configuration
+ */
+function createMergeForUniqAndOverrideKeys (overrideKeys) {
+  return merge({
+    customizeArray: function (a, b, key) {
+      if (overrideKeys && overrideKeys.length > 0 && overrideKeys.includes(key)) {
+        return b
+      }
+
+      return _.uniqWith([...a, ...b], _.isEqual)
+    },
+    customizeObject: function (a, b, key) {
+      if (overrideKeys && overrideKeys.length > 0 && overrideKeys.includes(key)) {
+        return b
+      }
+    }
+  });
+}
+
+exports.createMergeForUniqAndOverrideKeys = createMergeForUniqAndOverrideKeys;
+
+
+
+
+
+/**
  * projec-config 配置处理工具
  *
  * @param projectConfig : ProjecConfig   项目配置
@@ -265,9 +292,11 @@ exports.projecConfigMultipleTargetsSeparation = function projecConfigMultipleTar
   var multiProjConf = [projectConfig]
 
   if (multipleTargets && multipleTargets.length > 0) {
+    var overrideKeys = projectConfig.overrideKeys || ["externals"];
+    var projecConfigMerge = createMergeForUniqAndOverrideKeys(overrideKeys);
 
     multiProjConf = multipleTargets.map(function (target) {
-      return uniqMerge(projectConfig, target)
+      return projecConfigMerge(projectConfig, target)
     })
 
   }
