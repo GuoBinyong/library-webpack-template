@@ -40,7 +40,7 @@ module.exports = function createWebpackConfig(projectConfig) {
     libraryTarget = undefined;
   }
 
-  var ruleExclude = projectConfig.parseNodeModules ? undefined : /node_modules/ ;
+  var ruleExclude = projectConfig.parseNodeModules || projectConfig.parseNodeModules == undefined ? undefined : /node_modules/ ;
 
 
 
