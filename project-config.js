@@ -35,7 +35,7 @@ var projectConfig = {
   */
   multipleTargets: [
     //使用默认的配置
-    null,
+    null,  // 目前默认配置是：web环境下的umd方案
 
      // 通过 script 标签直接引用
      {
@@ -54,6 +54,14 @@ var projectConfig = {
       libraryTarget: "commonjs2",  //将库构建成遵循 commonjs2 规范的包
       externals: undefined,  //排任 node_module 中的所有依赖
     },
+    // 通过 commonjs 规范引用
+    {
+      // target: "web",   //设置被构建的包的运行环境
+      // filename: '[name].commonjs2.js',  //输出的包名
+      // library: "",  //库名
+      libraryTarget: "commonjs",  //将库构建成遵循 commonjs2 规范的包
+      externals: undefined,  //排任 node_module 中的所有依赖
+    },
 
     // 通过 amd 规范引用
     {
@@ -63,6 +71,15 @@ var projectConfig = {
       libraryTarget: "amd",  //将库构建成遵循 commonjs2 规范的包
       externals: undefined,  //排任 node_module 中的所有依赖
     },
+
+    // node 环境中的 umd 模块化方案
+    /* {
+      target: "node",   //设置被构建的包的运行环境
+      filename: '[name].umd.node.js',  //输出的包名
+      // library: "",  //库名
+      libraryTarget: "umd",  //将库构建成遵循 commonjs2 规范的包
+      externals: undefined,  //排任 node_module 中的所有依赖
+    }, */
 
   ],
 
