@@ -153,7 +153,7 @@ var projectConfig = {
     - 备注： 如果设置成空字符串 "" ，则会导出包含所有导出的对象；
     - 详细信息： <https://webpack.docschina.org/configuration/output/#output-libraryexport>
   */
-  libraryExport: "default",
+  libraryExport: "",
 
   /*
   webpack 的 resolve.alias，创建 import 或 require 的别名，来使模块引入变得更简单
