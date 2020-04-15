@@ -35,7 +35,7 @@ module.exports = function createWebpackConfig(projectConfig) {
     libraryName = undefined;
   }
 
-  var libraryTarget = projectConfig.libraryTarget;
+  var libraryTarget = projectConfig.module;
   if (libraryTarget === null) {
     libraryTarget = undefined;
   }

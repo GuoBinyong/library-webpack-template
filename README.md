@@ -204,29 +204,30 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
 + filename ：webpack 的 output.filename；此选项决定了每个输出 bundle 的名称。这些 bundle 将写入到 output.path 选项指定的目录下
     - **类型：** `string | function`
     - **默认值：**
-       + 当未显式指定 libraryTarget 时，`filename` 的默认值为 `<package.json/name>.js`；
-       + 当显式指定 libraryTarget 时，`filename` 的默认值为 `<package.json/name>.<project-config.js/libraryTarget>.js`；
+       + 当未显式指定 `module` 时，`filename` 的默认值为 `<package.json/name>.js`；
+       + 当显式指定 `module` 时，`filename` 的默认值为 `<package.json/name>.<project-config.js/module>.js`；
        + **注意：**
-          * 其中 `<package.json/name>` 的值为 package.json 文件中 name 的值，`<project-config.js/libraryTarget>` 为 project-config.js 文件中 libraryTarget 的值；
-          * 你可以在 filename 中使用 webpack 提供的模板字符串，如 `[name]` ；
-          * 其中 `<package.json/name>` 和 `<project-config.js/libraryTarget>` 并不是 webpack 给 filename 字段提供的有效的模板字符串；
+          * 其中 `<package.json/name>` 的值为 package.json 文件中 name 的值，`<project-config.js/module>` 为 project-config.js 文件中 module 的值；
+          * 你可以在 `filename` 中使用 webpack 提供的模板字符串，如 `[name]` ；
+          * 其中 `<package.json/name>` 和 `<project-config.js/module>` 并不是 webpack 给 filename 字段提供的有效的模板字符串；
     - **详细信息：** <https://webpack.docschina.org/configuration/output/#output-filename>
 
 
 
 + library ：库的名字；webpack 的 output.library；
-    - 类型： `string | object | null | undefined` （从 webpack 3.1.0 开始；用于 libraryTarget: 'umd'）；
-        * 当值为 undefined 时，会使用默认值；
-        * 当值为 null 时，会取消配置 webpack 的 output.library
+    - 类型： `string | {root: string, commonjs: string, amd: string} | null | undefined`
+        * 当值为 `undefined` 时，会使用默认值；
+        * 当值为 `null` 时，会取消配置 webpack 的 output.library
+        * 从 webpack 3.1.0 开始；对象类型 `{root: string, commonjs: string, amd: string}` 的值可用于 项目配置文件 project-config.js 中的 `module` 选项（即：webpack 中 output.libraryTarget 选项）的值为 `'umd'` 时；
     - **默认值：** `tools.stringToCamelFormat(package.name)`  即默认值是 package.json 文件中的 name 字段的值的驼峰式名字；函数 `tools.stringToCamelFormat(str)` 的作用是把 字符串 str 从 中划线 或 下划线 分隔的方式 转成 驼峰式
-    - **说明：** 某些模块化方案（由 `libraryTarget` 选项指定）（比如：`var`、`assign`、`this`、`window`、`self`、`global` 等等）会在引入库时会在环境中注入特定名字的环境变量，以便引入者能够通过该环境变量来访问库对外暴露的接口，该环境变量的名字就是由该选项 `library` 指定；
+    - **说明：** 某些模块化方案（由 `module` 选项指定）（比如：`var`、`assign`、`this`、`window`、`self`、`global` 等等）会在引入库时会在环境中注入特定名字的环境变量，以便引入者能够通过该环境变量来访问库对外暴露的接口，该环境变量的名字就是由该选项 `library` 指定；
     - **详细信息：** <https://webpack.docschina.org/configuration/output/#output-library>
     - **注意：**
        * 如果更改了 library 的值，你可能需要考虑下是否要同步更改下 package.json 中的 name 属性；
        * 如果库不对外导出（暴露）任何东西里，推荐将该 library 设置为 null
 
 
-+ libraryTarget ：配置对外暴露 库 的方式，即：库将会以哪种方式被使用；webpack 的 output.libraryTarget；
++ module ：配置库的构建目标（即：被构建（打包）后的包）采用的模块化方案，也可以理解为：对外暴露 库 的方式，即：库将会以哪种方式被使用；该选项配置的就是 webpack 的 output.libraryTarget 选项；
     - **类型：** `"var" | "assign" | "this" | "window" | "self" | "global" | "commonjs" | "commonjs2" | "commonjs-module" | "amd" | "amd-require" | "umd" | "umd2" | "jsonp" | "system"`
     - **详细信息：** <https://webpack.docschina.org/configuration/output/#output-librarytarget>
 
@@ -412,7 +413,7 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
         * 如果配置的是一个数组，数组中的每个元素都会被当作一个 项目配置 并覆盖 或 合并 默认的项目配置 projectConfig 中对应的具体选项；当进行构建时，会对数组中的每个项目配置分别构建并生成对应的包；
         * 数组中的 undefined 和 null 会被当作是 默认的项目配置 projectConfig；
         * 如果配置了多个构建目标，则应注意多个构建目标的输出因命名、路径或服务端口重复导致导出相互被覆盖 或者 服务启动失败 的问题；这类问题的解决方案就是：分别为每个构建目标设置相应选项设置一个不同的值；如：
-            - 分别为每个构建目标的 `filename` 设置一个不同的值，如 `{target: "node", filename: '[name].node.js' }` ，这样可以防止多个构建目标的构建包相互覆盖 ；`filename` 的默认值已包含了配置变量 `libraryTarget`，所以，如果分别为每个构建目标的 `libraryTarget` 选项显式地指定了不同的值，则也不会出现构建输出文件相互覆盖的问题；
+            - 分别为每个构建目标的 `filename` 设置一个不同的值，如 `{target: "node", filename: '[name].node.js' }` ，这样可以防止多个构建目标的构建包相互覆盖 ；`filename` 的默认值已包含了配置变量 `module`，所以，如果分别为每个构建目标的 `module` 选项显式地指定了不同的值，则也不会出现构建输出文件相互覆盖的问题；
             - 如果以 server 模式（这是默认的模式）开启了 构建分析报告，则应该采用以下任意一种方案来对 `bundleAnalyzerOptions.analyzerPort` 进行设置：
                 * 方案1（这是默认的设置）：将 所有构建目标公共的 `projectConfig.bundleAnalyzerOptions.analyzerPort` 设置为 auto ；
                 * 方案2：分别给每一个 构建目标的 `bundleAnalyzerOptions.analyzerPort` 设置一个不同的值；
