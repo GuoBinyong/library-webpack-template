@@ -430,7 +430,7 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
 
 # 10. npm包管理配置文件
 library-webpack-template 中与 npm 包管理相关的配置文件有 2 个：
-- `.npmignore` : npm 上传包时的忽略配置文件；默认忽略了 与构建配置文件的所有文件和目录，如：`build/` 等等；还有编辑器相关的文件和目录，如：`.idea`、`.vscode`；
+- `.npmignore` : npm 上传包时的忽略配置文件；默认忽略了 与构建配置文件的所有文件和目录，如：`build/` 等等；也忽略了开发环境默认的输出目录 `dev/`，还有编辑器相关的文件和目录，如：`.idea`、`.vscode`；
 - `package.json` : npm 的包管理配置文件；同时也是 通过 npm 上传、发布 包 的 配置模板文件；
 
 **注意：** `package.json` 文件中的如下字段：

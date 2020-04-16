@@ -22,3 +22,7 @@ tsconfig.json
 
 #Mac系统中用来存储文件夹的显示属性的文件
 .DS_Store
+
+
+# 构建输出相关
+dev/
