@@ -5,7 +5,6 @@ https://github.com/GuoBinyong/library-webpack-template
 
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const webpackNodeExternals = require('webpack-node-externals');
 const tools = require('./tools');
 const npmConfig = require("../package.json");
 
@@ -28,12 +27,15 @@ module.exports = function createWebpackConfig(projectConfig) {
   }
 
   var packageName = npmConfig.name;
-  var libraryName = projectConfig.library
-  if (libraryName === undefined) {
-    libraryName = tools.stringToCamelFormat(packageName);
-  } else if (libraryName === null) {
-    libraryName = undefined;
+
+  var haveExports = projectConfig.haveExports;
+  if (haveExports || haveExports === undefined){
+    var libraryName = projectConfig.refName;
+    if (libraryName == undefined) {
+      libraryName = tools.stringToCamelFormat(packageName);
+    }
   }
+  
 
   var libraryTarget = projectConfig.module;
   if (libraryTarget === null) {
@@ -42,22 +44,29 @@ module.exports = function createWebpackConfig(projectConfig) {
 
   var ruleExclude = projectConfig.parseNodeModules || projectConfig.parseNodeModules == undefined ? undefined : /node_modules/ ;
 
+  var removeDep = projectConfig.removeDep;
+  if (removeDep || removeDep === undefined){
+    var externals = projectConfig.dependencies || require('webpack-node-externals')(),
+  }
+
+  
+
 
 
 
   const wpConfig = {
-    target: projectConfig.target,  //node  web 等等
+    target: projectConfig.runEnv,  //node  web 等等
     context: path.resolve(__dirname, '../'),
     entry: {
       [packageName]: projectConfig.entry,
     },
     output: {
-      filename: projectConfig.filename || (libraryTarget ? `[name].${libraryTarget}.js` : "[name].js"),
+      filename: projectConfig.outputFile || (libraryTarget ? `[name].${libraryTarget}.js` : "[name].js"),
       library: libraryName,
       libraryTarget: libraryTarget,
       libraryExport: projectConfig.libraryExport,
     },
-    externals: projectConfig.externals || webpackNodeExternals(),
+    externals: externals,
     resolve: {
       extensions: projectConfig.extensions,
       alias: projectConfig.alias,

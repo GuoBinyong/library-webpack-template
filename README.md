@@ -44,7 +44,7 @@
 
 
 # 1. 简介
-library-webpack-template 称为 库构建模板，又称 公共代码构建模板 ，是专门用于构建 公共代码（如：封装的库、工具等） 的 webpack 配置模板，当需要开发和构建公共代码时，直接克隆本项目即可，并默认在的 src 目录下开发即可；
+library-webpack-template 称为 库构建模板，又称 公共代码构建模板 ，是专门用于构建 公共代码（如：封装的库、工具等） 的 webpack 配置模板，并对 webpack 配置做了二次封装，当需要开发和构建公共代码时，直接克隆本项目，并默认在的 src 目录下开发即可；如需定制化配置，只需更改项目根目录下的 `project-config.js` 配置文件即可，里面的配置字段 传明达意、简单易懂，且有详细的说明，摈弃了 webpack 配置的鱼龙混杂、掩人耳目；
 
 - [主页(GitHub)][git仓库]：<https://github.com/GuoBinyong/-library-webpack-template>
 - [主页(码云)][码云仓库]：<https://gitee.com/guobinyong/library-webpack-template>
@@ -59,6 +59,7 @@ library-webpack-template 称为 库构建模板，又称 公共代码构建模�
 
 
 # 2. 特性
+- 极易使用，配置极其简单，配置项传明达意、简单易懂；
 - 可配置去除 公共代码 的依赖，默认去除了所有 `node_modules` 中的依赖；
 - 多个构建目标可同时构建，即：一次构建分别生成多个构建目标的构建包；
 - 可快速切换 开发模式 和 生产模式；
@@ -186,7 +187,7 @@ library-webpack-template/   # 构建前端库的webpack打包配置模板项目�
 
 
 # 9. project-config.js
-project-config.js 是整个项目的配置文件，是 library-webpack-template 提供的 面向使用者的 对 整个项目的配置入口；
+project-config.js 是整个项目的配置文件，是 library-webpack-template 提供的 面向使用者的 对 整个项目的配置入口；相对于 webpack 配置文件，该配置文件具有 传明达意、简单易懂 之特点；
 
 该配置文件中的所有配置项都保存在 projectConfig 变量中，可配置的属性如下：
 
@@ -196,43 +197,37 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
     - **注意：** 如果修改了 entry 的值，你可能需要考虑下是否要同步更改下 package.json 中的 module 属性；
 
 
-+ target：webpack 的 target，用来告知 webpack   bundles 的运行环境。因为 服务器 和 浏览器 代码都可以用 JavaScript 编写，所以 webpack 提供了多种部署 target(目标)
-    - **类型：** `string | function (compiler)`
-    - **详细信息：** <https://webpack.docschina.org/configuration/target/#target>
 
 
-+ filename ：webpack 的 output.filename；此选项决定了每个输出 bundle 的名称。这些 bundle 将写入到 output.path 选项指定的目录下
-    - **类型：** `string | function`
-    - **默认值：**
-       + 当未显式指定 `module` 时，`filename` 的默认值为 `<package.json/name>.js`；
-       + 当显式指定 `module` 时，`filename` 的默认值为 `<package.json/name>.<project-config.js/module>.js`；
-       + **注意：**
-          * 其中 `<package.json/name>` 的值为 package.json 文件中 name 的值，`<project-config.js/module>` 为 project-config.js 文件中 module 的值；
-          * 你可以在 `filename` 中使用 webpack 提供的模板字符串，如 `[name]` ；
-          * 其中 `<package.json/name>` 和 `<project-config.js/module>` 并不是 webpack 给 filename 字段提供的有效的模板字符串；
-    - **详细信息：** <https://webpack.docschina.org/configuration/output/#output-filename>
++ haveExports : 用于指示库是否有对外暴露的内容，即：是否有导出的项目；
+    - **类型：** `boolean`
+       * 当值为 `true` 时，选择 `refName` 才会起作用；
+       * 当值为 `false` 时，会忽略 `refName` 选项；
+    - **默认值：** `true`
 
 
 
-+ library ：库的名字；webpack 的 output.library；
+
++ refName ：库的引用名字；与 webpack 的 `output.library` 选项相同；某些模块化方案（由 `module` 选项指定）（比如：`var`、`assign`、`this`、`window`、`self`、`global` 等等）会在引入库时会在环境中注入特定名字的环境变量，以便引入者能够通过该环境变量来访问库对外暴露的接口，该环境变量的名字就是由该选项 `refName` 指定；
     - 类型： `string | {root: string, commonjs: string, amd: string} | null | undefined`
-        * 当值为 `undefined` 时，会使用默认值；
-        * 当值为 `null` 时，会取消配置 webpack 的 output.library
+        * 当值为 `undefined` | `null` 时，会使用默认值；
         * 从 webpack 3.1.0 开始；对象类型 `{root: string, commonjs: string, amd: string}` 的值可用于 项目配置文件 project-config.js 中的 `module` 选项（即：webpack 中 output.libraryTarget 选项）的值为 `'umd'` 时；
     - **默认值：** `tools.stringToCamelFormat(package.name)`  即默认值是 package.json 文件中的 name 字段的值的驼峰式名字；函数 `tools.stringToCamelFormat(str)` 的作用是把 字符串 str 从 中划线 或 下划线 分隔的方式 转成 驼峰式
-    - **说明：** 某些模块化方案（由 `module` 选项指定）（比如：`var`、`assign`、`this`、`window`、`self`、`global` 等等）会在引入库时会在环境中注入特定名字的环境变量，以便引入者能够通过该环境变量来访问库对外暴露的接口，该环境变量的名字就是由该选项 `library` 指定；
     - **详细信息：** <https://webpack.docschina.org/configuration/output/#output-library>
     - **注意：**
-       * 如果更改了 library 的值，你可能需要考虑下是否要同步更改下 package.json 中的 name 属性；
-       * 如果库不对外导出（暴露）任何东西里，推荐将该 library 设置为 null
+       * 只有当选项 `haveExports` 的值为 `haveExports` 时，此选项 `refName` 才会有效；
+       * 如果更改了 refName 的值，你可能需要考虑下是否要同步更改下 package.json 中的 name 属性；
 
 
-+ module ：配置库的构建目标（即：被构建（打包）后的包）采用的模块化方案，也可以理解为：对外暴露 库 的方式，即：库将会以哪种方式被使用；该选项配置的就是 webpack 的 output.libraryTarget 选项；
++ module ：配置库的构建目标（即：被构建（打包）后的包）采用的模块化方案，也可以理解为：对外暴露 库 的方式，即：库将会以哪种方式被使用；与 webpack 的 `output.libraryTarget` 选项相同；
     - **类型：** `"var" | "assign" | "this" | "window" | "self" | "global" | "commonjs" | "commonjs2" | "commonjs-module" | "amd" | "amd-require" | "umd" | "umd2" | "jsonp" | "system"`
     - **详细信息：** <https://webpack.docschina.org/configuration/output/#output-librarytarget>
 
 
-+ libraryExport ：库中被导出的项；webpack 的 output.libraryExport ；
+
+
+
++ libraryExport ：库中被导出的项；与 webpack 的 `output.libraryExport` 选项相同；
     - **类型：** `string | string[]`
     - **默认值：** `"default"`
     - **备注：** 如果设置成空字符串 "" ，则会导出包含所有导出的对象；
@@ -240,20 +235,51 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
 
 
 
-+ alias：webpack 的 resolve.alias，创建 import 或 require 的别名，来使模块引入变得更简单
-    - **类型：** `object`
-    - **详细信息：** <https://webpack.docschina.org/configuration/resolve/#resolve-alias>
+
++ removeDep ：构建库时，是否要移除库依赖的模块；库依赖的模块由 `dependencies` 选项指定；
+    - **类型：** `boolean`
+       * 当值为 `true` 时，会移除 `dependencies` 选项指定的依赖；
+       * 当值为 `false` 时，不会移除任何依赖；
+    - **默认值：** `true`
 
 
-+ extensions ：webpack 的 resolve.extensions，自动解析确定的扩展名，能够使用户在引入模块时不用写文件的扩展名
-    - **类型：** `string[]`
-    - **详细信息：** <https://webpack.docschina.org/configuration/resolve/#resolve-extensions>
-
-+ externals ：webpack 的 externals； 排除依赖的模块；防止将某些 import 的包(package)打包到 bundle 中；
++ dependencies ：配置库的依赖；与 webpack 的 `externals` 选项相同；
     - **类型：** `string | object | function | regex | array`
     - **默认值：** `webpackNodeExternals()` ； 即排除所有 `node_modules` 中的模块； `webpackNodeExternals` 是 webpack-node-externals 包提供的功能，该包的信息详见 <https://github.com/liady/webpack-node-externals> ；
     - **详细信息：** <https://webpack.docschina.org/configuration/externals/#externals>
+    - **注意：** 只有 `removeDep` 选项被设置为 `true` 时，该选项 `dependencies` 才会生效；
 
+
+
+
+
++ runEnv：指定库被使用时的运行环境；与 webpack 的 `target` 选项相同；因为 服务器 和 浏览器 代码都可以用 JavaScript 编写，所以 webpack 提供了多种部署 target(目标)
+    - **类型：** `"web" | "webworker" | "node" | "node-webkit" | "async-node" | "electron-main" | "electron-renderer" | function (compiler)`
+    - **默认值：** `"web"`
+    - **详细信息：** <https://webpack.docschina.org/configuration/target/#target>
+
+
++ outputFile ：设置构建后的输出文件的名字；与 webpack 的 `output.filename` 相同；此选项决定了每个输出 bundle 的名称。这些 bundle 将写入到 outputDir 选项指定的目录下
+    - **类型：** `string | function`
+    - **默认值：**
+       + 当未显式指定 `module` 时，`outputFile` 的默认值为 `<package.json/name>.js`；
+       + 当显式指定 `module` 时，`outputFile` 的默认值为 `<package.json/name>.<project-config.js/module>.js`；
+       + **注意：**
+          * 其中 `<package.json/name>` 的值为 package.json 文件中 name 的值，`<project-config.js/module>` 为 project-config.js 文件中 module 的值；
+          * 你可以在 `outputFile` 中使用 webpack 提供的模板字符串，如 `[name]` ；
+          * 其中 `<package.json/name>` 和 `<project-config.js/module>` 并不是 webpack 给 output.filename 字段提供的有效的模板字符串；
+    - **详细信息：** <https://webpack.docschina.org/configuration/output/#output-filename>
+
+
++ extensions ：与 webpack 的 `resolve.extensions` 选项相同，自动解析确定的扩展名，能够使用户在引入模块时不用写文件的扩展名
+    - **类型：** `string[]`
+    - **详细信息：** <https://webpack.docschina.org/configuration/resolve/#resolve-extensions>
+
+
+
++ alias：与 webpack 的 `resolve.alias` 选项相同，创建 import 或 require 的别名，来使模块引入变得更简单
+    - **类型：** `object`
+    - **详细信息：** <https://webpack.docschina.org/configuration/resolve/#resolve-alias>
 
 
 
@@ -274,8 +300,7 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
     - **类型：** `string`
     - **详细信息：** <https://github.com/ampedandwired/html-webpack-plugin>
 
-+ htmlOut ：要将 html模板文件 htmlTemplate 写入的文件。您也可以在此处指定子目录；该选项会结合 outputPath 选项 生成 html-webpack-plugin
- 的 filename 选项 的值；
++ htmlOut ：要将 html模板文件 htmlTemplate 写入的文件。您也可以在此处指定子目录；该选项会结合 outputDir 选项 生成 html-webpack-plugin 的 filename 选项 的值；
     - **类型：** `string`
     - **默认值：** `"index.html"`
     - **详细信息：** <https://github.com/ampedandwired/html-webpack-plugin>
@@ -292,27 +317,10 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
     - **说明：** 如果设置为 `false`，则 `node_modules` 中的依赖会被直接包含，不会经过 webpack 相应 loader 的处理；
 
 
-+ tsconfig：TypeScript相关的配置选项对象
++ tsconfig：TypeScript相关的配置选项对象；可配置 TypeScript 的所有 编译选项，即：tsconfig.compilerOptions 中的选项；
     - **类型：** `Object`
     - **详细信息：** <https://www.tslang.cn/docs/handbook/tsconfig-json.html>
-    - 可配置的属性如下：
-        * target：指定TypeScript编译成 ECMAScript 的目标版本；用作 tsconfig.json 的 target 选项；
-            - **类型：** `"ES3" | "ES5" | "ES6"/"ES2015" | "ES2016" | "ES2017" | "ESNext"`
-            - **默认值：** `"ES3"`
-            - **详细信息：** <https://www.tslang.cn/docs/handbook/compiler-options.html>
-
-        * module：指定生成哪个模块系统代码；用作 tsconfig.json 的 module 选项；
-            - **类型：** `"None" | "CommonJS" | "AMD" | "System" | "UMD" | "ES6" | "ES2015"`
-            - **默认值：** `tsTarget === "ES6" ? "ES6" : "commonjs"`
-            - **详细信息：** <https://www.tslang.cn/docs/handbook/compiler-options.html>
-
-
-        * declaration：指定是否生成相应的 .d.ts 文件。用作 tsconfig.json 的 declaration 选项
-            - **类型：** `boolean`
-            - **默认值：** `false`
-            - **详细信息：** <https://www.tslang.cn/docs/handbook/compiler-options.html>
-
-
+    - 除 TypeScript 的所有 编译选项外，还可配置如下属性：
         * loader：配置解析 TypeScript 的 loader
             - **类型：** `"ts-loader" | "babel-loader"`
             - **默认值：** `"ts-loader"`
@@ -340,7 +348,7 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
 + dev：开发模式的配置选项对象
     - **类型：** `Object`
     - 可配置的属性如下：
-        * outputPath ：输出目录，一个绝对路径；webpack 的 output.path；
+        * outputDir ：输出目录，一个绝对路径；与 webpack 的 `output.path` 选项相同；
             - **类型：** `string`
             - **详细信息：** <https://webpack.docschina.org/configuration/output/#output-path>
             - **注意：**
@@ -359,7 +367,7 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
             - **默认值：** `false`
             - **详细信息：** <https://webpack.docschina.org/configuration/devtool/>
 
-        * devtool ：webpack 的 devtool 选项；用于控制如何生成 source map；
+        * devtool ：与 webpack 的 `devtool` 选项相同；用于控制如何生成 source map；
             - **类型：** `string`
             - **默认值：** `false`
             - **详细信息：** <https://webpack.docschina.org/configuration/devtool/>
@@ -374,7 +382,7 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
 + build：生产模式的配置选项对象
     - **类型：** `Object`
     - 可配置的属性如下：
-        * outputPath ：输出目录，一个绝对路径；webpack 的 output.path；
+        * outputDir ：输出目录，一个绝对路径；与 webpack 的 output.path 选项相同；
             - **类型：** `string`
             - **详细信息：** <https://webpack.docschina.org/configuration/output/#output-path>
             - **注意：**
@@ -395,7 +403,7 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
             - **默认值：** `false`
             - **详细信息：** <https://webpack.docschina.org/configuration/devtool/>
 
-        * devtool ：webpack 的 devtool 选项；用于控制如何生成 source map；
+        * devtool ：与 webpack 的 `devtool` 选项相同；用于控制如何生成 source map；
             - **类型：** string
             - **默认值：** `false`
             - **详细信息：** <https://webpack.docschina.org/configuration/devtool/>
@@ -413,15 +421,15 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
         * 如果配置的是一个数组，数组中的每个元素都会被当作一个 项目配置 并覆盖 或 合并 默认的项目配置 projectConfig 中对应的具体选项；当进行构建时，会对数组中的每个项目配置分别构建并生成对应的包；
         * 数组中的 undefined 和 null 会被当作是 默认的项目配置 projectConfig；
         * 如果配置了多个构建目标，则应注意多个构建目标的输出因命名、路径或服务端口重复导致导出相互被覆盖 或者 服务启动失败 的问题；这类问题的解决方案就是：分别为每个构建目标设置相应选项设置一个不同的值；如：
-            - 分别为每个构建目标的 `filename` 设置一个不同的值，如 `{target: "node", filename: '[name].node.js' }` ，这样可以防止多个构建目标的构建包相互覆盖 ；`filename` 的默认值已包含了配置变量 `module`，所以，如果分别为每个构建目标的 `module` 选项显式地指定了不同的值，则也不会出现构建输出文件相互覆盖的问题；
+            - 分别为每个构建目标的 `outputFile` 设置一个不同的值，如 `{runEnv: "node", outputFile: '[name].node.js' }` ，这样可以防止多个构建目标的构建包相互覆盖 ；`outputFile` 的默认值已包含了配置变量 `module`，所以，如果分别为每个构建目标的 `module` 选项显式地指定了不同的值，则也不会出现构建输出文件相互覆盖的问题；
             - 如果以 server 模式（这是默认的模式）开启了 构建分析报告，则应该采用以下任意一种方案来对 `bundleAnalyzerOptions.analyzerPort` 进行设置：
                 * 方案1（这是默认的设置）：将 所有构建目标公共的 `projectConfig.bundleAnalyzerOptions.analyzerPort` 设置为 auto ；
                 * 方案2：分别给每一个 构建目标的 `bundleAnalyzerOptions.analyzerPort` 设置一个不同的值；
 
 
 + overrideKeys ：指定 在将 多构建目标 `multipleTargets` 中的选项 与 默认的项目配置 projectConfig 进行合并时 采用覆盖方式进行合并的 key；
-    - **类型：** `undefined | null | Array<string>`
-    - **默认值：** `["externals"]`
+    - **类型：** `Array<string> | undefined | null`
+    - **默认值：** `undefined`
     - **说明：**
        * 此选项只用于 多构建目标 `multipleTargets` 与 默认的项目配置 projectConfig 的合并；
        * 些选择只能配置在 projectConfig 的顶层（即：projectConfig.overrideKeys），多构建目标 `multipleTargets` 中的 overrideKeys 选项会被忽略；

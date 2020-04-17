@@ -292,8 +292,7 @@ exports.projecConfigMultipleTargetsSeparation = function projecConfigMultipleTar
   var multiProjConf = [projectConfig]
 
   if (multipleTargets && multipleTargets.length > 0) {
-    var overrideKeys = projectConfig.overrideKeys || ["externals"];
-    var projecConfigMerge = createMergeForUniqAndOverrideKeys(overrideKeys);
+    var projecConfigMerge = createMergeForUniqAndOverrideKeys(projectConfig.overrideKeys);
 
     multiProjConf = multipleTargets.map(function (target) {
       return projecConfigMerge(projectConfig, target)

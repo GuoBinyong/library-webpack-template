@@ -28,11 +28,11 @@ function createWebpackConfig(projectConfig) {
   const tsConfig = createTsConfig(projectConfig);
   const base = createBaseConfig(projectConfig);
 
-  const outputPath = projectConfig.build.outputPath;
+  const outputDir = projectConfig.build.outputDir;
 
 
   if (tsConfig.compilerOptions.declaration) {
-    tsConfig.compilerOptions.declarationDir = outputPath;
+    tsConfig.compilerOptions.declarationDir = outputDir;
   }
 
   var ruleExclude = projectConfig.parseNodeModules || projectConfig.parseNodeModules == undefined ? undefined : /node_modules/ ;
@@ -41,7 +41,7 @@ function createWebpackConfig(projectConfig) {
   const wpConfig = {
     mode: "production",
     output: {
-      path: projectConfig.build.outputPath,
+      path: projectConfig.build.outputDir,
     },
     devtool: projectConfig.build.sourceMap ? projectConfig.build.devtool : false,
 
@@ -102,7 +102,7 @@ function createWebpackConfig(projectConfig) {
     // you can customize output by editing /index.html
     // see https://github.com/ampedandwired/html-webpack-plugin
     const htmlPlugin = new HtmlWebpackPlugin({
-      filename: path.resolve(__dirname, "..", projectConfig.build.outputPath, projectConfig.htmlOut),
+      filename: path.resolve(__dirname, "..", projectConfig.build.outputDir, projectConfig.htmlOut),
       template: htmlTemplate,
       inject: true,
       minify: {

@@ -25,12 +25,12 @@ function createWebpackConfig(projectConfig) {
   const tsConfig = createTsConfig(projectConfig);
   const base = createBaseConfig(projectConfig);
 
-  const outputPath = projectConfig.dev.outputPath;
+  const outputDir = projectConfig.dev.outputDir;
 
 
 
   if (tsConfig.compilerOptions.declaration) {
-    tsConfig.compilerOptions.declarationDir = outputPath;
+    tsConfig.compilerOptions.declarationDir = outputDir;
   }
 
   var ruleExclude = projectConfig.parseNodeModules || projectConfig.parseNodeModules == undefined ? undefined : /node_modules/ ;
@@ -40,7 +40,7 @@ function createWebpackConfig(projectConfig) {
     mode: "development",
     devtool: projectConfig.dev.sourceMap ? projectConfig.dev.devtool : false,
     output: {
-      path: outputPath,
+      path: outputDir,
     },
     module: {
       rules: [
@@ -68,7 +68,7 @@ function createWebpackConfig(projectConfig) {
   if (htmlTemplate) {
     // https://github.com/ampedandwired/html-webpack-plugin
     const htmlPlugin = new HtmlWebpackPlugin({
-      filename: path.resolve(__dirname, "..", outputPath, projectConfig.htmlOut),
+      filename: path.resolve(__dirname, "..", outputDir, projectConfig.htmlOut),
       template: htmlTemplate,
       inject: true
     });
