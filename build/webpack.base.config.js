@@ -28,21 +28,27 @@ module.exports = function createWebpackConfig(projectConfig) {
 
   var packageName = npmConfig.name;
 
-  var haveExports = projectConfig.haveExports;
-  if (haveExports || haveExports === undefined){
-    var libraryName = projectConfig.refName;
-    if (libraryName == undefined) {
-      libraryName = tools.stringToCamelFormat(packageName);
-    }
-  }
-  
 
   var libraryTarget = projectConfig.module;
   if (libraryTarget === null) {
     libraryTarget = undefined;
   }
 
-  var ruleExclude = projectConfig.parseNodeModules || projectConfig.parseNodeModules == undefined ? undefined : /node_modules/ ;
+
+  var haveExports = projectConfig.haveExports;
+  if (haveExports || haveExports === undefined){
+    var libraryName = projectConfig.refName;
+    if (libraryName == undefined) {
+      libraryName = tools.stringToCamelFormat(packageName);
+    }else if (libraryTarget && libraryTarget.toLowerCase() == "amd" && typeof libraryName == "object"){
+      libraryName = libraryName.amd;
+    }
+  }
+  
+
+  
+
+  var ruleExclude = (projectConfig.parseNodeModules || projectConfig.parseNodeModules === undefined) ? undefined : /node_modules/ ;
 
   var removeDep = projectConfig.removeDep;
   if (removeDep || removeDep === undefined){
