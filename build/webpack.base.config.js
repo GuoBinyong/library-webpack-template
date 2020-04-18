@@ -41,7 +41,7 @@ module.exports = function createWebpackConfig(projectConfig) {
     if (libraryName == undefined) {
       libraryName = tools.stringToCamelFormat(packageName);
     }else if (libraryTarget && libraryTarget.toLowerCase() == "amd" && typeof libraryName == "object"){
-      libraryName = libraryName.amd;
+      libraryName = libraryName.findValueForKeyFormats("amd",[{caseType:"L"},{caseType:"U"}]);
     }
   }
   
@@ -52,7 +52,7 @@ module.exports = function createWebpackConfig(projectConfig) {
 
   var removeDep = projectConfig.removeDep;
   if (removeDep || removeDep === undefined){
-    var externals = projectConfig.dependencies || require('webpack-node-externals')(),
+    var externals = projectConfig.dependencies || require('webpack-node-externals')();
   }
 
   
@@ -80,7 +80,7 @@ module.exports = function createWebpackConfig(projectConfig) {
     module: {
       rules: [
         ...(projectConfig.useEslint ? [{
-          test: /\.(js|ts|vue)$/,
+          test: /\.(js|ts)$/,
           loader: 'eslint-loader',
           enforce: 'pre',
           include: [resolve('src'), resolve('types'), resolve('test')],
