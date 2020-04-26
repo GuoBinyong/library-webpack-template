@@ -304,29 +304,3 @@ exports.projecConfigMultipleTargetsSeparation = function projecConfigMultipleTar
 }
 
 // 配置处理工具：结束
-
-/**
- * 将按指定分隔符分隔的字符串转换成驼峰格式
- *
- * @param  str : string    被转换的字符串
- * @param separators ?: string | Array<string>   可选；默认值：["-","_"]；  分隔符 或 分隔符好数组
- * @returns string  返回驼峰格式的字符串
- */
-exports.stringToCamelFormat = function stringToCamelFormat (str, separators) {
-
-  if (separators == undefined) {
-    separators = ['-', '_']
-  } else if (!Array.isArray(separators)) {
-    separators = [separators]
-  }
-
-  var separatorRexStr = '(' + separators.join('|') + ')' + '+([A-Za-z]?)'
-  var separatorRex = new RegExp(separatorRexStr, 'g')
-
-  var targetStr = str.replace(separatorRex, function (match, p1, p2) {
-    return p2.toUpperCase()
-  })
-
-  return targetStr
-}
-

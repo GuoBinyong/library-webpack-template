@@ -39,7 +39,7 @@ module.exports = function createWebpackConfig(projectConfig) {
   if (haveExports || haveExports === undefined){
     var libraryName = projectConfig.refName;
     if (libraryName == undefined) {
-      libraryName = tools.stringToCamelFormat(packageName);
+      libraryName = packageName.toCamelFormat();
     }else if (libraryTarget && libraryTarget.toLowerCase() == "amd" && typeof libraryName == "object"){
       libraryName = libraryName.findValueForKeyFormats("amd",[{caseType:"L"},{caseType:"U"}]);
     }
