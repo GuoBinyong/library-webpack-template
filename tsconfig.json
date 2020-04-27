@@ -9,7 +9,8 @@
       "ScriptHost"
     ],
     "strict": true,
-    "declaration":true
+    "declaration": true,
+    "esModuleInterop": true
   },
   "exclude":[
     "dist",
