@@ -94,9 +94,8 @@ exports.styleLoaders = function (options) {
 const jsBabelPresets = [
   ['@babel/preset-env', {
     'useBuiltIns': false,
-  }],
-  '@babel/preset-flow'
-]
+  }]
+];
 
 // js 的 babel 的插件 ：2020-4-10
 const jsBabelPlugins = [
@@ -113,6 +112,9 @@ const jsBabelPlugins = [
   ['@babel/plugin-proposal-class-properties', { 'loose': true }],
   '@babel/plugin-proposal-json-strings'
 ]
+
+// flow 的 babel 的预设
+const flowBabelPresets = ['@babel/preset-flow']
 
 // jsx 的 babel 的预设
 const jsxBabelPresets = [
@@ -139,7 +141,7 @@ function createBabelLoader(type) {
   switch (type) {
     case 'jsx':
     case 'react': {
-      babelPresets = babelPresets.concat(jsxBabelPresets)
+      babelPresets = babelPresets.concat(flowBabelPresets,jsxBabelPresets)
       break
     }
 
@@ -148,6 +150,10 @@ function createBabelLoader(type) {
     case 'typescript': {
       babelPresets = babelPresets.concat(tsBabelPresets)
       break
+    }
+
+    default {
+      babelPresets.concat(flowBabelPresets)
     }
 
   }
