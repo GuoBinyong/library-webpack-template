@@ -212,7 +212,7 @@ project-config.js 是整个项目的配置文件，是 library-webpack-template 
     - 类型： `string | {root: string, commonjs: string, amd: string} | null | undefined`
         * 当值为 `undefined` | `null` 时，会使用默认值；
         * 从 webpack 3.1.0 开始；对象类型 `{root: string, commonjs: string, amd: string}` 的值可用于 项目配置文件 project-config.js 中的 `module` 选项（即：webpack 中 output.libraryTarget 选项）的值为 `'umd'` 时；
-    - **默认值：** `package.name.toCamelFormat()`  即默认值是 package.json 文件中的 name 字段的值的驼峰式名字；字符串的方法 `toCamelFormat()` 是库 `es-expand` 对字符串的扩展方法，作用是把 字符串 从 中划线 或 下划线 分隔的方式 转成 驼峰式
+    - **默认值：** `getBaseNameOfHumpFormat(package.name)`，即：将 package.json 文件中的 name 字段的值去除命名空间后并转成驼峰格式的字符串；`getBaseNameOfHumpFormat()` 是库 `package-tls` 导出的函数，作用是把包名去除命名空间后 并 从 中划线 或 下划线 分隔的方式 转成 驼峰式
     - **详细信息：** <https://webpack.docschina.org/configuration/output/#output-library>
     - **注意：**
        * 只有当选项 `haveExports` 的值为 `haveExports` 时，此选项 `refName` 才会有效；

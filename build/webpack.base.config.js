@@ -2,6 +2,8 @@
 开发 和 生产两种模式公共的 webpack 配置文件
 https://github.com/GuoBinyong/library-webpack-template
 */
+const pkTls = require('package-tls');
+
 
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin')
@@ -39,7 +41,7 @@ module.exports = function createWebpackConfig(projectConfig) {
   if (haveExports || haveExports === undefined){
     var libraryName = projectConfig.refName;
     if (libraryName == undefined) {
-      libraryName = packageName.toCamelFormat();
+      libraryName = pkTls.getBaseNameOfHumpFormat(packageName);
     }else if (libraryTarget && libraryTarget.toLowerCase() == "amd" && typeof libraryName == "object"){
       libraryName = libraryName.findValueForKeyFormats("amd",[{caseType:"L"},{caseType:"U"}]);
     }
